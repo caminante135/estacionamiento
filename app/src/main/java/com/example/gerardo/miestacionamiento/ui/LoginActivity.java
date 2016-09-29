@@ -1,4 +1,4 @@
-package com.example.gerardo.miestacionamiento;
+package com.example.gerardo.miestacionamiento.ui;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.gerardo.miestacionamiento.ui.dialog.DialogEscogerTipoUsuario;
+import com.example.gerardo.miestacionamiento.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,10 +42,11 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_login)
     public void loguear() {
+
     }
 
     @OnClick(R.id.txt_Registrar)
     public void registrar() {
-        new DialogEscogerTipoUsuario(this,R.style.MyDialogTheme).show();
+        new DialogEscogerTipoUsuario(this).show();
     }
 }
