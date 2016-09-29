@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MiEstacionamiento</string>
+    <string name="action_settings">Settings</string>
+
+
+    <string-array name="paises">
+        <item>Chile</item>
+    </string-array>
+
+</resources>

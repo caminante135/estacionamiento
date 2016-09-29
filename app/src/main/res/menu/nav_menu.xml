@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@android:drawable/ic_menu_view"
+            android:title="Inicio" />
+        <item
+            android:id="@+id/nav_buscar2"
+            android:icon="@android:drawable/ic_menu_send"
+            android:title="Registrar Tarjeta" />
+
+        <item
+            android:id="@+id/nav_buscar"
+            android:icon="@android:drawable/ic_menu_directions"
+            android:title="Registrar Estacionamiento" />
+
+        <item
+            android:id="@+id/nav_buscar3"
+            android:icon="@android:drawable/ic_menu_preferences"
+            android:title="Configuracion" />
+
+        <item
+            android:id="@+id/nav_buscar553"
+            android:icon="@android:drawable/ic_menu_close_clear_cancel"
+            android:title="Salir" />
+    </group>
+
+
+</menu>
