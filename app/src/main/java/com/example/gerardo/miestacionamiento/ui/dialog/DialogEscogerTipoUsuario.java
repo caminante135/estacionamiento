@@ -2,14 +2,17 @@ package com.example.gerardo.miestacionamiento.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.ui.RegistroActivity;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -43,6 +46,7 @@ public class DialogEscogerTipoUsuario extends Dialog {
         setCancelable(true);
         setContentView(R.layout.dialog_choose);
 
+        ButterKnife.bind(this);
 
 
         //Ajusto el tamaño horizontal del dialog
@@ -59,5 +63,11 @@ public class DialogEscogerTipoUsuario extends Dialog {
 
     @OnClick(R.id.btn_propietario)
     public void onClick() {
+        getContext().startActivity(new Intent(getContext(), RegistroActivity.class));
+    }
+
+    @OnClick(R.id.btn_propietario)
+    public void onClick2() {
+        getContext().startActivity(new Intent(getContext(), RegistroActivity.class));
     }
 }

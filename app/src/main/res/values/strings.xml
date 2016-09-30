@@ -7,4 +7,17 @@
         <item>Chile</item>
     </string-array>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="itemsDatosPersonales">
+        <item>Rut</item>
+        <item>Nombre</item>
+        <item>Apellido Paterno</item>
+        <item>Apellido Materno</item>
+        <item>Correo</item>
+        <item>Teléfono</item>
+        <item>Contraseña</item>
+    </string-array>
+
 </resources>
