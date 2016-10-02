@@ -1,6 +1,10 @@
 package com.example.gerardo.miestacionamiento;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 /**
  * Created by Gerardo on 01/10/2016.
@@ -13,6 +17,11 @@ public final class GlobalFunction {
     public static int dpToPx(int dp)
     {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
+    }
+
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 

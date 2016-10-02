@@ -25,10 +25,18 @@
     <string name="hintModelo">Ingrese el modelo</string>
     <string name="hintColor">Ingrese el color</string>
     <string name="hintLargo">Ingrese el largo aproximado</string>
+
     <string name="your_button_title">registrar</string>
 
+    <!-- HINTS PARA EL FORMULARIO DE REGISTRO DE VEHICULO -->
+    <string name="hintComuna">Ingrese la comuna</string>
+    <string name="hintDireccion">Ingrese la dirección</string>
+    <string name="hintNumero">Ingrese el número</string>
+    <string name="hintNumeroEst">Número del estacionamiento</string>
+
+
     <string-array name="itemsDatosPersonales">
-        <item>Rut</item>
+        <item>RUT</item>
         <item>Nombre</item>
         <item>Apellido Paterno</item>
         <item>Apellido Materno</item>
@@ -42,6 +50,15 @@
         <item>Marca</item>
         <item>Modelo</item>
         <item>Color</item>
+        <item>Largo</item>
+    </string-array>
+
+    <string-array name="itemsDatosEstacionamiento">
+        <item>Comuna</item>
+        <item>Dirección</item>
+        <item>Número</item>
+        <item>Tipo</item>
+        <item>Número Estacionamiento</item>
         <item>Largo</item>
     </string-array>
 

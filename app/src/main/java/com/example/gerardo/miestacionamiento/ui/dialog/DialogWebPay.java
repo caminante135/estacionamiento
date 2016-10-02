@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.devmarvel.creditcardentry.library.CreditCard;
 import com.devmarvel.creditcardentry.library.CreditCardForm;
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.util.ExpirationFormatWatcher;
@@ -38,6 +40,8 @@ public class DialogWebPay extends DialogFragment {
     public DialogWebPay() {
     }
 
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +70,11 @@ public class DialogWebPay extends DialogFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_wp_cancelar:
+                dismissAllowingStateLoss();
                 break;
             case R.id.btn_wp_registrar:
+                CreditCard card = mCcform.getCreditCard();
+                Toast.makeText(getActivity(), "Tipo: "+card.getCardType() + " Numero: "+ card.getCardNumber(), Toast.LENGTH_SHORT).show();
                 break;
         }
     }

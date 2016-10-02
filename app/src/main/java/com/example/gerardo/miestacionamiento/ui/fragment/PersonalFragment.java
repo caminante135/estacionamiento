@@ -158,7 +158,10 @@ public class PersonalFragment extends Fragment implements VerticalStepperForm {
     @Override
     public void sendData() {
         if (tipoUsuario.equals(ARGUMENTO_PROP)){
-            Log.d("TIPOUSUARIO",tipoUsuario);
+            EstacionamientoFragment fragment = EstacionamientoFragment.newInstance();
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.container,fragment);
+            ft.commitAllowingStateLoss();
         }else{
             if (tipoUsuario.equals(ARGUMENTO_ARREN)){
                 VehiculoFragment fragment = VehiculoFragment.newInstance(tipoUsuario);
