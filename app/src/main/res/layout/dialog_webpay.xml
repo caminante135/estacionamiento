@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="20dp"
+    android:paddingEnd="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+
+    android:paddingStart="20dp">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Número" />
+
+    <com.devmarvel.creditcardentry.library.CreditCardForm
+        android:id="@+id/edit_wp_ccform"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        app:include_exp="false"
+        app:include_helper="false"
+        app:include_security="false"
+        app:include_zip="false" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
+            android:text="Expiración" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:paddingLeft="4dp"
+            android:text="CVC" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edit_wp_expiracion"
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/edit_text_background_wp"
+            android:inputType="phone"
+            android:maxLength="9"
+            android:paddingEnd="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingStart="15dp" />
+
+        <EditText
+            android:id="@+id/edit_wp_cvc"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/edit_text_background_wp"
+            android:inputType="number"
+            android:maxLength="6"
+            android:paddingEnd="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingStart="15dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Nombre" />
+
+    <EditText
+        android:id="@+id/edit_wp_nombre"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/edit_text_background_wp"
+        android:paddingEnd="15dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingStart="15dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_wp_cancelar"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:background="@android:color/transparent"
+            android:padding="0dp"
+            android:text="Cancelar"
+            android:textColor="@android:color/darker_gray" />
+
+        <Button
+            android:id="@+id/btn_wp_registrar"
+            android:layout_width="160dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:padding="0dp"
+            android:text="Registrar" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

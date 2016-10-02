@@ -14,6 +14,9 @@ import android.widget.EditText;
 
 import com.example.gerardo.miestacionamiento.GlobalFunction;
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.ui.dialog.DialogWebPay;
+
+
 
 import ernestoyaquello.com.verticalstepperform.VerticalStepperFormLayout;
 import ernestoyaquello.com.verticalstepperform.interfaces.VerticalStepperForm;
@@ -21,7 +24,7 @@ import ernestoyaquello.com.verticalstepperform.interfaces.VerticalStepperForm;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class VehiculoFragment extends Fragment implements VerticalStepperForm {
+public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
 
     public static final String ARGUMENTO_TIPO = "tipo";
     public static final String ARGUMENTO_PROP = "propietario";
@@ -81,6 +84,8 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm {
                 .displayBottomNavigation(true) // It is true by default, so in this case this line is not necessary
                 .init();
 
+
+
         return root;
     }
 
@@ -137,8 +142,10 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm {
 
     @Override
     public void sendData() {
-
+        DialogWebPay fragment = new DialogWebPay();
+        fragment.show(getActivity().getSupportFragmentManager(),"webpayFragment");
     }
+
 
 
 
@@ -154,7 +161,6 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm {
         return mPatente;
 
     }
-
     private View crearViewMarca() {
         mMarca = new EditText(getActivity());
         mMarca.setSingleLine(true);
@@ -166,7 +172,6 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm {
         mMarca.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         return mMarca;
     }
-
     private View crearViewModelo() {
         mModelo = new EditText(getActivity());
         mModelo.setSingleLine(true);
@@ -178,7 +183,6 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm {
         mModelo.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         return mModelo;
     }
-
     private View crearViewColor() {
         mColor = new EditText(getActivity());
         mColor.setSingleLine(true);
@@ -190,7 +194,6 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm {
         mColor.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         return mColor;
     }
-
     private View crearViewLargo() {
         mLargo = new EditText(getActivity());
         mLargo.setSingleLine(true);

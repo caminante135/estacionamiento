@@ -25,6 +25,7 @@
     <string name="hintModelo">Ingrese el modelo</string>
     <string name="hintColor">Ingrese el color</string>
     <string name="hintLargo">Ingrese el largo aproximado</string>
+    <string name="your_button_title">registrar</string>
 
     <string-array name="itemsDatosPersonales">
         <item>Rut</item>

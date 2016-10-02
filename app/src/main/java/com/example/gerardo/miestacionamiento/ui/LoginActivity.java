@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -12,9 +13,12 @@ import android.widget.TextView;
 import com.example.gerardo.miestacionamiento.ui.dialog.DialogEscogerTipoUsuario;
 import com.example.gerardo.miestacionamiento.R;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -49,4 +53,5 @@ public class LoginActivity extends AppCompatActivity {
     public void registrar() {
         new DialogEscogerTipoUsuario(this).show();
     }
+
 }
