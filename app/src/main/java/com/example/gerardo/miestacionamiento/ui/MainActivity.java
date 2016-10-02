@@ -10,9 +10,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.ui.fragment.MapFragment;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+    GoogleMap mGoogleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +31,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        MapFragment mMapFragment = MapFragment.newInstance();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.frame, mMapFragment)
+                .commit();
 
+        mMapFragment.getMapAsync(this);
 
 
     }
@@ -46,5 +62,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
+        LatLng green = new LatLng(-33.500316, -70.616127);
+        LatLng red = new LatLng(-33.500593,-70.616803);
+        mGoogleMap.addMarker(new MarkerOptions()
+                .position(green)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.greenmark))
+                .title("Estacionamiento 1"));
+        mGoogleMap.addMarker(new MarkerOptions()
+                .position(red)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.redmark))
+                .title("Estacionamiento 2"));
+
+        CameraPosition cameraPosition = CameraPosition.builder()
+                .target(green)
+                .zoom(15)
+                .build();
+
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 }

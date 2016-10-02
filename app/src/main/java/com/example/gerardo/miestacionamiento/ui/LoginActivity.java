@@ -1,6 +1,7 @@
 package com.example.gerardo.miestacionamiento.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,11 +57,12 @@ public class LoginActivity extends AppCompatActivity {
         if (!GlobalFunction.isEmpty(editUsuario.getText().toString().trim()) &&
                 !GlobalFunction.isEmpty(editPassword.getText().toString().trim())){
 
-            SharedPreferences prefs = this.getSharedPreferences(GlobalConstant.PREFS_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString(GlobalConstant.PREFS_USER,editUsuario.getText().toString().trim());
-            editor.putString(GlobalConstant.PREFS_PASS,editPassword.getText().toString().trim());
-            editor.apply();
+//            SharedPreferences prefs = this.getSharedPreferences(GlobalConstant.PREFS_NAME, Context.MODE_PRIVATE);
+//            SharedPreferences.Editor editor = prefs.edit();
+//            editor.putString(GlobalConstant.PREFS_USER,editUsuario.getText().toString().trim());
+//            editor.putString(GlobalConstant.PREFS_PASS,editPassword.getText().toString().trim());
+//            editor.apply();
+            startActivity(new Intent(this,MainActivity.class));
         }else{
             Toast.makeText(LoginActivity.this, "Debe rellenar todos los campos", Toast.LENGTH_SHORT).show();
         }
