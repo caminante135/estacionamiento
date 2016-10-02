@@ -62,4 +62,6 @@
         <item>Largo</item>
     </string-array>
 
+    <string name="vertical_form_stepper_form_confirm_button">Registrar</string>
+
 </resources>

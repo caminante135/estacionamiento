@@ -9,16 +9,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.example.gerardo.miestacionamiento.GlobalFunction;
+import com.example.gerardo.miestacionamiento.util.GlobalFunction;
 import com.example.gerardo.miestacionamiento.R;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import ernestoyaquello.com.verticalstepperform.VerticalStepperFormLayout;
 import ernestoyaquello.com.verticalstepperform.interfaces.VerticalStepperForm;

@@ -1,4 +1,4 @@
-package com.example.gerardo.miestacionamiento;
+package com.example.gerardo.miestacionamiento.util;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,8 +14,7 @@ public final class GlobalFunction {
 
 
     //Funcion para convertir unidades DP a Pixeles (PX)
-    public static int dpToPx(int dp)
-    {
+    public static int dpToPx(int dp) {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 
@@ -24,5 +23,12 @@ public final class GlobalFunction {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    public static boolean isEmpty(String value){
+        if (value.equals("") || value == null){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 }

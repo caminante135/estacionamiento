@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.example.gerardo.miestacionamiento.GlobalFunction;
+import com.example.gerardo.miestacionamiento.util.GlobalFunction;
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.ui.dialog.DialogWebPay;
 

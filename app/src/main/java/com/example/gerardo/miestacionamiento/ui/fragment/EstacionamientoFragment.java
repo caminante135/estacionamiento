@@ -14,7 +14,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.example.gerardo.miestacionamiento.GlobalFunction;
+import com.example.gerardo.miestacionamiento.ui.dialog.DialogWebPay;
+import com.example.gerardo.miestacionamiento.util.GlobalFunction;
 import com.example.gerardo.miestacionamiento.R;
 
 import ernestoyaquello.com.verticalstepperform.VerticalStepperFormLayout;
@@ -134,7 +135,8 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
 
     @Override
     public void sendData() {
-
+        DialogWebPay fragment = new DialogWebPay();
+        fragment.show(getActivity().getSupportFragmentManager(),"webpayFragment");
     }
 
     private View crearViewComuna() {
@@ -179,16 +181,11 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
         mTipoResidencia = new RadioGroup(getActivity());
         mTipoResidencia.setOrientation(RadioGroup.HORIZONTAL);
 
-        RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0,0,GlobalFunction.dpToPx(10),0);
-
         String[] texts = {"Casa", "Departamento"};
 
         for (int i = 0; i < 2; i++) {
             radioButtons[i] = new RadioButton(getActivity());
             radioButtons[i].setText(texts[i]);
-            radioButtons[i].setLayoutParams(lp);
             mTipoResidencia.addView(radioButtons[i]);
         }
 

@@ -1,5 +1,7 @@
 package com.example.gerardo.miestacionamiento.ui;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -9,9 +11,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.ui.dialog.DialogEscogerTipoUsuario;
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.util.GlobalConstant;
+import com.example.gerardo.miestacionamiento.util.GlobalFunction;
 
 import java.util.List;
 
@@ -31,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.txt_Registrar)
     TextView txtRegistrar;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +53,17 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_login)
     public void loguear() {
+        if (!GlobalFunction.isEmpty(editUsuario.getText().toString().trim()) &&
+                !GlobalFunction.isEmpty(editPassword.getText().toString().trim())){
 
+            SharedPreferences prefs = this.getSharedPreferences(GlobalConstant.PREFS_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString(GlobalConstant.PREFS_USER,editUsuario.getText().toString().trim());
+            editor.putString(GlobalConstant.PREFS_PASS,editPassword.getText().toString().trim());
+            editor.apply();
+        }else{
+            Toast.makeText(LoginActivity.this, "Debe rellenar todos los campos", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @OnClick(R.id.txt_Registrar)
