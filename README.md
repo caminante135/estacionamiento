@@ -6,4 +6,4 @@ Libreria para el consumo de la API: [Retrofit 2.1](http://square.github.io/retro
 Libreria para la injeccion de dependencias: [ButterKnife 7.0.1](http://jakewharton.github.io/butterknife)  
 Libreria para formulario vertical: [Vertical Stepper Form](https://github.com/ernestoyaquello/vertical-stepper-form)  
 Libreria para formulario horizontal: [Single Input Form](https://github.com/HeinrichReimer/material-singleinputform)  
-Libreria para validar CC: [WebPay Token Android](https://github.com/webpay/webpay-token-android)
+Libreria para validar CC: [Credit Card Entry](https://github.com/dbachelder/CreditCardEntry)
