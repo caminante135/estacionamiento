@@ -12,6 +12,9 @@
     <color name="blackTransparecy">#5a000000</color>
     <color name="white">#FFFFFF</color>
     <color name="whiteTransparecy">#32ffffff</color>
+    <color name="whiteHint">#6effffff</color>
     <color name="whiteLittleDark">#c5c5c5</color>
+
+    <color name="AccentTransparecy">#83ff9800</color>
 
 </resources>

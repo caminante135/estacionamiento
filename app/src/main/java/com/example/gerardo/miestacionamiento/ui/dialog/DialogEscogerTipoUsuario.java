@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
@@ -61,13 +62,18 @@ public class DialogEscogerTipoUsuario extends Dialog {
 
     }
 
-    @OnClick(R.id.btn_propietario)
-    public void onClick() {
-        getContext().startActivity(new Intent(getContext(), RegistroActivity.class));
-    }
-
-    @OnClick(R.id.btn_propietario)
-    public void onClick2() {
-        getContext().startActivity(new Intent(getContext(), RegistroActivity.class));
+    @OnClick({R.id.btn_propietario, R.id.btn_arrendatario})
+    public void onClick(View view) {
+        Intent intent = new Intent(getContext(),RegistroActivity.class);
+        switch (view.getId()) {
+            case R.id.btn_propietario:
+                intent.putExtra("tipo","propietario");
+                getContext().startActivity(intent);
+                break;
+            case R.id.btn_arrendatario:
+                intent.putExtra("tipo","arrendatario");
+                getContext().startActivity(intent);
+                break;
+        }
     }
 }

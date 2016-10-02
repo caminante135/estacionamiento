@@ -9,6 +9,13 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hintRut">Ingrese su RUT</string>
+    <string name="hintNombre">Ingrese su nombre</string>
+    <string name="hintApelP">Ingrese su apellido paterno</string>
+    <string name="hintApelM">Ingrese su apellido materno</string>
+    <string name="hintCorreo">Ingrese su correo</string>
+    <string name="hintTelefono">Ingrese su teléfono</string>
+    <string name="hintClave">Ingrese su clave</string>
 
     <string-array name="itemsDatosPersonales">
         <item>Rut</item>
