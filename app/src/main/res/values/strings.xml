@@ -7,8 +7,10 @@
         <item>Chile</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- HINTS PARA EL FORMULARIO DE DATOS PERSONALES -->
     <string name="hintRut">Ingrese su RUT</string>
     <string name="hintNombre">Ingrese su nombre</string>
     <string name="hintApelP">Ingrese su apellido paterno</string>
@@ -16,6 +18,13 @@
     <string name="hintCorreo">Ingrese su correo</string>
     <string name="hintTelefono">Ingrese su teléfono</string>
     <string name="hintClave">Ingrese su clave</string>
+
+    <!-- HINTS PARA EL FORMULARIO DE REGISTRO DE VEHICULO -->
+    <string name="hintPatente">Ingrese la patente</string>
+    <string name="hintMarca">Ingrese la marca</string>
+    <string name="hintModelo">Ingrese el modelo</string>
+    <string name="hintColor">Ingrese el color</string>
+    <string name="hintLargo">Ingrese el largo aproximado</string>
 
     <string-array name="itemsDatosPersonales">
         <item>Rut</item>
@@ -25,6 +34,14 @@
         <item>Correo</item>
         <item>Teléfono</item>
         <item>Contraseña</item>
+    </string-array>
+
+    <string-array name="itemsDatosVehiculo">
+        <item>Patente</item>
+        <item>Marca</item>
+        <item>Modelo</item>
+        <item>Color</item>
+        <item>Largo</item>
     </string-array>
 
 </resources>

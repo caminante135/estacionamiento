@@ -5,9 +5,11 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +29,10 @@ import ernestoyaquello.com.verticalstepperform.interfaces.VerticalStepperForm;
 public class PersonalFragment extends Fragment implements VerticalStepperForm {
 
     public static final String ARGUMENTO_TIPO = "tipo";
+    public static final String ARGUMENTO_PROP = "propietario";
+    public static final String ARGUMENTO_ARREN = "arrendatario";
 
-    private VerticalStepperFormLayout verticalStepperForm;
+    VerticalStepperFormLayout verticalStepperForm;
     ViewGroup.LayoutParams lp;
 
     EditText mRut;
@@ -153,7 +157,16 @@ public class PersonalFragment extends Fragment implements VerticalStepperForm {
 
     @Override
     public void sendData() {
-
+        if (tipoUsuario.equals(ARGUMENTO_PROP)){
+            Log.d("TIPOUSUARIO",tipoUsuario);
+        }else{
+            if (tipoUsuario.equals(ARGUMENTO_ARREN)){
+                VehiculoFragment fragment = VehiculoFragment.newInstance(tipoUsuario);
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.container,fragment);
+                ft.commitAllowingStateLoss();
+            }
+        }
     }
 
 
