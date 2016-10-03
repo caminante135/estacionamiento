@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.gerardo.miestacionamiento.ResponseRetro;
+import com.example.gerardo.miestacionamiento.rest.ApiAdapter;
 import com.example.gerardo.miestacionamiento.ui.dialog.DialogEscogerTipoUsuario;
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.util.GlobalConstant;
@@ -24,6 +26,9 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -62,7 +67,29 @@ public class LoginActivity extends AppCompatActivity {
 //            editor.putString(GlobalConstant.PREFS_USER,editUsuario.getText().toString().trim());
 //            editor.putString(GlobalConstant.PREFS_PASS,editPassword.getText().toString().trim());
 //            editor.apply();
-            startActivity(new Intent(this,MainActivity.class));
+
+            //LLAMADA AL WEB SERVICE
+            Call<ResponseRetro> g = ApiAdapter.getApiService().login(editUsuario.getText().toString(),editPassword.getText().toString());
+            g.enqueue(new Callback<ResponseRetro>() {
+                @Override
+                public void onResponse(Call<ResponseRetro> call, Response<ResponseRetro> response) {
+                    if (response.body().getMensaje().equals("true")){
+                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                    }else{
+                        Toast.makeText(LoginActivity.this, "Datos invalidos", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseRetro> call, Throwable t) {
+
+                }
+            });
+
+
+
+
+//
         }else{
             Toast.makeText(LoginActivity.this, "Debe rellenar todos los campos", Toast.LENGTH_SHORT).show();
         }

@@ -5,14 +5,14 @@ package com.example.gerardo.miestacionamiento.rest;
  */
 public class ApiConstants {
 
-    public static final String IP_PUERTO = "181.73.227.251:8080";
+    public static final String IP_PUERTO = "181.75.8.5:8080";
     public static final String URL_BASE = "http://"+IP_PUERTO;
 
     //PATHS
     public static final String PATH_MI_EST_WEB = "/mi-estacionamiento-web";
     public static final String PATH_SEARCH = "/search";
     public static final String PATH_API = "/api";
-    public static final String PATH_GET_USER = "/getUser";
+    public static final String PATH_GET_USER = "/getSearchResult2";
 
     //PARAMETROS
     public static final String PARAM_RUT = "rut";
