@@ -5,7 +5,7 @@ package com.example.gerardo.miestacionamiento.rest;
  */
 public class ApiConstants {
 
-    public static final String IP_PUERTO = "181.75.8.5:8080";
+    public static final String IP_PUERTO = "186.64.123.8:8080";
     public static final String URL_BASE = "http://"+IP_PUERTO;
 
     //PATHS

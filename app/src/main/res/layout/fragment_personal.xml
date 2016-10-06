@@ -1,15 +1,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragment.PersonalFragment">
 
+    <com.alburivan.slickform.SlickForm
+        android:id="@+id/slick_form_personal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:slick_buttonBgColor="@color/colorPrimary"
+        app:slick_tooltipEnabled="false"/>
+
     <ernestoyaquello.com.verticalstepperform.VerticalStepperFormLayout
         android:id="@+id/vertical_stepper_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"/>
-
+        android:layout_below="@+id/slick_form_personal" />
 
 
 </RelativeLayout>

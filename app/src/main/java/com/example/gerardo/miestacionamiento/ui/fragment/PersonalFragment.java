@@ -9,14 +9,24 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.example.gerardo.miestacionamiento.util.GlobalFunction;
+import com.alburivan.slickform.FieldsType;
+import com.alburivan.slickform.FormField;
+import com.alburivan.slickform.SlickForm;
+import com.alburivan.slickform.interfaces.IOnCustomValidation;
+import com.alburivan.slickform.interfaces.IOnProcessChange;
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.util.GlobalFunction;
 
+import java.util.List;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import ernestoyaquello.com.verticalstepperform.VerticalStepperFormLayout;
 import ernestoyaquello.com.verticalstepperform.interfaces.VerticalStepperForm;
@@ -24,7 +34,7 @@ import ernestoyaquello.com.verticalstepperform.interfaces.VerticalStepperForm;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PersonalFragment extends Fragment implements VerticalStepperForm {
+public class PersonalFragment extends Fragment {
 
     public static final String ARGUMENTO_TIPO = "tipo";
     public static final String ARGUMENTO_PROP = "propietario";
@@ -33,15 +43,17 @@ public class PersonalFragment extends Fragment implements VerticalStepperForm {
     VerticalStepperFormLayout verticalStepperForm;
     ViewGroup.LayoutParams lp;
 
-    EditText mRut;
-    EditText mNombre;
-    EditText mApellidoP;
-    EditText mApellidoM;
-    EditText mCorreo;
-    EditText mTelefono;
-    EditText mContraseña;
+    FormField mRut;
+    FormField mNombre;
+    FormField mApellidoP;
+    FormField mApellidoM;
+    FormField mCorreo;
+    FormField mTelefono;
+    FormField mContraseña;
 
-    String tipoUsuario=null;
+    String tipoUsuario = null;
+    @Bind(R.id.slick_form_personal)
+    SlickForm mSlickForm;
 
     public PersonalFragment() {
         // Required empty public constructor
@@ -50,7 +62,7 @@ public class PersonalFragment extends Fragment implements VerticalStepperForm {
     public static PersonalFragment newInstance(String tipo) {
         PersonalFragment personalFragment = new PersonalFragment();
         Bundle b = new Bundle();
-        b.putString(ARGUMENTO_TIPO,tipo);
+        b.putString(ARGUMENTO_TIPO, tipo);
         personalFragment.setArguments(b);
         return personalFragment;
     }
@@ -67,6 +79,7 @@ public class PersonalFragment extends Fragment implements VerticalStepperForm {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_personal, container, false);
+        ButterKnife.bind(this, root);
 
         String[] mySteps = getActivity().getResources().getStringArray(R.array.itemsDatosPersonales);
 
@@ -75,18 +88,19 @@ public class PersonalFragment extends Fragment implements VerticalStepperForm {
         int colorPrimaryDark = ContextCompat.getColor(getActivity().getApplicationContext(), R.color.colorPrimaryDark);
 
         verticalStepperForm = (VerticalStepperFormLayout) root.findViewById(R.id.vertical_stepper_form);
-        lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,GlobalFunction.dpToPx(35));
+        lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, GlobalFunction.dpToPx(35));
 
         // Setting up and initializing the form
-        VerticalStepperFormLayout.Builder.newInstance(verticalStepperForm, mySteps, this, getActivity())
-                .primaryColor(colorPrimary)
-                .primaryDarkColor(colorPrimaryDark)
-                .materialDesignInDisabledSteps(true)
-                .showVerticalLineWhenStepsAreCollapsed(true)
-//                .stepsSubtitles(mySubs)
-                .displayBottomNavigation(true) // It is true by default, so in this case this line is not necessary
-                .init();
+//        VerticalStepperFormLayout.Builder.newInstance(verticalStepperForm, mySteps, this, getActivity())
+//                .primaryColor(colorPrimary)
+//                .primaryDarkColor(colorPrimaryDark)
+//                .materialDesignInDisabledSteps(true)
+//                .showVerticalLineWhenStepsAreCollapsed(true)
+////                .stepsSubtitles(mySubs)
+//                .displayBottomNavigation(true) // It is true by default, so in this case this line is not necessary
+//                .init();
 
+        buildSlickForm();
 
         return root;
     }
@@ -97,163 +111,135 @@ public class PersonalFragment extends Fragment implements VerticalStepperForm {
     }
 
 
-    @Override
-    public View createStepContentView(int stepNumber) {
-        View view = null;
-        switch (stepNumber) {
-            case 0:
-                view = crearViewRut();
-                break;
-            case 1:
-                view = crearViewNombre();
-                break;
-            case 2:
-                view = crearViewAP();
-                break;
-            case 3:
-                view = crearViewAM();
-                break;
-            case 4:
-                view = crearViewCorreo();
-                break;
-            case 5:
-                view = crearViewTelefono();
-                break;
-            case 6:
-                view = crearViewContraseña();
-                break;
-        }
-        return view;
-    }
 
-    @Override
-    public void onStepOpening(int stepNumber) {
-        switch (stepNumber) {
-            case 0:
-                verticalStepperForm.setActiveStepAsCompleted();
-                break;
-            case 1:
-                verticalStepperForm.setActiveStepAsCompleted();
-                break;
-            case 2:
-                verticalStepperForm.setActiveStepAsCompleted();
-                break;
-            case 3:
-                verticalStepperForm.setActiveStepAsCompleted();
-                break;
-            case 4:
-                verticalStepperForm.setActiveStepAsCompleted();
-                break;
-            case 5:
-                verticalStepperForm.setActiveStepAsCompleted();
-                break;
-            case 6:
-                verticalStepperForm.setStepAsCompleted(6);
-                break;
-        }
-    }
-
-    @Override
     public void sendData() {
-        if (tipoUsuario.equals(ARGUMENTO_PROP)){
+        if (tipoUsuario.equals(ARGUMENTO_PROP)) {
             EstacionamientoFragment fragment = EstacionamientoFragment.newInstance();
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.container,fragment);
+            ft.replace(R.id.container, fragment);
             ft.commitAllowingStateLoss();
-        }else{
-            if (tipoUsuario.equals(ARGUMENTO_ARREN)){
-                VehiculoFragment fragment = VehiculoFragment.newInstance(tipoUsuario);
+        } else {
+            if (tipoUsuario.equals(ARGUMENTO_ARREN)) {
+                VehiculoFragment fragment = VehiculoFragment.newInstance();
                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.container,fragment);
+                ft.replace(R.id.container, fragment);
                 ft.commitAllowingStateLoss();
             }
         }
     }
 
+    private IOnCustomValidation crearValidation(){
+        IOnCustomValidation val = new IOnCustomValidation() {
+            @Override
+            public boolean withCustomValidation(FormField formField) {
+                if (GlobalFunction.isEmpty(formField.getInputFieldText())){
+                    return false;
+                }else{
+                    return true;
+                }
+            }
+        };
+        return val;
+    }
 
-
-    private View crearViewRut() {
-        mRut = new EditText(getActivity());
-        mRut.setSingleLine(true);
-        mRut.setLayoutParams(lp);
-        mRut.setHint(getActivity().getResources().getString(R.string.hintRut));
-        mRut.setHintTextColor(ContextCompat.getColor(getActivity(),R.color.whiteHint));
-        mRut.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimaryText));
-        mRut.setPadding(GlobalFunction.dpToPx(10),0,GlobalFunction.dpToPx(10),0);
-        mRut.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.edit_text_background));
+    private FormField crearViewRut() {
+        mRut = new FormField(getActivity())
+                .withType(FieldsType.TEXT)
+                .withHint(getActivity().getResources().getString(R.string.hintRut))
+                .withLabel("Siguiente")
+                .withCustomValidation(new IOnCustomValidation() {
+                    @Override
+                    public boolean withCustomValidation(FormField formField) {
+                        if (GlobalFunction.isEmpty(formField.getInputFieldText()) ||
+                                !GlobalFunction.isRut(formField.getInputFieldText())){
+                            return false;
+                        }else{
+                            return true;
+                        }
+                    }
+                })
+                ;
+//        mRut.setSingleLine(true);
+//        mRut.setLayoutParams(lp);
+//        mRut.setHint(getActivity().getResources().getString(R.string.hintRut));
+//        mRut.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
+//        mRut.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
+//        mRut.setPadding(GlobalFunction.dpToPx(10), 0, GlobalFunction.dpToPx(10), 0);
+//        mRut.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         return mRut;
     }
-    private View crearViewNombre() {
-        mNombre = new EditText(getActivity());
-        mNombre.setSingleLine(true);
-        mNombre.setLayoutParams(lp);
-        mNombre.setHint(getActivity().getResources().getString(R.string.hintNombre));
-        mNombre.setHintTextColor(ContextCompat.getColor(getActivity(),R.color.whiteHint));
-        mNombre.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimaryText));
-        mNombre.setPadding(GlobalFunction.dpToPx(10),0,GlobalFunction.dpToPx(10),0);
-        mNombre.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.edit_text_background));
-        mNombre.setInputType(InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+    private FormField crearViewNombre() {
+        mNombre = new FormField(getActivity())
+                .withType(FieldsType.TEXT)
+                .withHint(getActivity().getResources().getString(R.string.hintNombre))
+                .withLabel("Siguiente")
+                .withCustomValidation(crearValidation());
         return mNombre;
     }
-    private View crearViewAP() {
-        mApellidoP = new EditText(getActivity());
-        mApellidoP.setSingleLine(true);
-        mApellidoP.setLayoutParams(lp);
-        mApellidoP.setHint(getActivity().getResources().getString(R.string.hintApelP));
-        mApellidoP.setHintTextColor(ContextCompat.getColor(getActivity(),R.color.whiteHint));
-        mApellidoP.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimaryText));
-        mApellidoP.setPadding(GlobalFunction.dpToPx(10),0,GlobalFunction.dpToPx(10),0);
-        mApellidoP.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.edit_text_background));
+    private FormField crearViewAP() {
+        mApellidoP = new FormField(getActivity())
+                .withType(FieldsType.TEXT)
+                .withHint(getActivity().getResources().getString(R.string.hintApelP))
+                .withLabel("Siguiente")
+                .withCustomValidation(crearValidation());
+//        mApellidoP.setSingleLine(true);
+//        mApellidoP.setLayoutParams(lp);
+//        mApellidoP.setHint(getActivity().getResources().getString(R.string.hintApelP));
+//        mApellidoP.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
+//        mApellidoP.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
+//        mApellidoP.setPadding(GlobalFunction.dpToPx(10), 0, GlobalFunction.dpToPx(10), 0);
+//        mApellidoP.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         return mApellidoP;
     }
-    private View crearViewAM() {
-        mApellidoM = new EditText(getActivity());
-        mApellidoM.setSingleLine(true);
-        mApellidoM.setLayoutParams(lp);
-        mApellidoM.setHint(getActivity().getResources().getString(R.string.hintApelM));
-        mApellidoM.setHintTextColor(ContextCompat.getColor(getActivity(),R.color.whiteHint));
-        mApellidoM.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimaryText));
-        mApellidoM.setPadding(GlobalFunction.dpToPx(10),0,GlobalFunction.dpToPx(10),0);
-        mApellidoM.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.edit_text_background));
+    private FormField crearViewAM() {
+        mApellidoM = new FormField(getActivity())
+                .withType(FieldsType.TEXT)
+                .withHint(getActivity().getResources().getString(R.string.hintApelM))
+                .withLabel("Siguiente")
+                .withCustomValidation(crearValidation());
         return mApellidoM;
     }
-    private View crearViewCorreo() {
-        mCorreo = new EditText(getActivity());
-        mCorreo.setSingleLine(true);
-        mCorreo.setLayoutParams(lp);
-        mCorreo.setHint(getActivity().getResources().getString(R.string.hintCorreo));
-        mCorreo.setHintTextColor(ContextCompat.getColor(getActivity(),R.color.whiteHint));
-        mCorreo.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimaryText));
-        mCorreo.setPadding(GlobalFunction.dpToPx(10),0,GlobalFunction.dpToPx(10),0);
-        mCorreo.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.edit_text_background));
-        mCorreo.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+    private FormField crearViewCorreo() {
+        mCorreo = new FormField(getActivity())
+                .withType(FieldsType.EMAIL)
+                .withHint(getActivity().getResources().getString(R.string.hintCorreo))
+                .withLabel("Siguiente")
+                .withCustomValidation(new IOnCustomValidation() {
+                    @Override
+                    public boolean withCustomValidation(FormField formField) {
+                        if (!GlobalFunction.isEmpty(formField.getInputFieldText())
+                                && GlobalFunction.isValidEmail(formField.getInputFieldText())){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    }
+                });
+//        mCorreo.setSingleLine(true);
+//        mCorreo.setLayoutParams(lp);
+//        mCorreo.setHint(getActivity().getResources().getString(R.string.hintCorreo));
+//        mCorreo.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
+//        mCorreo.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
+//        mCorreo.setPadding(GlobalFunction.dpToPx(10), 0, GlobalFunction.dpToPx(10), 0);
+//        mCorreo.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
+//        mCorreo.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         return mCorreo;
     }
-    private View crearViewTelefono() {
-        mTelefono = new EditText(getActivity());
-        mTelefono.setSingleLine(true);
-        mTelefono.setLayoutParams(lp);
-        mTelefono.setHint(getActivity().getResources().getString(R.string.hintTelefono));
-        mTelefono.setHintTextColor(ContextCompat.getColor(getActivity(),R.color.whiteHint));
-        mTelefono.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimaryText));
-        mTelefono.setPadding(GlobalFunction.dpToPx(10),0,GlobalFunction.dpToPx(10),0);
-        mTelefono.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.edit_text_background));
-        mTelefono.setInputType(InputType.TYPE_CLASS_NUMBER);
+    private FormField crearViewTelefono() {
+        mTelefono = new FormField(getActivity())
+                .withType(FieldsType.NUMERIC)
+                .withHint(getActivity().getResources().getString(R.string.hintTelefono))
+                .withLabel("Siguiente")
+                .withCustomValidation(crearValidation());
+//
         return mTelefono;
     }
-    private View crearViewContraseña() {
-        mContraseña = new EditText(getActivity());
-        mContraseña.setSingleLine(true);
-        mContraseña.setLayoutParams(lp);
-        mContraseña.setHint(getActivity().getResources().getString(R.string.hintClave));
-        mContraseña.setHintTextColor(ContextCompat.getColor(getActivity(),R.color.whiteHint));
-        mContraseña.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimaryText));
-        mContraseña.setPadding(GlobalFunction.dpToPx(10),0,GlobalFunction.dpToPx(10),0);
-        mContraseña.setTypeface(Typeface.DEFAULT);
-        mContraseña.setTransformationMethod(new PasswordTransformationMethod());
-        mContraseña.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.edit_text_background));
-        mContraseña.setInputType(InputType.TYPE_CLASS_TEXT |
-                InputType.TYPE_TEXT_VARIATION_PASSWORD);
+    private FormField crearViewContraseña() {
+        mContraseña = new FormField(getActivity())
+                .withType(FieldsType.PASSWORD)
+                .withHint(getActivity().getResources().getString(R.string.hintClave))
+                .withLabel("Siguiente")
+                .withCustomValidation(crearValidation());
         return mContraseña;
     }
 
@@ -263,4 +249,35 @@ public class PersonalFragment extends Fragment implements VerticalStepperForm {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
+
+    private void buildSlickForm(){
+        mSlickForm
+                .withField(crearViewRut())
+                .withField(crearViewNombre())
+                .withField(crearViewAP())
+                .withField(crearViewAM())
+                .withField(crearViewCorreo())
+                .withField(crearViewTelefono())
+                .withField(crearViewContraseña())
+                .setOnProcessChangeListener(new IOnProcessChange() {
+                    @Override
+                    public boolean workInBackground(List<FormField> list) {
+                        Toast.makeText(getActivity(), "Rut: "+list.get(0).getInputFieldText()+" AP: "+list.get(1)
+                                .getInputFieldText(), Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+
+                    @Override
+                    public void workFinished() {
+//                        EstacionamientoFragment fragment = EstacionamientoFragment.newInstance();
+//                        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//                        ft.replace(R.id.container, fragment);
+//                        ft.commitAllowingStateLoss();
+                    }
+                })
+                .withProcessingLabel("Guardando")
+                .ready();
+    }
+
 }

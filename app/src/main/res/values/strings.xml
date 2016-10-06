@@ -35,6 +35,16 @@
     <string name="hintNumeroEst">Número del estacionamiento</string>
 
 
+    <!-- MENSAJE DE ERRORES-->
+    <string name="errorRut">Formato de RUT no válido</string>
+    <string name="errorNombre">Ingrese su nombre antes de continuar</string>
+    <string name="errorAP">Ingrese su apellido antes de continuar</string>
+    <string name="errorAM">Ingrese su apellido antes de continuar</string>
+    <string name="errorCorreo">Formato de correo no válido</string>
+    <string name="errorClave">Ingrese una clave antes de continuar</string>
+    <string name="errorTelefono">Ingrese su telefono antes de continuar</string>
+
+
     <string-array name="itemsDatosPersonales">
         <item>RUT</item>
         <item>Nombre</item>
@@ -63,5 +73,6 @@
     </string-array>
 
     <string name="vertical_form_stepper_form_confirm_button">Registrar</string>
+
 
 </resources>

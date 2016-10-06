@@ -46,11 +46,11 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
         // Required empty public constructor
     }
 
-    public static VehiculoFragment newInstance(String tipo) {
+    public static VehiculoFragment newInstance() {
         VehiculoFragment vehiculoFragment = new VehiculoFragment();
-        Bundle b = new Bundle();
-        b.putString(ARGUMENTO_TIPO, tipo);
-        vehiculoFragment.setArguments(b);
+//        Bundle b = new Bundle();
+//        b.putString(ARGUMENTO_TIPO, tipo);
+//        vehiculoFragment.setArguments(b);
         return vehiculoFragment;
     }
 
