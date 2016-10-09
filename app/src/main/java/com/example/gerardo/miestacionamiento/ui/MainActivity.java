@@ -1,16 +1,24 @@
 package com.example.gerardo.miestacionamiento.ui;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.ui.fragment.MapFragment;
+import com.example.gerardo.miestacionamiento.util.GlobalFunction;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -19,26 +27,41 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+
+public class MainActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener {
 
     GoogleMap mGoogleMap;
+    @Bind(R.id.nav_view)
+    NavigationView navView;
+    @Bind(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        MapFragment mMapFragment = MapFragment.newInstance();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.frame, mMapFragment)
-                .commit();
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
-        mMapFragment.getMapAsync(this);
+        displayView(R.id.nav_home);
+        navView.setNavigationItemSelectedListener(this);
 
+        ImageView iv = (ImageView) navView.getHeaderView(0).findViewById(R.id.navHeader_image);
+
+        Bitmap image = BitmapFactory.decodeResource(getResources(),
+                R.drawable.logo_last);
+        Bitmap blur = GlobalFunction.blurRenderScript(this,image,25);
+
+        iv.setImageBitmap(blur);
 
     }
 
@@ -64,25 +87,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onOptionsItemSelected(item);
     }
 
+    public void displayView(int viewId) {
+        Fragment fragment = null;
+        String title = null;
+
+        switch (viewId) {
+            case R.id.nav_home:
+                fragment = new MapFragment().newInstance();
+                title = "Inicio";
+                break;
+        }
+
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.frame, fragment);
+            ft.commit();
+        }
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.setTitle(title);
+        }
+        drawerLayout.closeDrawers();
+    }
+
+
+
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mGoogleMap = googleMap;
-        LatLng green = new LatLng(-33.500316, -70.616127);
-        LatLng red = new LatLng(-33.500593,-70.616803);
-        mGoogleMap.addMarker(new MarkerOptions()
-                .position(green)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.greenmark))
-                .title("Estacionamiento 1"));
-        mGoogleMap.addMarker(new MarkerOptions()
-                .position(red)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.redmark))
-                .title("Estacionamiento 2"));
-
-        CameraPosition cameraPosition = CameraPosition.builder()
-                .target(green)
-                .zoom(15)
-                .build();
-
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        displayView(item.getItemId());
+        return true;
     }
 }

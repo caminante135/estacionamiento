@@ -1,5 +1,6 @@
 package com.example.gerardo.miestacionamiento.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,10 +51,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            Window w = getWindow(); // in Activity's onCreate() for instance
+//            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+//        }
 
     }
 
@@ -68,11 +69,18 @@ public class LoginActivity extends AppCompatActivity {
 //            editor.putString(GlobalConstant.PREFS_PASS,editPassword.getText().toString().trim());
 //            editor.apply();
 
+            final ProgressDialog dialog = new ProgressDialog(this);
+            dialog.setMessage("Cargando...");
+            dialog.setCancelable(false);
+            dialog.show();
+
             //LLAMADA AL WEB SERVICE
-            Call<ResponseRetro> g = ApiAdapter.getApiService().login(editUsuario.getText().toString(),editPassword.getText().toString());
+            Call<ResponseRetro> g = ApiAdapter.getApiService().login(editUsuario.getText().toString().trim(),
+                    editPassword.getText().toString().trim());
             g.enqueue(new Callback<ResponseRetro>() {
                 @Override
                 public void onResponse(Call<ResponseRetro> call, Response<ResponseRetro> response) {
+                    dialog.dismiss();
                     if (response.body().getMensaje().equals("true")){
                         startActivity(new Intent(LoginActivity.this,MainActivity.class));
                     }else{
@@ -82,6 +90,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<ResponseRetro> call, Throwable t) {
+                    dialog.dismiss();
                     Toast.makeText(LoginActivity.this, "Problemas al conectar, reintentelo en unos minutos", Toast.LENGTH_SHORT).show();
                 }
             });
