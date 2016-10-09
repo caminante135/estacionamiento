@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         displayView(R.id.nav_home);
         navView.setNavigationItemSelectedListener(this);
 
+
         ImageView iv = (ImageView) navView.getHeaderView(0).findViewById(R.id.navHeader_image);
 
         Bitmap image = BitmapFactory.decodeResource(getResources(),
