@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250dp"
+    android:layout_height="200dp"
+    android:orientation="vertical"
+    android:paddingEnd="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingStart="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:text="Ver detalles >"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/info_window_comuna"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comuna: Puente Alto"
+                android:textColor="@color/colorPrimaryText" />
+
+            <TextView
+                android:id="@+id/info_window_direccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Direccion: Mapulemu 7183"
+                android:textColor="@color/colorPrimaryText" />
+
+            <TextView
+                android:id="@+id/info_window_tamaño"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tamaño: Normal"
+                android:textColor="@color/colorPrimaryText" />
+
+        </LinearLayout>
+
+        <android.support.v4.widget.Space
+            android:layout_width="8dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dueño: Gerardo Mascayano"
+                android:id="@+id/info_window_nombre_dueño"
+                android:textColor="@color/colorPrimaryText" />
+
+            <TextView
+                android:id="@+id/info_window_estado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estado: Disponible"
+                android:textColor="@color/colorPrimaryText" />
+
+
+            <TextView
+                android:id="@+id/info_window_valor_hora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Valor * hora: $2500"
+                android:textColor="@color/colorPrimaryText" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
