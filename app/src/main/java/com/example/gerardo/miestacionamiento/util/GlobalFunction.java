@@ -9,6 +9,7 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -114,6 +115,16 @@ public final class GlobalFunction {
         //Set RGB pixels.
         result.setPixels(pixels, 0, result.getWidth(), 0, 0, result.getWidth(), result.getHeight());
         return result;
+    }
+
+    //Crear dialog Si / No
+    public static AlertDialog.Builder crearDialogYesNot(Context context,String titulo, String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        builder.setTitle(titulo);
+        builder.setMessage(message);
+
+        return builder;
     }
 
 

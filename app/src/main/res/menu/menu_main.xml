@@ -2,9 +2,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.MainActivity">
+
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_vehiculo"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/action_vehiculo"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_estacionamiento"
+        android:orderInCategory="100"
+        android:title="@string/action_estacionamiento"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_tarjeta"
+        android:orderInCategory="100"
+        android:title="@string/action_tarjeta"
         app:showAsAction="never" />
 </menu>

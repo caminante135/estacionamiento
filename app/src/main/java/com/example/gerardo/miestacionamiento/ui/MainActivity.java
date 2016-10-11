@@ -1,19 +1,25 @@
 package com.example.gerardo.miestacionamiento.ui;
 
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.example.gerardo.miestacionamiento.R;
@@ -38,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     NavigationView navView;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+
+    Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +72,18 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
         iv.setImageBitmap(blur);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        hideOption(R.id.action_estacionamiento);
         return true;
     }
 
@@ -80,9 +94,13 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.action_estacionamiento:
+                break;
+            case R.id.action_vehiculo:
+                break;
+            case R.id.action_tarjeta:
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -96,6 +114,31 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             case R.id.nav_home:
                 fragment = new MapFragment().newInstance();
                 title = "Inicio";
+                break;
+            case R.id.nav_profile:
+                break;
+            case R.id.nav_historial:
+                break;
+            case R.id.nav_prefs:
+                break;
+            case R.id.nav_logout:
+                AlertDialog.Builder builder = GlobalFunction.crearDialogYesNot(this,"Salir","¿Desea salir de Mi Estacionamiento?");
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
                 break;
         }
 
@@ -118,4 +161,12 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         displayView(item.getItemId());
         return true;
     }
+
+    private void hideOption(int id)
+    {
+        MenuItem item = menu.findItem(id);
+        item.setVisible(false);
+        invalidateOptionsMenu();
+    }
+
 }

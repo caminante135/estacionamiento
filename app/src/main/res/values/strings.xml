@@ -75,6 +75,9 @@
     </string-array>
 
     <string name="vertical_form_stepper_form_confirm_button">Registrar</string>
+    <string name="action_vehiculo">Registrar vehículo</string>
+    <string name="action_estacionamiento">Registrar estacionamiento</string>
+    <string name="action_tarjeta">Registrar tarjeta</string>
 
 
 </resources>
