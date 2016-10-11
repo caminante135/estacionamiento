@@ -4,6 +4,7 @@ package com.example.gerardo.miestacionamiento.ui.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         mGoogleMap = googleMap;
         mGoogleMap.setOnInfoWindowClickListener(this);
         mGoogleMap.setInfoWindowAdapter(this);
+        mGoogleMap.setOnMapClickListener(this);
 
         LatLng green = new LatLng(-33.500316, -70.616127);
         LatLng red = new LatLng(-33.500593, -70.616803);
@@ -85,13 +87,17 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     //EVENTO CLICK DE LA VENTANA DE INFORMACION
     @Override
     public void onInfoWindowClick(Marker marker) {
-//        StreetViewFragment fragment = new StreetViewFragment();
-//        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame,fragment).commit();
+        StreetViewFragment fragment = StreetViewFragment.newInstance(marker.getPosition());
+
+        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.frame,fragment).commit();
     }
 
     @Override
     public void onMapClick(LatLng latLng) {
-
+        mGoogleMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.greenmark))
+                    .title("Marker Dinámico"));
     }
 
     @Override
@@ -104,7 +110,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         View v = getActivity().getLayoutInflater().inflate(R.layout.googlemap_info_window,null);
 
         v.setLayoutParams(new LinearLayout.LayoutParams(850, ViewGroup.LayoutParams.WRAP_CONTENT));
-                
+
 
         return v;
     }

@@ -1,6 +1,7 @@
 package com.example.gerardo.miestacionamiento.ui.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +19,25 @@ import com.google.android.gms.maps.model.LatLng;
 public class StreetViewFragment extends SupportStreetViewPanoramaFragment implements OnStreetViewPanoramaReadyCallback {
 
     StreetViewPanorama mStreetView;
+    LatLng coordenadas;
+
+    public static StreetViewFragment newInstance(LatLng coordenadas) {
+        StreetViewFragment fragment = new StreetViewFragment();
+        Bundle b = new Bundle();
+        b.putDouble("latitud",coordenadas.latitude);
+        b.putDouble("longitud",coordenadas.longitude);
+        fragment.setArguments(b);
+        return fragment;
+
+    }
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-
+        Bundle args = getArguments();
+        Double la = args.getDouble("latitud");
+        Double lo = args.getDouble("longitud");
+        coordenadas = new LatLng(la,lo);
     }
 
     @Override
@@ -35,6 +50,7 @@ public class StreetViewFragment extends SupportStreetViewPanoramaFragment implem
     @Override
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
         mStreetView = streetViewPanorama;
-        mStreetView.setPosition(new LatLng(-33.4997293, -70.6164077));
+        mStreetView.setPosition(coordenadas);
+        Log.d("STREETVIEW",coordenadas.toString());
     }
 }
