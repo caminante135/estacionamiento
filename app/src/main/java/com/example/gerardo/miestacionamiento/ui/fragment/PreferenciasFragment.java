@@ -1,6 +1,7 @@
 package com.example.gerardo.miestacionamiento.ui.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SwitchCompat;
@@ -76,7 +77,21 @@ public class PreferenciasFragment extends Fragment {
 
     @OnClick(R.id.txt_prefs_share)
     public void compartir(){
-        Toast.makeText(getActivity(), "Enviar invitación", Toast.LENGTH_SHORT).show();
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent
+                .putExtra(Intent.EXTRA_TEXT,
+                        "Hola, te invito a probar la app 'Mi Estacionamiento' es gratis y si pones el codigo 'HHGGMM'" +
+                                " recibes un cupon de descuento por $0, disfrutalos :) ");
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Invitación a Mi Estacionamiento");
+        sendIntent.setType("text/plain");
+//        sendIntent.setPackage("com.facebook.orca");
+        try {
+            startActivity(sendIntent);
+        }
+        catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getActivity(),"Por favor instale la applicación", Toast.LENGTH_LONG).show();
+        }
     }
 
     @OnClick(R.id.txt_prefs_about)
