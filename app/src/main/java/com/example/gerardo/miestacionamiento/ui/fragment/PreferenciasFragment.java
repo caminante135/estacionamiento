@@ -1,7 +1,9 @@
 package com.example.gerardo.miestacionamiento.ui.fragment;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SwitchCompat;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.util.GlobalConstant;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -35,6 +38,7 @@ public class PreferenciasFragment extends Fragment {
     @Bind(R.id.txt_prefs_delete)
     TextView txtDelete;
 
+
     public PreferenciasFragment() {
         // Required empty public constructor
     }
@@ -44,6 +48,7 @@ public class PreferenciasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_preferencias, container, false);
+
 
 
         ButterKnife.bind(this, root);

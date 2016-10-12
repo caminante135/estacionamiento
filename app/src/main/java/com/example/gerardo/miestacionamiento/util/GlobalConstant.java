@@ -10,5 +10,8 @@ public class GlobalConstant {
     public static final String PREFS_USER = "user";
     public static final String PREFS_PASS = "pass";
 
+    public static final String PREFS_LATITUD = "latitud";
+    public static final String PREFS_LONGITUD = "longitud";
+
 
 }
