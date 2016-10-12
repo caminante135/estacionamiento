@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.ui.fragment.MapFragment;
 import com.example.gerardo.miestacionamiento.ui.fragment.MiCuentaFragment;
+import com.example.gerardo.miestacionamiento.ui.fragment.PreferenciasFragment;
 import com.example.gerardo.miestacionamiento.util.GlobalFunction;
 import com.google.android.gms.maps.GoogleMap;
 
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Bind(R.id.txt_header_tipo)
     TextView txtHeaderTipo;
 
+    TextView txtToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +67,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        setTitle("");
+        txtToolbar = (TextView) toolbar.findViewById(R.id.txt_toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
@@ -144,12 +148,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_profile:
                 fragment = new MiCuentaFragment();
+                title = "Mi Cuenta";
                 enableCollapse();
                 break;
             case R.id.nav_historial:
+                title = "Historial";
                 disableCollapse();
                 break;
             case R.id.nav_prefs:
+                fragment = new PreferenciasFragment();
+                title = "Preferencias";
                 disableCollapse();
                 break;
             case R.id.nav_logout:
@@ -160,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         dialogInterface.dismiss();
                     }
                 });
-                builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -181,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setTitle(title);
+            txtToolbar.setText(title);
         }
         drawerLayout.closeDrawers();
     }

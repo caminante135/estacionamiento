@@ -1,0 +1,159 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.gerardo.miestacionamiento.ui.fragment.PreferenciasFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mantener Sesión"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="18dp" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/switch_prefs_sesion"
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:thumbTextPadding="25dp"
+            android:switchMinWidth="60dp"
+            android:maxHeight="20dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp" />
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorDivider" />
+
+    <TextView
+        android:id="@+id/txt_prefs_report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/ic_caution"
+        android:drawableStart="@drawable/ic_caution"
+        android:gravity="center_vertical"
+        android:drawablePadding="10dp"
+        android:textSize="18dp"
+        android:paddingEnd="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingStart="8dp"
+        android:text="Reportar problema"
+        android:textColor="@color/colorSecondaryText" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorDivider" />
+
+    <TextView
+        android:id="@+id/txt_prefs_share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/ic_share"
+        android:drawableStart="@drawable/ic_share"
+        android:paddingEnd="8dp"
+        android:paddingLeft="8dp"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:textSize="18dp"
+        android:paddingRight="8dp"
+        android:paddingStart="8dp"
+        android:text="Enviar Invitación"
+        android:textColor="@color/colorSecondaryText" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorDivider" />
+
+    <TextView
+        android:id="@+id/txt_prefs_about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/ic_about"
+        android:drawableStart="@drawable/ic_about"
+        android:paddingEnd="8dp"
+        android:textSize="18dp"
+        android:gravity="center_vertical"
+        android:drawablePadding="10dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingStart="8dp"
+        android:text="Sobre Nosotros"
+        android:textColor="@color/colorSecondaryText" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorDivider" />
+
+
+    <TextView
+        android:id="@+id/txt_prefs_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/ic_delete"
+        android:drawableStart="@drawable/ic_delete"
+        android:paddingEnd="8dp"
+        android:textSize="18dp"
+        android:gravity="center_vertical"
+        android:drawablePadding="10dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingStart="8dp"
+        android:text="Eliminar Cuenta"
+        android:textColor="@color/colorSecondaryText" />
+
+</LinearLayout>
