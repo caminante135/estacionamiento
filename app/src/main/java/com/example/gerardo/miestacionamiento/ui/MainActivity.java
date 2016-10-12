@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -20,8 +19,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.ui.fragment.MapFragment;
@@ -31,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -48,10 +48,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     CollapsingToolbarLayout collapsingToolbarLayout;
 
     Menu menu;
+    Fragment fragment = null;
+    @Bind(R.id.image_circle_header)
+    CircleImageView imageCircleHeader;
+    @Bind(R.id.txt_header_nombre)
+    TextView txtHeaderNombre;
+    @Bind(R.id.txt_header_tipo)
+    TextView txtHeaderTipo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -68,15 +76,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ImageView iv = (ImageView) navView.getHeaderView(0).findViewById(R.id.navHeader_image);
 
-        Bitmap image = BitmapFactory.decodeResource(getResources(),
-                R.drawable.logo_last);
-        Bitmap blur = GlobalFunction.blurRenderScript(this, image, 25);
 
-        iv.setImageBitmap(blur);
+        iv.setImageBitmap(setImageBlurEffect(R.drawable.logo_last));
+        imageHeader.setImageBitmap(setImageBlurEffect(R.drawable.logo_last));
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//        }
 
         disableCollapse();
 
@@ -90,9 +96,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void syncFrags() {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame);
-        if (fragment instanceof MiCuentaFragment){
+        if (fragment instanceof MiCuentaFragment) {
             enableCollapse();
-        }else{
+        } else {
             disableCollapse();
         }
     }
@@ -126,14 +132,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void displayView(int viewId) {
-        Fragment fragment = null;
         String title = null;
 
         switch (viewId) {
             case R.id.nav_home:
-                fragment = new MapFragment().newInstance();
-                title = "Inicio";
-                disableCollapse();
+                if (!(fragment instanceof MapFragment)) {
+                    fragment = new MapFragment().newInstance();
+                    title = "Inicio";
+                    disableCollapse();
+                }
                 break;
             case R.id.nav_profile:
                 fragment = new MiCuentaFragment();
@@ -169,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.frame, fragment);
+            ft.addToBackStack(null);
             ft.commit();
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -193,13 +201,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void disableCollapse() {
         imageHeader.setVisibility(View.GONE);
+        imageCircleHeader.setVisibility(View.GONE);
+        txtHeaderNombre.setVisibility(View.GONE);
+        txtHeaderTipo.setVisibility(View.GONE);
         collapsingToolbarLayout.setTitleEnabled(false);
 
     }
 
     public void enableCollapse() {
         imageHeader.setVisibility(View.VISIBLE);
+        imageCircleHeader.setVisibility(View.VISIBLE);
+        txtHeaderNombre.setVisibility(View.VISIBLE);
+        txtHeaderTipo.setVisibility(View.VISIBLE);
         collapsingToolbarLayout.setTitleEnabled(true);
+    }
+
+    public Bitmap setImageBlurEffect(int drawable) {
+        Bitmap image = BitmapFactory.decodeResource(getResources(),
+                drawable);
+
+        Bitmap blur = GlobalFunction.blurRenderScript(this, image, 25);
+
+        return blur;
     }
 
 }

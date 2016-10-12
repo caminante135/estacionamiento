@@ -58,6 +58,9 @@ public class LoginActivity extends AppCompatActivity {
 //            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 //        }
 
+
+
+
     }
 
     @OnClick(R.id.btn_login)
@@ -85,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                     dialog.dismiss();
                     if (response.body().getMensaje().equals("true")){
                         startActivity(new Intent(LoginActivity.this,MainActivity.class));
+
                     }else{
                         Toast.makeText(LoginActivity.this, "Datos invalidos", Toast.LENGTH_SHORT).show();
                     }

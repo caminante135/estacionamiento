@@ -10,8 +10,7 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_layout"
@@ -28,7 +27,41 @@
                 android:fitsSystemWindows="true"
                 android:scaleType="centerCrop"
                 android:src="@drawable/logo_last"
-                android:visibility="visible"
+                app:layout_collapseMode="parallax" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/image_circle_header"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center_horizontal"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax"
+                android:layout_marginTop="60dp"
+                android:src="@drawable/logo_last"/>
+
+            <TextView
+                android:id="@+id/txt_header_nombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="170dp"
+                android:fitsSystemWindows="true"
+                android:text="Gerardo Mascayano"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                app:layout_collapseMode="parallax" />
+
+            <TextView
+                android:id="@+id/txt_header_tipo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="200dp"
+                android:fitsSystemWindows="true"
+                android:text="Propietario"
+                android:textColor="@color/white"
+                android:textSize="17dp"
                 app:layout_collapseMode="parallax" />
 
 
@@ -37,8 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                 />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -48,7 +80,7 @@
         android:id="@+id/frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
 </android.support.design.widget.CoordinatorLayout>
