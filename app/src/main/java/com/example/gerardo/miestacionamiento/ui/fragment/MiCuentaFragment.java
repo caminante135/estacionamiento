@@ -1,9 +1,12 @@
 package com.example.gerardo.miestacionamiento.ui.fragment;
 
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,7 @@ import com.example.gerardo.miestacionamiento.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,4 +58,19 @@ public class MiCuentaFragment extends Fragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
+    @OnClick(R.id.txt_micuenta_clave)
+    public void textVisible() {
+        if (txtClave.getInputType() == (InputType.TYPE_CLASS_TEXT |
+                InputType.TYPE_TEXT_VARIATION_PASSWORD)){
+            txtClave.setInputType(InputType.TYPE_CLASS_TEXT);
+            txtClave.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_eye_off,0);
+        }else{
+            txtClave.setInputType(InputType.TYPE_CLASS_TEXT |
+                    InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            txtClave.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_eye,0);
+        }
+    }
+
+
 }

@@ -13,6 +13,16 @@
         android:paddingStart="15dp"
         tools:context="com.example.gerardo.miestacionamiento.ui.fragment.MiCuentaFragment">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Rut:"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="16dp" />
+
 
         <TextView
             android:id="@+id/txt_micuenta_rut"
@@ -20,10 +30,20 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:text="Rut: 18953787-3"
+            android:layout_marginTop="10dp"
+            android:text="18953787-3"
             android:textColor="@color/colorBlack"
             android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Teléfono:"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="16dp" />
 
         <TextView
             android:id="@+id/txt_micuenta_telefono"
@@ -32,9 +52,19 @@
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:text="Teléfono: 85881340"
+            android:text="85881340"
             android:textColor="@color/colorBlack"
             android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Correo:"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="16dp" />
 
 
         <TextView
@@ -51,9 +81,19 @@
             android:lines="1"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
-            android:text="Correo: gerardo.mascayano@gmail.com"
+            android:text="gerardo.mascayano@gmail.com"
             android:textColor="@color/colorBlack"
             android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Clave:"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="16dp" />
 
 
         <TextView
@@ -62,9 +102,14 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:text="Clave: ******"
+            android:layout_marginTop="7dp"
+            android:text="gerardo123"
+            android:inputType="textPassword"
+            android:gravity="center"
+            android:drawablePadding="10dp"
             android:textColor="@color/colorBlack"
+            android:drawableRight="@drawable/ic_eye"
+            android:drawableEnd="@drawable/ic_eye"
             android:textSize="18dp" />
 
         <View
@@ -75,7 +120,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:background="@android:color/darker_gray" />
+            android:background="@color/colorDivider" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -85,7 +130,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
             android:text="Estacionamientos"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/colorSecondaryText"
             android:textSize="18dp" />
 
         <android.support.v7.widget.RecyclerView
@@ -101,16 +146,17 @@
             android:layout_marginRight="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:background="@android:color/darker_gray" />
+            android:background="@color/colorDivider"  />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="15dp"
             android:text="Vehículos"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/colorSecondaryText"
             android:textSize="18dp" />
 
         <android.support.v7.widget.RecyclerView
@@ -126,22 +172,33 @@
             android:layout_marginRight="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:background="@android:color/darker_gray" />
+            android:background="@color/colorDivider"  />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="15dp"
             android:text="Tarjetas"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/colorSecondaryText"
             android:textSize="18dp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView_micuenta_tarjeta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorDivider"  />
 
 
     </LinearLayout>
