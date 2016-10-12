@@ -7,8 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -19,31 +19,33 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.ui.fragment.MapFragment;
+import com.example.gerardo.miestacionamiento.ui.fragment.MiCuentaFragment;
 import com.example.gerardo.miestacionamiento.util.GlobalFunction;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class MainActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     GoogleMap mGoogleMap;
     @Bind(R.id.nav_view)
     NavigationView navView;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+
+
+    @Bind(R.id.image_header)
+    ImageView imageHeader;
+    @Bind(R.id.collapsing_toolbar_layout)
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
     Menu menu;
 
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
 
         Bitmap image = BitmapFactory.decodeResource(getResources(),
                 R.drawable.logo_last);
-        Bitmap blur = GlobalFunction.blurRenderScript(this,image,25);
+        Bitmap blur = GlobalFunction.blurRenderScript(this, image, 25);
 
         iv.setImageBitmap(blur);
 
@@ -76,6 +78,23 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
+        disableCollapse();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        syncFrags();
+    }
+
+    private void syncFrags() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame);
+        if (fragment instanceof MiCuentaFragment){
+            enableCollapse();
+        }else{
+            disableCollapse();
+        }
     }
 
     @Override
@@ -94,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
             case R.id.action_estacionamiento:
                 break;
             case R.id.action_vehiculo:
@@ -114,15 +133,20 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
             case R.id.nav_home:
                 fragment = new MapFragment().newInstance();
                 title = "Inicio";
+                disableCollapse();
                 break;
             case R.id.nav_profile:
+                fragment = new MiCuentaFragment();
+                enableCollapse();
                 break;
             case R.id.nav_historial:
+                disableCollapse();
                 break;
             case R.id.nav_prefs:
+                disableCollapse();
                 break;
             case R.id.nav_logout:
-                AlertDialog.Builder builder = GlobalFunction.crearDialogYesNot(this,"Salir","¿Desea salir de Mi Estacionamiento?");
+                AlertDialog.Builder builder = GlobalFunction.crearDialogYesNot(this, "Salir", "¿Desea salir de Mi Estacionamiento?");
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -132,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
                 builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        startActivity(new Intent(MainActivity.this,LoginActivity.class));
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     }
                 });
 
@@ -155,18 +179,27 @@ public class MainActivity extends AppCompatActivity implements  NavigationView.O
     }
 
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         displayView(item.getItemId());
         return true;
     }
 
-    private void hideOption(int id)
-    {
+    private void hideOption(int id) {
         MenuItem item = menu.findItem(id);
         item.setVisible(false);
         invalidateOptionsMenu();
+    }
+
+    public void disableCollapse() {
+        imageHeader.setVisibility(View.GONE);
+        collapsingToolbarLayout.setTitleEnabled(false);
+
+    }
+
+    public void enableCollapse() {
+        imageHeader.setVisibility(View.VISIBLE);
+        collapsingToolbarLayout.setTitleEnabled(true);
     }
 
 }
