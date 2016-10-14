@@ -57,8 +57,8 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        tipoUsuario = args.getString(ARGUMENTO_TIPO);
+//        Bundle args = getArguments();
+//        tipoUsuario = args.getString(ARGUMENTO_TIPO);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Registro nuevo vehículo");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Agregar vehículo");
     }
 
     @Override

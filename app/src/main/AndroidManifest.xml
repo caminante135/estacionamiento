@@ -19,6 +19,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.LoginActivity"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,13 +27,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.RegistroActivity" />
+        <activity android:name=".ui.RegistroActivity"
+            android:configChanges="orientation|screenSize"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".ui.BaseActivityRegistro"></activity>
+        <activity android:name=".ui.BaseActivityRegistro"
+            android:configChanges="orientation|screenSize"/>
     </application>
 
 </manifest>

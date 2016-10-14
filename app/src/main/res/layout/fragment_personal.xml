@@ -1,22 +1,218 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragment.PersonalFragment">
+    android:layout_height="match_parent">
 
-    <com.alburivan.slickform.SlickForm
-        android:id="@+id/slick_form_personal"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:slick_buttonBgColor="@color/colorPrimary"
-        app:slick_tooltipEnabled="false"/>
+        android:layout_marginTop="20dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:paddingEnd="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingStart="10dp"
+        tools:context=".ui.fragment.PersonalFragment">
 
-    <ernestoyaquello.com.verticalstepperform.VerticalStepperFormLayout
-        android:id="@+id/vertical_stepper_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/slick_form_personal" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="25dp"
+            android:text="Datos Personales"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="25dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¿Como deseas registrarte?"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="17dp" />
+
+        <RadioGroup
+            android:id="@+id/rg_persona_tipo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_persona_tipo_prop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Propietario" />
+
+            <RadioButton
+                android:id="@+id/rb_persona_tipo_arre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:text="Arrendatario" />
+
+        </RadioGroup>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_personal_rut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_rut_green"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_rut_green"
+                android:ems="10"
+                android:hint="RUT"
+                android:inputType="text"
+                android:textColor="@color/colorPrimaryText"
+                android:textColorHint="@color/colorPrimary" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_personal_nombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_user_green"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_user_green"
+                android:ems="10"
+                android:hint="Nombre"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorPrimaryText"
+                android:textColorHint="@color/colorPrimary" />
+
+        </android.support.design.widget.TextInputLayout>
 
 
-</RelativeLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_personal_apellido_p"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_apellido_green"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_apellido_green"
+                android:ems="10"
+                android:hint="Apellido paterno"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorPrimaryText"
+                android:textColorHint="@color/colorPrimary" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_personal_apellido_m"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_apellido_green"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_apellido_green"
+                android:ems="10"
+                android:hint="Apellido materno"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorPrimaryText"
+                android:textColorHint="@color/colorPrimary" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_personal_correo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_email_green"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_email_green"
+                android:ems="10"
+                android:hint="Correo"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/colorPrimaryText"
+                android:textColorHint="@color/colorPrimary" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_personal_telefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_telefono_green"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_telefono_green"
+                android:ems="10"
+                android:hint="Teléfono"
+                android:inputType="phone"
+                android:textColor="@color/colorPrimaryText"
+                android:textColorHint="@color/colorPrimary" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_personal_clave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_pass_green"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_pass_green"
+                android:ems="10"
+                android:hint="Contraseña"
+                android:inputType="textPassword"
+                android:textColor="@color/colorPrimaryText"
+                android:textColorHint="@color/colorPrimary" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/btn_personal_registrar"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/btn_background"
+            android:text="Continuar"
+            android:textColor="@color/colorPrimaryText" />
+
+
+    </LinearLayout>
+
+
+</ScrollView>
