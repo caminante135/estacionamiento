@@ -3,15 +3,19 @@ package com.example.gerardo.miestacionamiento.util;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
+import java.util.List;
 
 /**
  * Created by Gerardo on 01/10/2016.
@@ -25,6 +29,7 @@ public final class GlobalFunction {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 
+    //ESCONDE EL TECLADO
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

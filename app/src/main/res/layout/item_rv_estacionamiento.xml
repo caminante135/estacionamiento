@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_height="120dp"
+    app:cardCornerRadius="5dp"
+    app:elevation="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
+        android:paddingRight="10dp"
+        android:paddingEnd="10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_item_est_direccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_address"
+                android:drawableStart="@drawable/ic_address"
+                android:gravity="center_vertical"
+                android:text="Mapulemu 7183"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/txt_item_est_estado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:drawableLeft="@drawable/ic_state"
+                android:drawableStart="@drawable/ic_state"
+                android:gravity="center_vertical"
+                android:text="Disponible"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/txt_item_est_tamaño"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_size"
+                android:drawableStart="@drawable/ic_size"
+                android:gravity="center_vertical"
+                android:text="Normal"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_item_est_editar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:drawableLeft="@drawable/ic_edit"
+                android:drawableStart="@drawable/ic_edit"
+                android:gravity="center_vertical"
+                android:text="Editar"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/txt_item_est_eliminar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_delete2"
+                android:drawableStart="@drawable/ic_delete2"
+                android:gravity="center_vertical"
+                android:text="Eliminar"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="15dp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

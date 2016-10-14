@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.adapter.EstacionamientoAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,6 +40,8 @@ public class MiCuentaFragment extends Fragment {
     @Bind(R.id.recyclerView_micuenta_tarjeta)
     RecyclerView recyclerViewTarjeta;
 
+    EstacionamientoAdapter adapter;
+
     public MiCuentaFragment() {
         // Required empty public constructor
     }
@@ -50,6 +53,12 @@ public class MiCuentaFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_mi_cuenta, container, false);
         ButterKnife.bind(this, root);
         txtCorreo.setSelected(true);
+
+        adapter = new EstacionamientoAdapter(getActivity());
+        recyclerViewEstacionamiento.setAdapter(adapter);
+
+
+
         return root;
     }
 

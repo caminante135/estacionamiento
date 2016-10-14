@@ -1,8 +1,10 @@
 package com.example.gerardo.miestacionamiento.ui;
 
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -26,8 +28,12 @@ import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.ui.fragment.MapFragment;
 import com.example.gerardo.miestacionamiento.ui.fragment.MiCuentaFragment;
 import com.example.gerardo.miestacionamiento.ui.fragment.PreferenciasFragment;
+import com.example.gerardo.miestacionamiento.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.util.GlobalFunction;
 import com.google.android.gms.maps.GoogleMap;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     TextView txtToolbar;
 
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +96,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 //        }
+
+        //PREFERENCIAS
+        prefs = getSharedPreferences(GlobalConstant.PREFS_NAME, Context.MODE_PRIVATE);
+        editor = prefs.edit();
 
         disableCollapse();
 
@@ -171,7 +184,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        deletePrefs();
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
+
                     }
                 });
 
@@ -231,6 +246,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Bitmap blur = GlobalFunction.blurRenderScript(this, image, 25);
 
         return blur;
+    }
+
+    @Override
+    protected void onStop() {
+        deletePrefs();
+        super.onStop();
+    }
+
+    private void deletePrefs(){
+        editor.remove(GlobalConstant.PREFS_LATITUD);
+        editor.remove(GlobalConstant.PREFS_LONGITUD);
+        editor.apply();
     }
 
 }
