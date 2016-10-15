@@ -20,7 +20,8 @@ public class ApiAdapter {
             OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
 
-            Retrofit adapter = new Retrofit.Builder().baseUrl(ApiConstants.URL_BASE)
+            Retrofit adapter = new Retrofit.Builder()
+                    .baseUrl(ApiConstants.URL_BASE)
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();

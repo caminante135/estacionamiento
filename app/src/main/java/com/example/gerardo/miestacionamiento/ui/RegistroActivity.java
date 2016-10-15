@@ -13,9 +13,6 @@ import android.widget.Toast;
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.ui.fragment.PersonalFragment;
 import com.example.gerardo.miestacionamiento.util.GlobalFunction;
-import com.heinrichreimersoftware.singleinputform.SingleInputFormActivity;
-import com.heinrichreimersoftware.singleinputform.steps.Step;
-import com.heinrichreimersoftware.singleinputform.steps.TextStep;
 
 import java.util.ArrayList;
 import java.util.List;

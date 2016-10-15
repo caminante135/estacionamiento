@@ -1,28 +1,23 @@
 package com.example.gerardo.miestacionamiento.ui;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.gerardo.miestacionamiento.ResponseRetro;
+import com.example.gerardo.miestacionamiento.model.ResponseLogin;
+import com.example.gerardo.miestacionamiento.model.Usuario;
 import com.example.gerardo.miestacionamiento.rest.ApiAdapter;
 import com.example.gerardo.miestacionamiento.ui.dialog.DialogEscogerTipoUsuario;
 import com.example.gerardo.miestacionamiento.R;
-import com.example.gerardo.miestacionamiento.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.util.GlobalFunction;
-
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -79,23 +74,31 @@ public class LoginActivity extends AppCompatActivity {
             dialog.setCancelable(false);
             dialog.show();
 
+            Usuario user = new Usuario();
+            user.setCorreo(editUsuario.getText().toString().trim());
+            user.setContraseña(editPassword.getText().toString().trim());
+
             //LLAMADA AL WEB SERVICE
-            Call<ResponseRetro> g = ApiAdapter.getApiService().login(editUsuario.getText().toString().trim(),
-                    editPassword.getText().toString().trim());
-            g.enqueue(new Callback<ResponseRetro>() {
+            Call<ResponseLogin> retroCall = ApiAdapter.getApiService().login(user);
+            retroCall.enqueue(new Callback<ResponseLogin>() {
                 @Override
-                public void onResponse(Call<ResponseRetro> call, Response<ResponseRetro> response) {
+                public void onResponse(Call<ResponseLogin> call, Response<ResponseLogin> response) {
                     dialog.dismiss();
                     if (response.body().getMensaje().equals("true")){
+
+                        Usuario usuario = response.body().getUsuario();
+
+                        Log.d("USUARIO",usuario.getRut());
+                        Log.d("USUARIO", String.valueOf(usuario.getTelefono()));
                         startActivity(new Intent(LoginActivity.this,MainActivity.class));
 
                     }else{
-                        Toast.makeText(LoginActivity.this, "Datos invalidos", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Usuario y/o contraseña incorrectos", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
-                public void onFailure(Call<ResponseRetro> call, Throwable t) {
+                public void onFailure(Call<ResponseLogin> call, Throwable t) {
                     dialog.dismiss();
                     Toast.makeText(LoginActivity.this, "Problemas al conectar, reintentelo en unos minutos", Toast.LENGTH_SHORT).show();
                 }

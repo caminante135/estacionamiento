@@ -37,13 +37,13 @@ public class BaseActivityRegistro extends AppCompatActivity {
 //        Bundle args = new Bundle();
 //        args.putString("tipo",tipo);
 
-        if (fragment!=null){
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//            personalFragment.setArguments(args);
-            ft.setCustomAnimations(R.anim.slide_in_left,R.anim.slide_in_left);
-            ft.replace(R.id.container, fragment);
-            ft.commit();
-        }
+//        if (fragment!=null){
+//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+////            personalFragment.setArguments(args);
+//            ft.setCustomAnimations(R.anim.slide_in_left,R.anim.slide_in_left);
+//            ft.replace(R.id.container, fragment);
+//            ft.commit();
+//        }
 
 
 
