@@ -46,6 +46,8 @@
     <string name="errorClave">Ingrese una clave antes de continuar</string>
     <string name="errorTelefono">Ingrese su telefono antes de continuar</string>
 
+    <string name="formatoFecha">%1$s/%2$s/%3$s - %4$s:%5$s</string>
+    <string name="cantHoras">Cantidad de Horas: %1$s</string>
 
     <string-array name="itemsDatosPersonales">
         <item>RUT</item>
@@ -78,7 +80,6 @@
     <string name="action_vehiculo">Registrar vehículo</string>
     <string name="action_estacionamiento">Registrar estacionamiento</string>
     <string name="action_tarjeta">Registrar tarjeta</string>
-
 
 
 </resources>

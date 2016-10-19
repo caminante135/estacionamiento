@@ -12,12 +12,23 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.gerardo.miestacionamiento.model.Usuario;
 
+import org.joda.time.DateTime;
+import org.joda.time.Hours;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by Gerardo on 01/10/2016.
@@ -79,7 +90,7 @@ public final class GlobalFunction {
         }
     }
 
-    //Añadir efecto blur al image
+    //Añadir efecto blur al imageView
     @SuppressLint("NewApi")
     public static Bitmap blurRenderScript(Context context,Bitmap smallBitmap, int radius) {
         try {
@@ -149,5 +160,70 @@ public final class GlobalFunction {
 
         return usuario;
     }
+
+    //Wed Oct 19 08:27:41 GMT-03:00 2016
+    public static String formatDate(String prevDate){
+        String outputPattern = "dd/MM/yyyy HH:mm";
+        String inputPattern = "EEE MMM dd hh:mm:ss z yyyy";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.US);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+//        inputFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        Date date;
+        String str = "";
+
+        try {
+
+            date = inputFormat.parse(prevDate);
+            str = outputFormat.format(date);
+
+        } catch (ParseException e) {
+            Log.d("ERROR_FORMAT",e.toString());
+            e.printStackTrace();
+        }
+
+        return str;
+
+    }
+
+    //CALCULO LA CANTIDAD DE HORAS ENTRE 2 FECHAS
+    public static int hourBetweenDates(String date1, String date2){
+        String format = "dd/MM/yyyy HH:mm";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        Date fechaLlegada = null;
+        Date fechaSalida = null;
+        try {
+            fechaLlegada = dateFormat.parse(date1);
+            fechaSalida = dateFormat.parse(date2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar calendarLlegada = Calendar.getInstance();
+        calendarLlegada.setTime(fechaLlegada);
+        DateTime dateTimeLlegada = new DateTime(calendarLlegada.get(Calendar.YEAR),
+                calendarLlegada.get(Calendar.MONTH),
+                calendarLlegada.get(Calendar.DAY_OF_MONTH),
+                calendarLlegada.get(Calendar.HOUR_OF_DAY),
+                calendarLlegada.get(Calendar.MINUTE)
+                );
+        
+
+        Calendar calendarSalida = Calendar.getInstance();
+        calendarSalida.setTime(fechaSalida);
+        DateTime dateTimeSalida = new DateTime(calendarSalida.get(Calendar.YEAR),
+                calendarSalida.get(Calendar.MONTH),
+                calendarSalida.get(Calendar.DAY_OF_MONTH),
+                calendarSalida.get(Calendar.HOUR_OF_DAY),
+                calendarSalida.get(Calendar.MINUTE)
+        );
+
+
+        Hours hours = Hours.hoursBetween(dateTimeLlegada,dateTimeSalida);
+
+        Log.d("HORAS", String.valueOf(hours.getHours()));
+        return hours.getHours();
+    }
+
 
 }
