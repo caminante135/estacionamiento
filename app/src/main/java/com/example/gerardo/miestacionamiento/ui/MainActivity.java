@@ -34,6 +34,7 @@ import com.google.android.gms.maps.GoogleMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -100,6 +101,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //PREFERENCIAS
         prefs = getSharedPreferences(GlobalConstant.PREFS_NAME, Context.MODE_PRIVATE);
         editor = prefs.edit();
+
+        //SETEO DATOS HEADER DEL MENU IZQUIERDO
+        String nombre = prefs.getString(GlobalConstant.PREFS_NOMBRE, "");
+        String apellido = prefs.getString(GlobalConstant.PREFS_APELLIDO_P, "");
+
+        setDatosDrawerAndHeader(nombre, apellido, "Propietario", 2, 1);
 
         disableCollapse();
 
@@ -254,10 +261,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onStop();
     }
 
-    private void deletePrefs(){
+    private void deletePrefs() {
         editor.remove(GlobalConstant.PREFS_LATITUD);
         editor.remove(GlobalConstant.PREFS_LONGITUD);
         editor.apply();
+    }
+
+    private void setDatosDrawerAndHeader(String nombre, String apellido, String tipo, int cantVeh, int cantEst) {
+        TextView txtNombre, txtTipo, txtCv, txtcE,txtNombreHeader,txtTipoHeader;
+
+        View header = navView.getHeaderView(0);
+
+        txtNombre = (TextView) header.findViewById(R.id.txt_drawer_nombre);
+        txtTipo = (TextView) header.findViewById(R.id.txt_drawer_tipo);
+        txtCv = (TextView) header.findViewById(R.id.txt_drawer_vehiculos);
+        txtcE = (TextView) header.findViewById(R.id.txt_Drawer_estacionamientos);
+
+        txtNombreHeader = (TextView) collapsingToolbarLayout.findViewById(R.id.txt_header_nombre);
+        txtTipoHeader = (TextView) collapsingToolbarLayout.findViewById(R.id.txt_header_tipo);
+
+        txtNombre.setText(String.format("%s %s", nombre, apellido));
+        txtTipo.setText(tipo);
+        txtCv.setText(String.format(new Locale("es", "ES"), "Vehículos: %d", cantVeh));
+        txtcE.setText(String.format(new Locale("es", "ES"), "Estacionamientos: %d", cantEst));
+
+        txtNombreHeader.setText(String.format("%s %s", nombre, apellido));
+        txtTipoHeader.setText(tipo);
     }
 
 }

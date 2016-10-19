@@ -41,7 +41,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/username"
+                android:id="@+id/txt_drawer_nombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Gerardo Mascayano"
@@ -49,7 +49,7 @@
                 android:textSize="17dp" />
 
             <TextView
-                android:id="@+id/rol"
+                android:id="@+id/txt_drawer_tipo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
@@ -59,7 +59,7 @@
                 android:textSize="15dp" />
 
             <TextView
-                android:id="@+id/vehicuklos"
+                android:id="@+id/txt_drawer_vehiculos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
@@ -68,7 +68,7 @@
                 android:textSize="15dp" />
 
             <TextView
-                android:id="@+id/estacionamientos"
+                android:id="@+id/txt_Drawer_estacionamientos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Estacionamientos: 1"

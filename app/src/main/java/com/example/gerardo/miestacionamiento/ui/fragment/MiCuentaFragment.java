@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.adapter.EstacionamientoAdapter;
+import com.example.gerardo.miestacionamiento.model.Usuario;
+import com.example.gerardo.miestacionamiento.util.GlobalFunction;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -57,7 +60,7 @@ public class MiCuentaFragment extends Fragment {
         adapter = new EstacionamientoAdapter(getActivity());
         recyclerViewEstacionamiento.setAdapter(adapter);
 
-
+        setDatos();
 
         return root;
     }
@@ -81,5 +84,17 @@ public class MiCuentaFragment extends Fragment {
         }
     }
 
+    private void setDatos(){
+        Usuario usuario = GlobalFunction.currentUsuario(getActivity());
+
+        if (usuario != null){
+
+            txtRut.setText(usuario.getRut());
+            txtTelefono.setText(String.valueOf(usuario.getTelefono()));
+            txtCorreo.setText(usuario.getCorreo());
+            txtClave.setText(usuario.getContraseña());
+        }
+
+    }
 
 }

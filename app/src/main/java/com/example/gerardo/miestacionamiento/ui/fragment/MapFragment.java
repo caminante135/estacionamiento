@@ -1,6 +1,7 @@
 package com.example.gerardo.miestacionamiento.ui.fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,15 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.util.GlobalConstant;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
-import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -44,6 +42,8 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         // Required empty public constructor
     }
 
+    ProgressDialog dialog;
+
     public static MapFragment newInstance() {
         MapFragment fragment = new MapFragment();
         return fragment;
@@ -56,6 +56,11 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         View root = super.onCreateView(inflater, container, savedInstanceState);
         prefs = getActivity().getSharedPreferences(GlobalConstant.PREFS_NAME, Context.MODE_PRIVATE);
 
+        dialog = new ProgressDialog(getActivity());
+        dialog.setTitle("Cargando");
+        dialog.setMessage("Cargando los estacionamientos");
+        dialog.setCancelable(false);
+        dialog.show();
         getMapAsync(this);
 
         return root;
@@ -87,6 +92,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        dialog.dismiss();
         mGoogleMap = googleMap;
         mGoogleMap.setOnInfoWindowClickListener(this);
         mGoogleMap.setInfoWindowAdapter(this);
@@ -124,7 +130,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     //EVENTO CLICK DE LA VENTANA DE INFORMACION
     @Override
     public void onInfoWindowClick(Marker marker) {
-        StreetViewFragment fragment = StreetViewFragment.newInstance(marker.getPosition());
+        DetalleFragment fragment = DetalleFragment.newInstance(marker.getPosition());
 
         getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.frame, fragment).commit();
     }
@@ -147,7 +153,6 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         View v = getActivity().getLayoutInflater().inflate(R.layout.googlemap_info_window, null);
 
         v.setLayoutParams(new LinearLayout.LayoutParams(850, ViewGroup.LayoutParams.WRAP_CONTENT));
-
 
         return v;
     }

@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+<!--
+        <fragment
+            android:id="@+id/street_view"
+            android:name="com.example.gerardo.miestacionamiento.ui.fragment.DetalleFragment"
+            android:layout_width="match_parent"
+            android:layout_height="180dp" />
+
+            -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/titulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:text="Estacionamiento"
+                android:textColor="@color/colorBlack"
+                android:textSize="21dp" />
+
+            <TextView
+                android:id="@+id/titComuna"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Comuna:"
+                android:layout_below="@+id/titulo"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="16dp" />
+
+
+            <TextView
+                android:id="@+id/txt_detalle_comuna"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/titComuna"
+                android:text="Puente Alto"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/titDireccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="20dp"
+                android:text="Direccion:"
+                android:layout_toRightOf="@+id/titComuna"
+                android:layout_below="@+id/titulo"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="16dp" />
+
+
+            <TextView
+                android:id="@+id/txt_detalle_direccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/titDireccion"
+                android:layout_toRightOf="@+id/titComuna"
+                android:text="Mapulemu 07183"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp" />
+
+
+            <TextView
+                android:id="@+id/titTamaño"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Tamaño::"
+                android:layout_below="@+id/txt_detalle_comuna"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="16dp" />
+
+
+            <TextView
+                android:id="@+id/txt_detalle_tamaño"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/titTamaño"
+                android:text="Normal"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/titNumero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="10dp"
+                android:text="Número:"
+                android:layout_toRightOf="@+id/titTamaño"
+                android:layout_below="@+id/txt_detalle_direccion"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="16dp" />
+
+
+            <TextView
+                android:id="@+id/txt_detalle_numero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/titNumero"
+                android:layout_toRightOf="@+id/titTamaño"
+                android:text="102"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp" />
+
+
+            <TextView
+                android:id="@+id/titPiso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Piso:"
+                android:layout_below="@+id/txt_detalle_tamaño"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="16dp" />
+
+
+            <TextView
+                android:id="@+id/txt_detalle_piso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/titPiso"
+                android:text="2"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/titCamaraVigilancia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="10dp"
+                android:text="¿Cámara de Vigilancia?"
+                android:layout_toRightOf="@+id/titTamaño"
+                android:layout_below="@+id/txt_detalle_numero"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="16dp" />
+
+
+            <TextView
+                android:id="@+id/txt_detalle_camara_vigilancia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/titCamaraVigilancia"
+                android:layout_toRightOf="@+id/titTamaño"
+                android:text="No"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/titValor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Valor / hora"
+                android:layout_below="@+id/txt_detalle_piso"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="16dp" />
+
+
+            <TextView
+                android:id="@+id/txt_detalle_valor_hora"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/titValor"
+                android:text="$2500"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/titulo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:text="Dueño"
+                android:layout_below="@+id/txt_detalle_valor_hora"
+                android:textColor="@color/colorBlack"
+                android:textSize="21dp" />
+
+            <TextView
+                android:id="@+id/titNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Nombre:"
+                android:layout_below="@+id/titulo2"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="16dp" />
+
+
+            <TextView
+                android:id="@+id/txt_detalle_nombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/titNombre"
+                android:text="Gerardo Ignacio"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/titApellido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="20dp"
+                android:text="Apellido:"
+                android:layout_toRightOf="@+id/titTamaño"
+                android:layout_below="@+id/titulo2"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="16dp" />
+
+
+            <TextView
+                android:id="@+id/txt_detalle_apellido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/titApellido"
+                android:layout_toRightOf="@+id/titNombre"
+                android:text="Mascayano Beroíza"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/titcorreo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Correo:"
+                android:layout_below="@+id/txt_detalle_nombre"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="16dp" />
+
+
+            <TextView
+                android:id="@+id/txt_detalle_correo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/titcorreo"
+                android:text="gerardo.mascayano@gmail.com"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/titValoracion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Valoración:"
+                android:layout_below="@+id/txt_detalle_correo"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="16dp" />
+
+
+            <RatingBar
+                android:id="@+id/txt_detalle_valoracion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:numStars="5"
+
+                android:rating="4"
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                android:progressTint="@color/colorPrimary"
+                android:layout_below="@+id/titValoracion"
+                android:textSize="18dp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</ScrollView>

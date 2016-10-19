@@ -2,6 +2,7 @@ package com.example.gerardo.miestacionamiento.ui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -17,6 +18,7 @@ import com.example.gerardo.miestacionamiento.model.Usuario;
 import com.example.gerardo.miestacionamiento.rest.ApiAdapter;
 import com.example.gerardo.miestacionamiento.ui.dialog.DialogEscogerTipoUsuario;
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.util.GlobalFunction;
 
 import butterknife.Bind;
@@ -38,7 +40,8 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.txt_Registrar)
     TextView txtRegistrar;
 
-
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
 //            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 //        }
 
-
+        prefs = getSharedPreferences(GlobalConstant.PREFS_NAME,MODE_PRIVATE);
 
 
     }
@@ -70,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 //            editor.apply();
 
             final ProgressDialog dialog = new ProgressDialog(this);
+            dialog.setTitle("Login");
             dialog.setMessage("Cargando...");
             dialog.setCancelable(false);
             dialog.show();
@@ -88,8 +92,9 @@ public class LoginActivity extends AppCompatActivity {
 
                         Usuario usuario = response.body().getUsuario();
 
-                        Log.d("USUARIO",usuario.getRut());
-                        Log.d("USUARIO", String.valueOf(usuario.getTelefono()));
+                        saveUserInfo(usuario);
+
+
                         startActivity(new Intent(LoginActivity.this,MainActivity.class));
 
                     }else{
@@ -108,6 +113,20 @@ public class LoginActivity extends AppCompatActivity {
         }else{
             Toast.makeText(LoginActivity.this, "Debe rellenar todos los campos", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void saveUserInfo(Usuario usuario){
+        editor = prefs.edit();
+
+        editor.putString(GlobalConstant.PREFS_RUT,usuario.getRut());
+        editor.putString(GlobalConstant.PREFS_NOMBRE,usuario.getNombre());
+        editor.putString(GlobalConstant.PREFS_APELLIDO_P,usuario.getApellidoPaterno());
+        editor.putString(GlobalConstant.PREFS_APELLIDO_M,usuario.getApellidoMaterno());
+        editor.putString(GlobalConstant.PREFS_CORREO,usuario.getCorreo());
+        editor.putInt(GlobalConstant.PREFS_TELEFONO,usuario.getTelefono());
+        editor.putString(GlobalConstant.PREFS_CLAVE,usuario.getContraseña());
+
+        editor.apply();
     }
 
     @OnClick(R.id.txt_Registrar)

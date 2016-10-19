@@ -15,6 +15,8 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.example.gerardo.miestacionamiento.model.Usuario;
+
 import java.util.List;
 
 /**
@@ -69,7 +71,7 @@ public final class GlobalFunction {
     }
 
     //VALIDAR DE EMAIL
-    public final static boolean isValidEmail(String target) {
+    public static boolean isValidEmail(String target) {
         if (target == null) {
             return false;
         } else {
@@ -132,5 +134,20 @@ public final class GlobalFunction {
         return builder;
     }
 
+    public static Usuario currentUsuario(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(GlobalConstant.PREFS_NAME,Context.MODE_PRIVATE);
+
+        Usuario usuario = new Usuario();
+
+        usuario.setRut(prefs.getString(GlobalConstant.PREFS_RUT,""));
+        usuario.setNombre(prefs.getString(GlobalConstant.PREFS_NOMBRE,""));
+        usuario.setApellidoPaterno(prefs.getString(GlobalConstant.PREFS_APELLIDO_P,""));
+        usuario.setApellidoMaterno(prefs.getString(GlobalConstant.PREFS_APELLIDO_M,""));
+        usuario.setCorreo(prefs.getString(GlobalConstant.PREFS_CORREO,""));
+        usuario.setTelefono(prefs.getInt(GlobalConstant.PREFS_TELEFONO,0));
+        usuario.setContraseña(prefs.getString(GlobalConstant.PREFS_CLAVE,""));
+
+        return usuario;
+    }
 
 }
