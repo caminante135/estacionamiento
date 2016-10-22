@@ -19,7 +19,7 @@ import butterknife.OnClick;
 /**
  * Created by Gerardo on 29/09/2016.
  */
-public class DialogEscogerTipoUsuario extends Dialog {
+public class DialogTipoUsuario extends Dialog {
 
 
     @Bind(R.id.btn_propietario)
@@ -27,11 +27,11 @@ public class DialogEscogerTipoUsuario extends Dialog {
     @Bind(R.id.btn_arrendatario)
     ImageButton btnArrendatario;
 
-    public DialogEscogerTipoUsuario(Context context, int themeResId) {
+    public DialogTipoUsuario(Context context, int themeResId) {
         super(context, themeResId);
     }
 
-    public DialogEscogerTipoUsuario(Context context) {
+    public DialogTipoUsuario(Context context) {
         super(context);
     }
 

@@ -15,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.gerardo.miestacionamiento.ui.dialog.DialogWebPay;
+import com.example.gerardo.miestacionamiento.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.util.GlobalFunction;
 import com.example.gerardo.miestacionamiento.R;
 
@@ -37,17 +38,26 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
     EditText mNumEstacionamiento;
     EditText mLargo;
 
+    String jsonUsuario;
 
     public EstacionamientoFragment() {
         // Required empty public constructor
     }
 
-    public static EstacionamientoFragment newInstance() {
+    public static EstacionamientoFragment newInstance(String jsonUsuario) {
         EstacionamientoFragment fragment = new EstacionamientoFragment();
-
+        Bundle b = new Bundle();
+        b.putString(GlobalConstant.BUNDLE_USUARIO,jsonUsuario);
+        fragment.setArguments(b);
         return fragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        jsonUsuario = args.getString(GlobalConstant.BUNDLE_USUARIO,"");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,7 +71,7 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
         int colorPrimaryDark = ContextCompat.getColor(getActivity().getApplicationContext(), R.color.colorPrimaryDark);
 
         verticalStepperForm = (VerticalStepperFormLayout) root.findViewById(R.id.vertical_stepper_form_estacionamiento);
-        lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, GlobalFunction.dpToPx(35));
+        lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, GlobalFunction.ConvertDpToPx(35));
 
         // Setting up and initializing the form
         VerticalStepperFormLayout.Builder.newInstance(verticalStepperForm, mySteps, this, getActivity())
@@ -80,7 +90,7 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Registro nuevo estacionamiento");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Nuevo Estacionamiento");
     }
 
     @Override
@@ -135,7 +145,7 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
 
     @Override
     public void sendData() {
-        DialogWebPay fragment = new DialogWebPay();
+        DialogWebPay fragment = DialogWebPay.newInstance(jsonUsuario,null,null);
         fragment.show(getActivity().getSupportFragmentManager(),"webpayFragment");
     }
 
@@ -146,11 +156,10 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
         mComuna.setHint(getActivity().getResources().getString(R.string.hintComuna));
         mComuna.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
         mComuna.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mComuna.setPadding(GlobalFunction.dpToPx(10), 0, GlobalFunction.dpToPx(10), 0);
+        mComuna.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
         mComuna.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         return mComuna;
     }
-
     private View crearViewDireccion() {
         mDireccion = new EditText(getActivity());
         mDireccion.setSingleLine(true);
@@ -158,11 +167,10 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
         mDireccion.setHint(getActivity().getResources().getString(R.string.hintDireccion));
         mDireccion.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
         mDireccion.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mDireccion.setPadding(GlobalFunction.dpToPx(10), 0, GlobalFunction.dpToPx(10), 0);
+        mDireccion.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
         mDireccion.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         return mDireccion;
     }
-
     private View crearViewNumero() {
         mNumResidencia = new EditText(getActivity());
         mNumResidencia.setSingleLine(true);
@@ -170,12 +178,11 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
         mNumResidencia.setHint(getActivity().getResources().getString(R.string.hintNumero));
         mNumResidencia.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
         mNumResidencia.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mNumResidencia.setPadding(GlobalFunction.dpToPx(10), 0, GlobalFunction.dpToPx(10), 0);
+        mNumResidencia.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
         mNumResidencia.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         mNumResidencia.setInputType(InputType.TYPE_CLASS_NUMBER);
         return mNumResidencia;
     }
-
     private View crearViewTipo() {
         RadioButton[] radioButtons = new RadioButton[2];
         mTipoResidencia = new RadioGroup(getActivity());
@@ -192,7 +199,6 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
         return mTipoResidencia;
 
     }
-
     private View crearViewNumEst() {
         mNumEstacionamiento = new EditText(getActivity());
         mNumEstacionamiento.setSingleLine(true);
@@ -200,12 +206,11 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
         mNumEstacionamiento.setHint(getActivity().getResources().getString(R.string.hintNumeroEst));
         mNumEstacionamiento.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
         mNumEstacionamiento.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mNumEstacionamiento.setPadding(GlobalFunction.dpToPx(10), 0, GlobalFunction.dpToPx(10), 0);
+        mNumEstacionamiento.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
         mNumEstacionamiento.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         mNumEstacionamiento.setInputType(InputType.TYPE_CLASS_NUMBER);
         return mNumEstacionamiento;
     }
-
     private View crearViewLargo() {
         mLargo = new EditText(getActivity());
         mLargo.setSingleLine(true);
@@ -213,7 +218,7 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
         mLargo.setHint(getActivity().getResources().getString(R.string.hintLargo));
         mLargo.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
         mLargo.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mLargo.setPadding(GlobalFunction.dpToPx(10), 0, GlobalFunction.dpToPx(10), 0);
+        mLargo.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
         mLargo.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         mLargo.setInputType(InputType.TYPE_CLASS_NUMBER);
         return mLargo;

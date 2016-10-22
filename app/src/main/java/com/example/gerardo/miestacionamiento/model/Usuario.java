@@ -2,9 +2,17 @@ package com.example.gerardo.miestacionamiento.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
 /**
- * Created by Gerardo on 14/10/2016.
+
+ * @author Gerardo Mascayano
+
+ * @version 0.8
+
+ * 14/10/2016.
+
+ * Clase Usuario se utiliza para modelar el envio y la recepcion de datos con respecto a la tabla
+ * Usuario de la Base de Datos
+
  */
 public class Usuario {
 
@@ -22,6 +30,8 @@ public class Usuario {
     private int telefono;
     @SerializedName("clave")
     private String contraseña;
+
+    private int tipoUsuario;
 
     public Usuario() {
     }
@@ -80,5 +90,13 @@ public class Usuario {
 
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
+    }
+
+    public int getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(int tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 }

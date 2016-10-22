@@ -14,6 +14,7 @@ import com.devmarvel.creditcardentry.library.CreditCard;
 import com.devmarvel.creditcardentry.library.CreditCardForm;
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.util.ExpirationFormatWatcher;
+import com.example.gerardo.miestacionamiento.util.GlobalConstant;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,14 +38,38 @@ public class DialogWebPay extends DialogFragment {
     @Bind(R.id.btn_wp_registrar)
     Button btnRegistrar;
 
+    String jsonUsuario;
+    String jsonVehiculo;
+    String jsonEstacionamiento;
+
     public DialogWebPay() {
     }
 
+    public static DialogWebPay newInstance(String jsonUsuario, @Nullable String jsonVehiculo,
+                                           @Nullable String jsonEstacionamiento){
+        DialogWebPay dialogWebPay = new DialogWebPay();
+        Bundle b = new Bundle();
+        b.putString(GlobalConstant.BUNDLE_USUARIO, jsonUsuario);
+        if (jsonVehiculo != null){
+            b.putString(GlobalConstant.BUNDLE_VEHICULO, jsonVehiculo);
+        }
+        if (jsonEstacionamiento != null){
+            b.putString(GlobalConstant.BUNDLE_ESTACIO, jsonEstacionamiento);
+        }
 
+        dialogWebPay.setArguments(b);
+
+        return dialogWebPay;
+
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        jsonUsuario = args.getString(GlobalConstant.BUNDLE_USUARIO,"");
+        jsonVehiculo = args.getString(GlobalConstant.BUNDLE_VEHICULO,"");
+        jsonEstacionamiento = args.getString(GlobalConstant.BUNDLE_ESTACIO,"");
     }
 
 
@@ -74,7 +99,7 @@ public class DialogWebPay extends DialogFragment {
                 break;
             case R.id.btn_wp_registrar:
                 CreditCard card = mCcform.getCreditCard();
-                Toast.makeText(getActivity(), "Tipo: "+card.getCardType() + " Numero: "+ card.getCardNumber(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "Tipo: "+card.getCardType() + " Numero: "+ card.getCardNumber(), Toast.LENGTH_SHORT).show();
                 break;
         }
     }

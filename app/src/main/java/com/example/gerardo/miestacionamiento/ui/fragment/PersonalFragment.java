@@ -1,14 +1,12 @@
 package com.example.gerardo.miestacionamiento.ui.fragment;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,9 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.model.Usuario;
 import com.example.gerardo.miestacionamiento.util.GlobalFunction;
+import com.google.gson.Gson;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,19 +44,19 @@ public class PersonalFragment extends Fragment {
     @Bind(R.id.rg_persona_tipo)
     RadioGroup rgTipo;
     @Bind(R.id.edit_personal_rut)
-    TextInputEditText editRut;
+    TextInputEditText mEditRut;
     @Bind(R.id.edit_personal_nombre)
-    TextInputEditText editNombre;
+    TextInputEditText mEditNombre;
     @Bind(R.id.edit_personal_apellido_p)
-    TextInputEditText editApellidoP;
+    TextInputEditText mEditApellidoP;
     @Bind(R.id.edit_personal_apellido_m)
-    TextInputEditText editApellidoM;
+    TextInputEditText mEditApellidoM;
     @Bind(R.id.edit_personal_correo)
-    TextInputEditText editCorreo;
+    TextInputEditText mEditCorreo;
     @Bind(R.id.edit_personal_telefono)
-    TextInputEditText editTelefono;
+    TextInputEditText mEditTelefono;
     @Bind(R.id.edit_personal_clave)
-    TextInputEditText editClave;
+    TextInputEditText mEditClave;
     @Bind(R.id.btn_personal_registrar)
     Button btnRegistrar;
 
@@ -91,8 +91,6 @@ public class PersonalFragment extends Fragment {
 
 
 
-
-
         return root;
     }
 
@@ -102,21 +100,21 @@ public class PersonalFragment extends Fragment {
     }
 
 
-    public void sendData() {
-        if (tipoUsuario.equals(ARGUMENTO_PROP)) {
-            EstacionamientoFragment fragment = EstacionamientoFragment.newInstance();
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.container, fragment);
-            ft.commitAllowingStateLoss();
-        } else {
-            if (tipoUsuario.equals(ARGUMENTO_ARREN)) {
-                VehiculoFragment fragment = VehiculoFragment.newInstance();
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.container, fragment);
-                ft.commitAllowingStateLoss();
-            }
-        }
-    }
+//    public void sendData() {
+//        if (tipoUsuario.equals(ARGUMENTO_PROP)) {
+//            EstacionamientoFragment fragment = EstacionamientoFragment.newInstance();
+//            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.container, fragment);
+//            ft.commitAllowingStateLoss();
+//        } else {
+//            if (tipoUsuario.equals(ARGUMENTO_ARREN)) {
+//                VehiculoFragment fragment = VehiculoFragment.newInstance();
+//                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//                ft.replace(R.id.container, fragment);
+//                ft.commitAllowingStateLoss();
+//            }
+//        }
+//    }
 
     @Override
     public void onDestroyView() {
@@ -126,25 +124,25 @@ public class PersonalFragment extends Fragment {
 
     private boolean validarFormulario(){
 
-        if (editRut.getText().toString().trim().equals("")){
+        if (mEditRut.getText().toString().trim().equals("")){
             return false;
         }
-        if (editNombre.getText().toString().trim().equals("")) {
+        if (mEditNombre.getText().toString().trim().equals("")) {
             return false;
         }
-        if (editApellidoP.getText().toString().trim().equals("")) {
+        if (mEditApellidoP.getText().toString().trim().equals("")) {
             return false;
         }
-        if (editApellidoM.getText().toString().trim().equals("")) {
+        if (mEditApellidoM.getText().toString().trim().equals("")) {
             return false;
         }
-        if (editCorreo.getText().toString().trim().equals("")){
+        if (mEditCorreo.getText().toString().trim().equals("")){
             return false;
         }
-        if (editTelefono.getText().toString().trim().equals("")){
+        if (mEditTelefono.getText().toString().trim().equals("")){
             return false;
         }
-        if (editClave.getText().toString().trim().equals("")){
+        if (mEditClave.getText().toString().trim().equals("")){
             return false;
         }
         if (rgTipo.getCheckedRadioButtonId() == -1){
@@ -158,8 +156,8 @@ public class PersonalFragment extends Fragment {
     @OnClick(R.id.btn_personal_registrar)
     public void onClick() {
         if (validarFormulario()){
-            if (GlobalFunction.isRut(editRut.getText().toString().trim())){
-                if (GlobalFunction.isValidEmail(editCorreo.getText().toString().trim())){
+            if (GlobalFunction.isRut(mEditRut.getText().toString().trim())){
+                if (GlobalFunction.isValidEmail(mEditCorreo.getText().toString().trim())){
 
                     if (rbTipoProp.isChecked()){
                         changeFragment(ARGUMENTO_PROP);
@@ -185,9 +183,9 @@ public class PersonalFragment extends Fragment {
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 
         if (tipo.equals(ARGUMENTO_PROP)){
-            fragment = EstacionamientoFragment.newInstance();
+            fragment = EstacionamientoFragment.newInstance(setIntentInfo(1));
         }else{
-            fragment = VehiculoFragment.newInstance();
+            fragment = VehiculoFragment.newInstance(setIntentInfo(2));
         }
 
         if (fragment!=null){
@@ -196,6 +194,22 @@ public class PersonalFragment extends Fragment {
             ft.commitAllowingStateLoss();
         }
 
+
+    }
+
+    private String setIntentInfo(int tipo){
+        Usuario usuario = new Usuario();
+        usuario.setRut(mEditRut.getText().toString().trim());
+        usuario.setNombre(mEditNombre.getText().toString().trim());
+        usuario.setApellidoPaterno(mEditApellidoP.getText().toString().trim());
+        usuario.setApellidoMaterno(mEditApellidoM.getText().toString().trim());
+        usuario.setCorreo(mEditCorreo.getText().toString().trim());
+        usuario.setTelefono(Integer.parseInt(mEditTelefono.getText().toString().trim()));
+        usuario.setContraseña(mEditClave.getText().toString().trim());
+        usuario.setTipoUsuario(tipo);
+
+        String json = GlobalFunction.createJSONObject(usuario);
+        return json;
 
     }
 

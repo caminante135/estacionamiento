@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.example.gerardo.miestacionamiento.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.util.GlobalFunction;
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.ui.dialog.DialogWebPay;
@@ -40,25 +41,25 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
     EditText mLargo;
 
 
-    String tipoUsuario = null;
+    String jsonUsuario = null;
 
     public VehiculoFragment() {
         // Required empty public constructor
     }
 
-    public static VehiculoFragment newInstance() {
+    public static VehiculoFragment newInstance(String jsonUsuario) {
         VehiculoFragment vehiculoFragment = new VehiculoFragment();
-//        Bundle b = new Bundle();
-//        b.putString(ARGUMENTO_TIPO, tipo);
-//        vehiculoFragment.setArguments(b);
+        Bundle b = new Bundle();
+        b.putString(GlobalConstant.BUNDLE_USUARIO,jsonUsuario);
+        vehiculoFragment.setArguments(b);
         return vehiculoFragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Bundle args = getArguments();
-//        tipoUsuario = args.getString(ARGUMENTO_TIPO);
+        Bundle args = getArguments();
+        jsonUsuario = args.getString(GlobalConstant.BUNDLE_USUARIO);
     }
 
     @Override
@@ -72,7 +73,7 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
         int colorPrimaryDark = ContextCompat.getColor(getActivity().getApplicationContext(), R.color.colorPrimaryDark);
 
         verticalStepperForm = (VerticalStepperFormLayout) root.findViewById(R.id.vertical_stepper_form_vehiculo);
-        lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, GlobalFunction.dpToPx(35));
+        lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, GlobalFunction.ConvertDpToPx(35));
 
         // Setting up and initializing the form
         VerticalStepperFormLayout.Builder.newInstance(verticalStepperForm, mySteps, this, getActivity())
@@ -92,7 +93,7 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Agregar vehículo");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Nuevo Vehículo");
     }
 
     @Override
@@ -156,7 +157,7 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
         mPatente.setHint(getActivity().getResources().getString(R.string.hintPatente));
         mPatente.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
         mPatente.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mPatente.setPadding(GlobalFunction.dpToPx(10), 0, GlobalFunction.dpToPx(10), 0);
+        mPatente.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
         mPatente.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         return mPatente;
 
@@ -168,7 +169,7 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
         mMarca.setHint(getActivity().getResources().getString(R.string.hintMarca));
         mMarca.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
         mMarca.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mMarca.setPadding(GlobalFunction.dpToPx(10), 0, GlobalFunction.dpToPx(10), 0);
+        mMarca.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
         mMarca.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         return mMarca;
     }
@@ -179,7 +180,7 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
         mModelo.setHint(getActivity().getResources().getString(R.string.hintModelo));
         mModelo.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
         mModelo.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mModelo.setPadding(GlobalFunction.dpToPx(10), 0, GlobalFunction.dpToPx(10), 0);
+        mModelo.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
         mModelo.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         return mModelo;
     }
@@ -190,7 +191,7 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
         mColor.setHint(getActivity().getResources().getString(R.string.hintColor));
         mColor.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
         mColor.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mColor.setPadding(GlobalFunction.dpToPx(10), 0, GlobalFunction.dpToPx(10), 0);
+        mColor.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
         mColor.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         return mColor;
     }
@@ -201,7 +202,7 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
         mLargo.setHint(getActivity().getResources().getString(R.string.hintLargo));
         mLargo.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
         mLargo.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mLargo.setPadding(GlobalFunction.dpToPx(10), 0, GlobalFunction.dpToPx(10), 0);
+        mLargo.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
         mLargo.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         mLargo.setInputType(InputType.TYPE_CLASS_NUMBER);
         return mLargo;

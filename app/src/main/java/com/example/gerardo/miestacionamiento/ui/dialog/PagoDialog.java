@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.example.gerardo.miestacionamiento.R;
@@ -22,14 +20,14 @@ import butterknife.ButterKnife;
 /**
  * Created by Gerardo on 21/10/2016.
  */
-public class PagarDialog extends DialogFragment {
+public class PagoDialog extends DialogFragment {
 
 
     @Bind(R.id.spn_pagar_tarjetas)
     Spinner mSpnTarjetas;
 
-    public static PagarDialog newInstance() {
-        PagarDialog dialog = new PagarDialog();
+    public static PagoDialog newInstance() {
+        PagoDialog dialog = new PagoDialog();
         return dialog;
     }
 
@@ -57,7 +55,7 @@ public class PagarDialog extends DialogFragment {
     public void onResume() {
         super.onResume();
 //        getDialog().getWindow().setEnterTransition();
-        getDialog().getWindow().setLayout(GlobalFunction.dpToPx(300), GlobalFunction.dpToPx(250));
+        getDialog().getWindow().setLayout(GlobalFunction.ConvertDpToPx(300), GlobalFunction.ConvertDpToPx(250));
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(0));
     }
 

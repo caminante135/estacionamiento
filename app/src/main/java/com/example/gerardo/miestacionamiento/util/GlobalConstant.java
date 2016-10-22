@@ -18,5 +18,8 @@ public class GlobalConstant {
     public static final String PREFS_LATITUD = "latitud";
     public static final String PREFS_LONGITUD = "longitud";
 
+    public static final String BUNDLE_USUARIO = "usuario";
+    public static final String BUNDLE_VEHICULO = "vehiculo";
+    public static final String BUNDLE_ESTACIO = "estacionamiento";
 
 }

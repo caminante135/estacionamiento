@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.gerardo.miestacionamiento.model.Usuario;
+import com.google.gson.Gson;
 
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
@@ -38,7 +39,7 @@ public final class GlobalFunction {
 
 
     //Funcion para convertir unidades DP a Pixeles (PX)
-    public static int dpToPx(int dp) {
+    public static int ConvertDpToPx(int dp) {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 
@@ -232,7 +233,14 @@ public final class GlobalFunction {
         return hours.getHours();
     }
 
+    //CREAR JSON A PARTIR DE UN OBJETO
+    public static String createJSONObject(Object object){
+        Gson gson = new Gson();
 
+        String json = gson.toJson(object);
+
+        return json;
+    }
 
 
 }

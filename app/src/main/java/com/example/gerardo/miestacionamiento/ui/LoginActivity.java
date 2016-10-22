@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 import com.example.gerardo.miestacionamiento.model.ResponseLogin;
 import com.example.gerardo.miestacionamiento.model.Usuario;
 import com.example.gerardo.miestacionamiento.rest.ApiAdapter;
-import com.example.gerardo.miestacionamiento.ui.dialog.DialogEscogerTipoUsuario;
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.util.GlobalFunction;
@@ -131,7 +129,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.txt_Registrar)
     public void registrar() {
-        new DialogEscogerTipoUsuario(this).show();
+//        new DialogTipoUsuario(this).show();
+        startActivity(new Intent(this,RegistroActivity.class));
     }
 
 }

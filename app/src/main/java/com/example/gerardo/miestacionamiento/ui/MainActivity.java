@@ -201,6 +201,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 dialog.show();
 
                 break;
+            default:
+                fragment = null;
         }
 
         if (fragment != null) {
