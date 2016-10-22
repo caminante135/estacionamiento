@@ -52,7 +52,7 @@
                     android:drawableLeft="@drawable/ic_user"
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/ic_user"
-                    android:hint="Usuario"
+                    android:hint="@string/hintEmail"
                     android:inputType="textPersonName"
                     android:textColor="@color/white" />
 
@@ -71,7 +71,7 @@
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/ic_pass"
                     android:fontFamily="sans-serif"
-                    android:hint="Password"
+                    android:hint="@string/hintContraseña"
                     android:inputType="textPassword"
                     android:textColor="@color/white" />
 

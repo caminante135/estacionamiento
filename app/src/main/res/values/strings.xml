@@ -81,5 +81,16 @@
     <string name="action_estacionamiento">Registrar estacionamiento</string>
     <string name="action_tarjeta">Registrar tarjeta</string>
 
+    <string name="terminosCondiciones">El Cliente se obliga a usar los Servicios de forma diligente, correcta y lícita y, en particular, a título meramente enunciativo y no limitativo, se compromete a abstenerse de:
+
+utilizar los Servicios de forma, con fines o efectos contrarios a la ley, a la moral y a las buenas costumbres generalmente aceptadas o al orden público;
+reproducir o copiar, distribuir, permitir el acceso del público a través de cualquier modalidad de comunicación pública, transformar o modificar los Servicios, a menos que se cuente con la autorización del titular de los correspondientes derechos o ello resulte legalmente permitido;
+realizar cualquier acto que pueda ser considerado una vulneración de cualesquiera derechos de propiedad intelectual o industrial pertenecientes a Mi Estacionamiento o a terceros;
+emplear los Servicios y, en particular, la información de cualquier clase obtenida a través del Sitio Web para remitir publicidad, comunicaciones con fines de venta directa o con cualquier otra clase de finalidad comercial, mensajes no solicitados dirigidos a una pluralidad de personas con independencia de su finalidad, así como de comercializar o divulgar de cualquier modo dicha información;
+El Cliente responderá de los daños y perjuicios de toda naturaleza que Mi Estacionamiento pueda sufrir, con ocasión o como consecuencia del incumplimiento de cualquiera de las obligaciones anteriormente expuestas así como cualesquiera otras incluidas en las presentes Condiciones Generales y/o las impuestas por la Ley en relación con la utilización del Sitio Web .
+
+Mi Estacionamiento velará en todo momento por el respeto del ordenamiento jurídico vigente, y estará legitimada para interrumpir, a su entera discreción, el Servicio o excluir al Cliente del Sitio Web en caso de presunta comisión, completa o incompleta, de alguno de los delitos o faltas tipificados por el Código Penal vigente, o en caso de observar cualesquiera conductas que a juicio de Mi Estacionamiento resulten contrarias a estas Condiciones Generales, las Condiciones Generales de Contratación que operan para este Sitio Web, la Ley, las normas establecidas por Mi Estacionamiento o sus colaboradores o puedan perturbar el buen funcionamiento, imagen, credibilidad y/o prestigio de Mi Estacionamiento o sus colaboradores.</string>
+    <string name="hintContraseña">Contraseña</string>
+    <string name="hintEmail">Email</string>
 
 </resources>

@@ -193,37 +193,46 @@ public final class GlobalFunction {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
         Date fechaLlegada = null;
         Date fechaSalida = null;
+
         try {
             fechaLlegada = dateFormat.parse(date1);
             fechaSalida = dateFormat.parse(date2);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Calendar calendarLlegada = Calendar.getInstance();
-        calendarLlegada.setTime(fechaLlegada);
-        DateTime dateTimeLlegada = new DateTime(calendarLlegada.get(Calendar.YEAR),
-                calendarLlegada.get(Calendar.MONTH),
-                calendarLlegada.get(Calendar.DAY_OF_MONTH),
-                calendarLlegada.get(Calendar.HOUR_OF_DAY),
-                calendarLlegada.get(Calendar.MINUTE)
-                );
-        
 
-        Calendar calendarSalida = Calendar.getInstance();
-        calendarSalida.setTime(fechaSalida);
-        DateTime dateTimeSalida = new DateTime(calendarSalida.get(Calendar.YEAR),
-                calendarSalida.get(Calendar.MONTH),
-                calendarSalida.get(Calendar.DAY_OF_MONTH),
-                calendarSalida.get(Calendar.HOUR_OF_DAY),
-                calendarSalida.get(Calendar.MINUTE)
-        );
+        Hours hours = null;
+
+        if (fechaLlegada != null && fechaSalida != null){
+            Calendar calendarLlegada = Calendar.getInstance();
+            calendarLlegada.setTime(fechaLlegada);
+            DateTime dateTimeLlegada = new DateTime(calendarLlegada.get(Calendar.YEAR),
+                    calendarLlegada.get(Calendar.MONTH)+1,
+                    calendarLlegada.get(Calendar.DAY_OF_MONTH),
+                    calendarLlegada.get(Calendar.HOUR_OF_DAY),
+                    calendarLlegada.get(Calendar.MINUTE)
+            );
 
 
-        Hours hours = Hours.hoursBetween(dateTimeLlegada,dateTimeSalida);
+            Calendar calendarSalida = Calendar.getInstance();
+            calendarSalida.setTime(fechaSalida);
+            DateTime dateTimeSalida = new DateTime(calendarSalida.get(Calendar.YEAR),
+                    calendarSalida.get(Calendar.MONTH)+1,
+                    calendarSalida.get(Calendar.DAY_OF_MONTH),
+                    calendarSalida.get(Calendar.HOUR_OF_DAY),
+                    calendarSalida.get(Calendar.MINUTE)
+            );
 
-        Log.d("HORAS", String.valueOf(hours.getHours()));
+            hours = Hours.hoursBetween(dateTimeLlegada,dateTimeSalida);
+
+        }
+
+
+
         return hours.getHours();
     }
+
+
 
 
 }

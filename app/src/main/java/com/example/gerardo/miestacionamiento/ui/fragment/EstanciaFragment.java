@@ -94,6 +94,9 @@ public class EstanciaFragment extends Fragment {
 
     @OnClick(R.id.btn_estancia_aceptar)
     public void onClick() {
+        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                .replace(R.id.frame,ResumenFragment.newInstance())
+                .commitAllowingStateLoss();
     }
 
     @OnClick(R.id.btn_estancia_definir_llegada)
