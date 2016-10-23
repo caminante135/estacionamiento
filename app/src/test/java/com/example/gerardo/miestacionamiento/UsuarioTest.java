@@ -27,7 +27,6 @@ public class UsuarioTest  {
     @Test
     public void testUltimoUsuario(){
         Usuario user = GlobalFunction.currentUsuario(new MockContext());
-
         assertNotNull(user);
 
     }

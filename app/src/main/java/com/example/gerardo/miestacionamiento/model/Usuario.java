@@ -30,8 +30,10 @@ public class Usuario {
     private int telefono;
     @SerializedName("clave")
     private String contraseña;
-
+    @SerializedName("idRol")
     private int tipoUsuario;
+    @SerializedName("idEstado")
+    private int estado;
 
     public Usuario() {
     }
@@ -98,5 +100,13 @@ public class Usuario {
 
     public void setTipoUsuario(int tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
     }
 }

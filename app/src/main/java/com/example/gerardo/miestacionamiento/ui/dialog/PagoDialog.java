@@ -43,8 +43,8 @@ public class PagoDialog extends DialogFragment {
     }
 
     private void setSpinner() {
-        String[] years = {"1996", "1997", "1998", "1998"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_text, years);
+        String[] medios = {"MasterCard", "American Express", "VISA", "pobree"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_text, medios);
         mSpnTarjetas.setAdapter(adapter);
 //        ArrayAdapter<CharSequence> langAdapter = new ArrayAdapter<CharSequence>(getActivity(), R.layout.spinner_text, years );
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);

@@ -1,13 +1,10 @@
 package com.example.gerardo.miestacionamiento.ui.fragment;
 
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.adapter.EstacionamientoAdapter;
+import com.example.gerardo.miestacionamiento.adapter.TarjetaAdapter;
 import com.example.gerardo.miestacionamiento.model.Usuario;
 import com.example.gerardo.miestacionamiento.util.GlobalFunction;
 
@@ -43,7 +41,8 @@ public class MiCuentaFragment extends Fragment {
     @Bind(R.id.recyclerView_micuenta_tarjeta)
     RecyclerView recyclerViewTarjeta;
 
-    EstacionamientoAdapter adapter;
+    EstacionamientoAdapter adapterEstacionamiento;
+    TarjetaAdapter adapterTarjeta;
 
     public MiCuentaFragment() {
         // Required empty public constructor
@@ -57,8 +56,11 @@ public class MiCuentaFragment extends Fragment {
         ButterKnife.bind(this, root);
         txtCorreo.setSelected(true);
 
-        adapter = new EstacionamientoAdapter(getActivity());
-        recyclerViewEstacionamiento.setAdapter(adapter);
+        adapterEstacionamiento = new EstacionamientoAdapter(getActivity());
+        adapterTarjeta = new TarjetaAdapter(getActivity());
+
+        recyclerViewEstacionamiento.setAdapter(adapterEstacionamiento);
+        recyclerViewTarjeta.setAdapter(adapterTarjeta);
 
         setDatos();
 

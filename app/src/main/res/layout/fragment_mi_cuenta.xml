@@ -168,7 +168,12 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView_micuenta_vehiculo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="220dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
         <View
             android:layout_width="match_parent"
@@ -194,7 +199,12 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView_micuenta_tarjeta"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="220dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
         <View
             android:layout_width="match_parent"

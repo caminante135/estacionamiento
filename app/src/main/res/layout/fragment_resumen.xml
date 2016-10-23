@@ -144,7 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:checked="true"
+            android:checked="false"
             android:layout_marginBottom="15dp"
             android:text="Estoy de Acuerdo con los Términos y Condiciones"
             android:textColor="@android:color/black" />

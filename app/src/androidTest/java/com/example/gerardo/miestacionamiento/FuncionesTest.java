@@ -27,7 +27,6 @@ public class FuncionesTest extends TestCase {
 
         //SE ESPERA UN TRUE
         assertEquals("Resultado RUT",true,resultado);
-
     }
 
 

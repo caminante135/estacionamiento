@@ -27,10 +27,10 @@ public class BaseActivityRegistro extends AppCompatActivity {
 
         if (tipo != null){
             if (tipo.equals("propietario")){
-                fragment = EstacionamientoFragment.newInstance();
+//                fragment = EstacionamientoFragment.newInstance();
             }else
                 if (tipo.equals("arrendatario")){
-                    fragment = VehiculoFragment.newInstance();
+//                    fragment = VehiculoFragment.newInstance();
                 }
         }
 
