@@ -16,7 +16,7 @@ public interface IApiService {
 //    Call<ResponseLogin> login(@Query(ApiConstants.PARAM_RUT) String rut,
 //                                @Query(ApiConstants.PARAM_CLAVE) String clave);
 
-    @POST(ApiConstants.URL_LOGIN2)
+    @POST(ApiConstants.URL_LOGIN)
     Call<ResponseLogin> login(@Body Usuario usuario);
 
 

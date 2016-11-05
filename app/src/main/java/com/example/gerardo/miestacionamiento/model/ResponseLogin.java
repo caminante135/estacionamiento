@@ -12,7 +12,7 @@ public class ResponseLogin {
     @SerializedName("msg")
     private String mensaje;
 
-    @SerializedName("result")
+    @SerializedName("usuario")
     private Usuario usuario;
 
     @SerializedName("listaEstacionamientos")

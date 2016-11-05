@@ -18,6 +18,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -104,7 +105,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String nombre = prefs.getString(GlobalConstant.PREFS_NOMBRE, "");
         String apellido = prefs.getString(GlobalConstant.PREFS_APELLIDO_P, "");
 
-        setDatosDrawerAndHeader(nombre, apellido, "Propietario", 2, 1);
+        int cantV = GlobalFunction.calcularSizeArray(prefs.getString(GlobalConstant.PREFS_JSON_VEHICULOS,""));
+        int cantE = GlobalFunction.calcularSizeArray(prefs.getString(GlobalConstant.PREFS_JSON_ESTACIONAMIENTOS,""));
+
+
+        setDatosDrawerAndHeader(nombre, apellido, prefs.getInt(GlobalConstant.PREFS_IDROL,4), cantV, cantE);
 
         disableCollapse();
 
@@ -268,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editor.apply();
     }
 
-    private void setDatosDrawerAndHeader(String nombre, String apellido, String tipo, int cantVeh, int cantEst) {
+    private void setDatosDrawerAndHeader(String nombre, String apellido, int tipo, int cantVeh, int cantEst) {
         TextView txtNombre, txtTipo, txtCv, txtcE,txtNombreHeader,txtTipoHeader;
 
         View header = navView.getHeaderView(0);
@@ -281,13 +286,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         txtNombreHeader = (TextView) collapsingToolbarLayout.findViewById(R.id.txt_header_nombre);
         txtTipoHeader = (TextView) collapsingToolbarLayout.findViewById(R.id.txt_header_tipo);
 
+        String tipoUsuario="";
+        switch (tipo){
+            case GlobalConstant.TIPO_DUEÑO:
+                tipoUsuario = "Dueño";
+                break;
+            case GlobalConstant.TIPO_CLIENTE:
+                tipoUsuario = "Cliente";
+                break;
+            case GlobalConstant.TIPO_ADMINISTRADOR:
+                tipoUsuario = "Administrador";
+                break;
+            case GlobalConstant.TIPO_CONSULTOR:
+                tipoUsuario = "Consultor";
+        }
+
         txtNombre.setText(String.format("%s %s", nombre, apellido));
-        txtTipo.setText(tipo);
+        txtTipo.setText(tipoUsuario);
         txtCv.setText(String.format(new Locale("es", "ES"), "Vehículos: %d", cantVeh));
         txtcE.setText(String.format(new Locale("es", "ES"), "Estacionamientos: %d", cantEst));
 
         txtNombreHeader.setText(String.format("%s %s", nombre, apellido));
-        txtTipoHeader.setText(tipo);
+        txtTipoHeader.setText(tipoUsuario);
     }
 
 }

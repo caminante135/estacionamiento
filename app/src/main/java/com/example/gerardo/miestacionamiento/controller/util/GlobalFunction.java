@@ -15,18 +15,24 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.example.gerardo.miestacionamiento.model.Estacionamiento;
 import com.example.gerardo.miestacionamiento.model.ResponseLogin;
+import com.example.gerardo.miestacionamiento.model.Tarjeta;
 import com.example.gerardo.miestacionamiento.model.Usuario;
 import com.example.gerardo.miestacionamiento.controller.rest.ApiAdapter;
+import com.example.gerardo.miestacionamiento.model.Vehiculo;
 import com.google.gson.Gson;
 
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -257,8 +263,11 @@ public final class GlobalFunction {
                 if (response.body().getMensaje().equals("true")){
 
                     Usuario usuario = response.body().getUsuario();
+                    List<Estacionamiento> estacionamientos = response.body().getEstacionamientos();
+                    List<Vehiculo> vehiculos = response.body().getVehiculos();
+                    List<Tarjeta> tarjetas = response.body().getTarjetas();
 
-                    saveUserInfo(context,usuario);
+                    saveInfo(context,usuario,estacionamientos,vehiculos,tarjetas);
                     if (block!=null) {
                         block.setResponse(GlobalConstant.RESPONSE_LOGIN_CORRECT);
                         block.run();
@@ -283,22 +292,59 @@ public final class GlobalFunction {
 
     }
 
-    private static void saveUserInfo(Context context,Usuario usuario){
+    private static void saveInfo(Context context, Usuario usuario,List<Estacionamiento> estacionamientos,
+                                 List<Vehiculo> vehiculos, List<Tarjeta> tarjetas){
         SharedPreferences prefs = context.getSharedPreferences(GlobalConstant.PREFS_NAME,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
+        //USUARIO
         editor.putString(GlobalConstant.PREFS_RUT,usuario.getRut());
         editor.putString(GlobalConstant.PREFS_NOMBRE,usuario.getNombre());
         editor.putString(GlobalConstant.PREFS_APELLIDO_P,usuario.getApellidoPaterno());
         editor.putString(GlobalConstant.PREFS_APELLIDO_M,usuario.getApellidoMaterno());
         editor.putString(GlobalConstant.PREFS_CORREO,usuario.getCorreo());
+        editor.putInt(GlobalConstant.PREFS_IDESTADO,usuario.getEstado());
+        editor.putInt(GlobalConstant.PREFS_IDROL,usuario.getTipoUsuario());
         editor.putInt(GlobalConstant.PREFS_TELEFONO,usuario.getTelefono());
         editor.putString(GlobalConstant.PREFS_CLAVE,usuario.getContraseña());
 
         //AUTO LOGIN
         editor.putBoolean(GlobalConstant.PREFS_AUTOLOGIN,true);
 
+        Gson gson = new Gson();
+
+        //JSON ESTACIONAMIENTOS
+        if (estacionamientos != null){
+            String jsonEst = gson.toJson(estacionamientos);
+            editor.putString(GlobalConstant.PREFS_JSON_ESTACIONAMIENTOS,jsonEst);
+        }
+
+        //JSON VEHICULOS
+        if (vehiculos != null){
+            String jsonVeh = gson.toJson(vehiculos);
+            editor.putString(GlobalConstant.PREFS_JSON_VEHICULOS,jsonVeh);
+        }
+
+        //JSON TARJETAS
+        if (tarjetas != null){
+            String jsonTar = gson.toJson(tarjetas);
+            editor.putString(GlobalConstant.PREFS_JSON_TARJETAS,jsonTar);
+        }
+
         editor.apply();
+    }
+
+    public static int calcularSizeArray(String array){
+//        Gson gson = new Gson();
+//        String arr = gson.toJson(array);
+        int cantidad = 0;
+        try {
+            JSONArray jsonArray = new JSONArray(array);
+            cantidad = jsonArray.length();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return cantidad;
     }
 
 }
