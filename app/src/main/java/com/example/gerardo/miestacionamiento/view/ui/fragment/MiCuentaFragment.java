@@ -1,20 +1,25 @@
 package com.example.gerardo.miestacionamiento.view.ui.fragment;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
+import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
+import com.example.gerardo.miestacionamiento.model.Usuario;
 import com.example.gerardo.miestacionamiento.view.adapter.EstacionamientoAdapter;
 import com.example.gerardo.miestacionamiento.view.adapter.TarjetaAdapter;
-import com.example.gerardo.miestacionamiento.model.Usuario;
-import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,6 +45,13 @@ public class MiCuentaFragment extends Fragment {
     RecyclerView recyclerViewVehiculo;
     @Bind(R.id.recyclerView_micuenta_tarjeta)
     RecyclerView recyclerViewTarjeta;
+    @Bind(R.id.micuenta_layout_estacionamiento)
+    LinearLayout layoutEst;
+    @Bind(R.id.micuenta_layout_vehiculo)
+    LinearLayout layoutVeh;
+    @Bind(R.id.micuenta_layout_tarjeta)
+    LinearLayout layoutTar;
+
 
     EstacionamientoAdapter adapterEstacionamiento;
     TarjetaAdapter adapterTarjeta;
@@ -56,13 +68,8 @@ public class MiCuentaFragment extends Fragment {
         ButterKnife.bind(this, root);
         txtCorreo.setSelected(true);
 
-        adapterEstacionamiento = new EstacionamientoAdapter(getActivity());
-        adapterTarjeta = new TarjetaAdapter(getActivity());
-
-        recyclerViewEstacionamiento.setAdapter(adapterEstacionamiento);
-        recyclerViewTarjeta.setAdapter(adapterTarjeta);
-
         setDatos();
+        setRecyclers();
 
         return root;
     }
@@ -76,26 +83,51 @@ public class MiCuentaFragment extends Fragment {
     @OnClick(R.id.txt_micuenta_clave)
     public void textVisible() {
         if (txtClave.getInputType() == (InputType.TYPE_CLASS_TEXT |
-                InputType.TYPE_TEXT_VARIATION_PASSWORD)){
+                InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
             txtClave.setInputType(InputType.TYPE_CLASS_TEXT);
-            txtClave.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_eye_off,0);
-        }else{
+            txtClave.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye_off, 0);
+        } else {
             txtClave.setInputType(InputType.TYPE_CLASS_TEXT |
                     InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            txtClave.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_eye,0);
+            txtClave.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye, 0);
         }
     }
 
-    private void setDatos(){
+    private void setDatos() {
         Usuario usuario = GlobalFunction.currentUsuario(getActivity());
 
-        if (usuario != null){
-
+        if (usuario != null) {
             txtRut.setText(usuario.getRut());
             txtTelefono.setText(String.valueOf(usuario.getTelefono()));
             txtCorreo.setText(usuario.getCorreo());
             txtClave.setText(usuario.getContraseña());
         }
+
+    }
+
+    private void setRecyclers() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(GlobalConstant.PREFS_NAME, Context.MODE_PRIVATE);
+
+
+        if (prefs.getString(GlobalConstant.PREFS_JSON_VEHICULOS, "").equals("[]")) {
+            layoutVeh.setVisibility(View.GONE);
+        } else {
+            Log.d("VEHICULO", prefs.getString(GlobalConstant.PREFS_JSON_VEHICULOS, ""));
+        }
+        if (prefs.getString(GlobalConstant.PREFS_JSON_ESTACIONAMIENTOS, "").equals("[]")) {
+            layoutEst.setVisibility(View.GONE);
+        } else {
+            adapterEstacionamiento = new EstacionamientoAdapter(getActivity());
+            recyclerViewEstacionamiento.setAdapter(adapterEstacionamiento);
+        }
+
+        if (prefs.getString(GlobalConstant.PREFS_JSON_TARJETAS, "").equals("[]")) {
+            layoutTar.setVisibility(View.GONE);
+        } else {
+            adapterTarjeta = new TarjetaAdapter(getActivity(), prefs.getString(GlobalConstant.PREFS_JSON_TARJETAS, ""));
+            recyclerViewTarjeta.setAdapter(adapterTarjeta);
+        }
+
 
     }
 

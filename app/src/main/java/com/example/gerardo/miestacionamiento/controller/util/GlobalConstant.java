@@ -54,7 +54,6 @@ public class GlobalConstant {
     /**
      * VALORES
      */
-
     public static final int TIPO_DUEÑO = 1;
     public static final int TIPO_CLIENTE = 2;
     public static final int TIPO_ADMINISTRADOR = 3;

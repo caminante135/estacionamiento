@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.controller.util.EnumCardType;
+import com.example.gerardo.miestacionamiento.model.Tarjeta;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,9 +45,12 @@ ResourcesCompat.getDrawable(getResources(), R.drawable.name, anotherTheme);
 public class TarjetaAdapter extends RecyclerView.Adapter<TarjetaAdapter.TarjetaViewHolder> {
 
     Context context;
+    List<Tarjeta> tarjetas;
 
-    public TarjetaAdapter(Context context) {
+    public TarjetaAdapter(Context context, String tarjetasArray) {
         this.context = context;
+
+        this.tarjetas = convertJsonArrayList(tarjetasArray);
     }
 
     @Override
@@ -50,41 +62,48 @@ public class TarjetaAdapter extends RecyclerView.Adapter<TarjetaAdapter.TarjetaV
 
     @Override
     public void onBindViewHolder(TarjetaViewHolder holder, int position) {
+        Tarjeta currentTarjeta = tarjetas.get(position);
+
         Drawable res = null;
         String nombre = "";
-        String numero = "";
 
-        switch (position){
-            case 0:
+
+        switch (EnumCardType.detect(currentTarjeta.getNumeroTarjeta())){
+            case MASTERCARD:
                 res = ContextCompat.getDrawable(context,R.drawable.ic_mastercard);
                 nombre = "MasterCard";
-                numero = "5105105105105100";
+
                 break;
-            case 1:
+            case VISA:
                 res = ContextCompat.getDrawable(context,R.drawable.ic_visa);
                 nombre = "VISA";
-                numero = "4012888888881881";
+
                 break;
-            case 2:
+            case AMERICAN_EXPRESS:
                 res = ContextCompat.getDrawable(context,R.drawable.ic_americanexpress);
                 nombre = "American Express";
-                numero = "378282246310005";
+
                 break;
-            case 3:
+            case UNKNOWN:
                 res = ContextCompat.getDrawable(context,R.drawable.ic_discover);
-                nombre = "Discover";
-                numero = "6011000990139424";
+                nombre = "Unknow";
+
                 break;
         }
-
         holder.setImgTarjeta(res);
         holder.setNombreTarjeta(nombre);
-        holder.setNumeroTarjeta(numero);
+        holder.setNumeroTarjeta(currentTarjeta.getNumeroTarjeta());
     }
 
     @Override
     public int getItemCount() {
-        return 4;
+        return tarjetas.size();
+    }
+
+    private List<Tarjeta> convertJsonArrayList(String array){
+        Type type = new TypeToken<List<Tarjeta>>(){}.getType();
+        List<Tarjeta> tarjetaList = new Gson().fromJson(array,type);
+        return tarjetaList;
     }
 
     public class TarjetaViewHolder extends RecyclerView.ViewHolder{
