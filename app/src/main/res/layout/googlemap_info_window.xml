@@ -35,14 +35,16 @@
                 android:id="@+id/info_window_comuna"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Comuna: Puente Alto"
+                android:text="Puente Alto"
                 android:textColor="@color/colorPrimaryText" />
 
             <TextView
                 android:id="@+id/info_window_direccion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Direccion: Mapulemu 7183"
+                android:text="Mapulemu 7183"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:textColor="@color/colorPrimaryText" />
 
             <TextView
@@ -66,18 +68,12 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/info_window_nombre_dueño"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dueño: Gerardo Mascayano"
-                android:textColor="@color/colorPrimaryText" />
 
             <TextView
                 android:id="@+id/info_window_estado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Estado: Disponible"
+                android:text="Disponible"
                 android:textColor="@color/colorPrimaryText" />
 
 
@@ -85,7 +81,16 @@
                 android:id="@+id/info_window_valor_hora"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Valor * hora: $2500"
+                android:text="Valor hora: $2500"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/colorPrimaryText" />
+
+            <TextView
+                android:id="@+id/info_window_comentarios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comentarios (4)"
                 android:textColor="@color/colorPrimaryText" />
 
 

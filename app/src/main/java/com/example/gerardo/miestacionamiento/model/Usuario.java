@@ -1,6 +1,5 @@
 package com.example.gerardo.miestacionamiento.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 /**
 
@@ -24,11 +23,11 @@ public class Usuario {
     private String apellidoPaterno;
     @SerializedName("apellidoMaterno")
     private String apellidoMaterno;
-    @SerializedName("mail")
+    @SerializedName("correoUsuario")
     private String correo;
     @SerializedName("fonoUsuario")
     private int telefono;
-    @SerializedName("clave")
+    @SerializedName("claveUsuario")
     private String contraseña;
     @SerializedName("idRol")
     private int tipoUsuario;
@@ -36,6 +35,11 @@ public class Usuario {
     private int estado;
 
     public Usuario() {
+    }
+
+    public Usuario(String correo, String contraseña) {
+        this.correo = correo;
+        this.contraseña = contraseña;
     }
 
     public String getRut() {

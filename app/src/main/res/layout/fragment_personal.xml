@@ -14,7 +14,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingStart="10dp"
-        tools:context=".ui.fragment.PersonalFragment">
+        tools:context=".view.ui.fragment.PersonalFragment">
 
         <TextView
             android:layout_width="wrap_content"

@@ -14,6 +14,8 @@
 
         <item name="android:textColorHint">@color/whiteLittleDark</item>
 
+        <item name="android:actionMenuTextColor">@color/colorPrimaryText</item>
+
 
     </style>
 
@@ -39,7 +41,11 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">false</item>
 
+    </style>
 
+    <style name="ProgressDialog" parent="Base.Theme.AppCompat.Light.Dialog">
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
     </style>
 
     <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem">
@@ -47,7 +53,6 @@
 
     <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
     </style>
-
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

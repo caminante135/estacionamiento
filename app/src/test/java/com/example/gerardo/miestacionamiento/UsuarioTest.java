@@ -4,9 +4,8 @@ import android.content.Context;
 import android.test.mock.MockContext;
 
 import com.example.gerardo.miestacionamiento.model.Usuario;
-import com.example.gerardo.miestacionamiento.util.GlobalFunction;
+import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
 
-import junit.framework.TestCase;
 import static org.junit.Assert.*;
 import org.junit.Test;
 

@@ -77,9 +77,9 @@
     </string-array>
 
     <string name="vertical_form_stepper_form_confirm_button">Registrar</string>
-    <string name="action_vehiculo">Registrar vehículo</string>
-    <string name="action_estacionamiento">Registrar estacionamiento</string>
-    <string name="action_tarjeta">Registrar tarjeta</string>
+    <string name="action_vehiculo">+ vehículo</string>
+    <string name="action_estacionamiento">+ estacionamiento</string>
+    <string name="action_tarjeta">+ tarjeta</string>
 
     <string name="terminosCondiciones">El Cliente se obliga a usar los Servicios de forma diligente, correcta y lícita y, en particular, a título meramente enunciativo y no limitativo, se compromete a abstenerse de:
 
