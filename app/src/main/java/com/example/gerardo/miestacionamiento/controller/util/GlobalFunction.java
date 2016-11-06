@@ -10,25 +10,27 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
-import android.renderscript.Type;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
+import com.example.gerardo.miestacionamiento.model.ResponseAllEstacionamientos;
 import com.example.gerardo.miestacionamiento.model.ResponseLogin;
 import com.example.gerardo.miestacionamiento.model.Tarjeta;
 import com.example.gerardo.miestacionamiento.model.Usuario;
 import com.example.gerardo.miestacionamiento.controller.rest.ApiAdapter;
 import com.example.gerardo.miestacionamiento.model.Vehiculo;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -295,6 +297,33 @@ public final class GlobalFunction {
 
     }
 
+    //LLAMADA AL SERVICIO GET ESTACIONAMIENTOS
+    public static void getEstacionamientos(final Context context, final RunnableArgs block){
+        Call<List<ResponseAllEstacionamientos>> retroCall = ApiAdapter.getApiService().getEstacionamientos();
+
+        retroCall.enqueue(new Callback<List<ResponseAllEstacionamientos>>() {
+            @Override
+            public void onResponse(Call<List<ResponseAllEstacionamientos>> call, Response<List<ResponseAllEstacionamientos>> response) {
+                Log.d("RESPONSE","CORRECTO");
+//                Log.d("RESPONSE",response.body().getUsuario().getRut());
+                convertToJsonGetEstacionamientos(context,response.body());
+                if (block!=null) {
+                    block.setResponse(GlobalConstant.RESPONSE_LOGIN_CORRECT);
+                    block.run();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ResponseAllEstacionamientos>> call, Throwable t) {
+                if (block!=null) {
+                    block.setResponse(GlobalConstant.RESPONSE_CONNECTION_ERROR);
+                    block.run();
+                }
+            }
+        });
+
+    }
+
     //GUARDA LA INFO DEL USUARIO, Y LA DE ESTACIONAMIENTOS,VEHICULOS, TARJETAS EN FORMATO JSON
     private static void saveInfo(Context context, Usuario usuario,List<Estacionamiento> estacionamientos,
                                  List<Vehiculo> vehiculos, List<Tarjeta> tarjetas){
@@ -336,6 +365,23 @@ public final class GlobalFunction {
         }
 
         editor.apply();
+    }
+
+    private static void convertToJsonGetEstacionamientos(Context context,List<ResponseAllEstacionamientos> datos){
+        Gson gson = new Gson();
+        SharedPreferences prefs = context.getSharedPreferences(GlobalConstant.PREFS_NAME,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        String json = gson.toJson(datos);
+
+        editor.putString(GlobalConstant.PREFS_JSON_GET_EST,json);
+        editor.commit();
+    }
+    public static List<ResponseAllEstacionamientos> convertToObjectGetEstacionamientos(String json){
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<ResponseAllEstacionamientos>>(){}.getType();
+        List<ResponseAllEstacionamientos> e = new Gson().fromJson(json, type);
+        return e;
     }
 
     //CALCULA EL TAMAÑO DE UN JSONARRAY

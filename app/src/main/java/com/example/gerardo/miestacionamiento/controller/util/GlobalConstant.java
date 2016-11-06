@@ -32,6 +32,10 @@ public class GlobalConstant {
     //PREFERENCIAS TARJETA
     public static final String PREFS_JSON_TARJETAS = "jsonTarjetas";
 
+    //PREFERENCIAS GET ESTACIONAMIENTOS
+    public static final String PREFS_JSON_GET_EST = "getEstacionamientos";
+
+
     public static final String PREFS_LATITUD = "latitud";
     public static final String PREFS_LONGITUD = "longitud";
 
@@ -52,11 +56,15 @@ public class GlobalConstant {
     public static final int RESPONSE_LOGIN_INCORRECT = 0;
 
     /**
-     * VALORES
+     * VALORES / ESTADOS
      */
     public static final int TIPO_DUEÑO = 1;
     public static final int TIPO_CLIENTE = 2;
     public static final int TIPO_ADMINISTRADOR = 3;
     public static final int TIPO_CONSULTOR = 4;
+
+    //ESTADOS ESTACIONAMIENTOS
+    public static final int ESTACIONAMIENTO_NO_DISPONIBLE = 0;
+    public static final int ESTACIONAMIENTO_DISPONIBLE = 1;
 
 }
