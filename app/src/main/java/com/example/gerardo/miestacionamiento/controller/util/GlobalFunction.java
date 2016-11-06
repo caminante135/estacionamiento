@@ -269,6 +269,7 @@ public final class GlobalFunction {
                     List<Vehiculo> vehiculos = response.body().getVehiculos();
                     List<Tarjeta> tarjetas = response.body().getTarjetas();
 
+
                     saveInfo(context,usuario,estacionamientos,vehiculos,tarjetas);
                     if (block!=null) {
                         block.setResponse(GlobalConstant.RESPONSE_LOGIN_CORRECT);
@@ -294,6 +295,7 @@ public final class GlobalFunction {
 
     }
 
+    //GUARDA LA INFO DEL USUARIO, Y LA DE ESTACIONAMIENTOS,VEHICULOS, TARJETAS EN FORMATO JSON
     private static void saveInfo(Context context, Usuario usuario,List<Estacionamiento> estacionamientos,
                                  List<Vehiculo> vehiculos, List<Tarjeta> tarjetas){
         SharedPreferences prefs = context.getSharedPreferences(GlobalConstant.PREFS_NAME,Context.MODE_PRIVATE);
@@ -336,9 +338,8 @@ public final class GlobalFunction {
         editor.apply();
     }
 
+    //CALCULA EL TAMAÑO DE UN JSONARRAY
     public static int calcularSizeArray(String array){
-//        Gson gson = new Gson();
-//        String arr = gson.toJson(array);
         int cantidad = 0;
         try {
             JSONArray jsonArray = new JSONArray(array);

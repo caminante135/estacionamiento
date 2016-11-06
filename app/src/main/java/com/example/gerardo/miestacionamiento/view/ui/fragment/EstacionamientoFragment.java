@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.example.gerardo.miestacionamiento.model.Estacionamiento;
+import com.example.gerardo.miestacionamiento.model.Usuario;
 import com.example.gerardo.miestacionamiento.view.ui.dialog.DialogWebPay;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
@@ -33,10 +35,11 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
 
     EditText mDireccion;
     EditText mComuna;
-    EditText mNumResidencia;
+    EditText mPiso;
     RadioGroup mTipoResidencia;
+    RadioGroup mCamaraVigilancia;
     EditText mNumEstacionamiento;
-    EditText mLargo;
+    EditText mValorHora;
 
     String jsonUsuario;
 
@@ -104,16 +107,19 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
                 view = crearViewDireccion();
                 break;
             case 2:
-                view = crearViewNumero();
-                break;
-            case 3:
                 view = crearViewTipo();
                 break;
-            case 4:
+            case 3:
                 view = crearViewNumEst();
                 break;
+            case 4:
+                view = crearViewCamaraVigilancia();
+                break;
             case 5:
-                view = crearViewLargo();
+                view = crearviewPiso();
+                break;
+            case 6:
+                view = crearViewValorHora();
                 break;
         }
         return view;
@@ -138,7 +144,10 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
                 verticalStepperForm.setActiveStepAsCompleted();
                 break;
             case 5:
-                verticalStepperForm.setStepAsCompleted(5);
+                verticalStepperForm.setActiveStepAsCompleted();
+                break;
+            case 6:
+                verticalStepperForm.setStepAsCompleted(6);
                 break;
         }
     }
@@ -148,6 +157,22 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
         DialogWebPay fragment = DialogWebPay.newInstance(jsonUsuario,null,null);
         fragment.show(getActivity().getSupportFragmentManager(),"webpayFragment");
     }
+//
+//    private String setIntentInfo(int tipo){
+//        Estacionamiento est = new Estacionamiento();
+//        est.setIdComuna(mEditRut.getText().toString().trim());
+//        usuario.setNombre(mEditNombre.getText().toString().trim());
+//        usuario.setApellidoPaterno(mEditApellidoP.getText().toString().trim());
+//        usuario.setApellidoMaterno(mEditApellidoM.getText().toString().trim());
+//        usuario.setCorreo(mEditCorreo.getText().toString().trim());
+//        usuario.setTelefono(Integer.parseInt(mEditTelefono.getText().toString().trim()));
+//        usuario.setContraseña(mEditClave.getText().toString().trim());
+//        usuario.setTipoUsuario(tipo);
+//
+//        String json = GlobalFunction.createJSONObject(usuario);
+//        return json;
+//
+//    }
 
     private View crearViewComuna() {
         mComuna = new EditText(getActivity());
@@ -171,17 +196,17 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
         mDireccion.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         return mDireccion;
     }
-    private View crearViewNumero() {
-        mNumResidencia = new EditText(getActivity());
-        mNumResidencia.setSingleLine(true);
-        mNumResidencia.setLayoutParams(lp);
-        mNumResidencia.setHint(getActivity().getResources().getString(R.string.hintNumero));
-        mNumResidencia.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
-        mNumResidencia.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mNumResidencia.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
-        mNumResidencia.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
-        mNumResidencia.setInputType(InputType.TYPE_CLASS_NUMBER);
-        return mNumResidencia;
+    private View crearviewPiso() {
+        mPiso = new EditText(getActivity());
+        mPiso.setSingleLine(true);
+        mPiso.setLayoutParams(lp);
+        mPiso.setHint(getActivity().getResources().getString(R.string.hintPiso));
+        mPiso.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
+        mPiso.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
+        mPiso.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
+        mPiso.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
+        mPiso.setInputType(InputType.TYPE_CLASS_NUMBER);
+        return mPiso;
     }
     private View crearViewTipo() {
         RadioButton[] radioButtons = new RadioButton[2];
@@ -199,6 +224,22 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
         return mTipoResidencia;
 
     }
+    private View crearViewCamaraVigilancia() {
+        RadioButton[] radioButtons = new RadioButton[2];
+        mCamaraVigilancia = new RadioGroup(getActivity());
+        mCamaraVigilancia.setOrientation(RadioGroup.HORIZONTAL);
+
+        String[] texts = {"Si", "No"};
+
+        for (int i = 0; i < 2; i++) {
+            radioButtons[i] = new RadioButton(getActivity());
+            radioButtons[i].setText(texts[i]);
+            mCamaraVigilancia.addView(radioButtons[i]);
+        }
+
+        return mCamaraVigilancia;
+
+    }
     private View crearViewNumEst() {
         mNumEstacionamiento = new EditText(getActivity());
         mNumEstacionamiento.setSingleLine(true);
@@ -211,17 +252,17 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
         mNumEstacionamiento.setInputType(InputType.TYPE_CLASS_NUMBER);
         return mNumEstacionamiento;
     }
-    private View crearViewLargo() {
-        mLargo = new EditText(getActivity());
-        mLargo.setSingleLine(true);
-        mLargo.setLayoutParams(lp);
-        mLargo.setHint(getActivity().getResources().getString(R.string.hintLargo));
-        mLargo.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
-        mLargo.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mLargo.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
-        mLargo.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
-        mLargo.setInputType(InputType.TYPE_CLASS_NUMBER);
-        return mLargo;
+    private View crearViewValorHora() {
+        mValorHora = new EditText(getActivity());
+        mValorHora.setSingleLine(true);
+        mValorHora.setLayoutParams(lp);
+        mValorHora.setHint(getActivity().getResources().getString(R.string.hintValorHora));
+        mValorHora.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
+        mValorHora.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
+        mValorHora.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
+        mValorHora.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
+        mValorHora.setInputType(InputType.TYPE_CLASS_NUMBER);
+        return mValorHora;
     }
 
 

@@ -26,7 +26,7 @@
     <string name="hintMarca">Ingrese la marca</string>
     <string name="hintModelo">Ingrese el modelo</string>
     <string name="hintColor">Ingrese el color</string>
-    <string name="hintLargo">Ingrese el largo aproximado</string>
+    <string name="hintValorHora">Ingrese el valor por hora</string>
 
     <string name="your_button_title">registrar</string>
 
@@ -34,6 +34,7 @@
     <string name="hintComuna">Ingrese la comuna</string>
     <string name="hintDireccion">Ingrese la dirección</string>
     <string name="hintNumero">Ingrese el número</string>
+    <string name="hintPiso">Ingrese el número del piso</string>
     <string name="hintNumeroEst">Número del estacionamiento</string>
 
 
@@ -64,16 +65,17 @@
         <item>Marca</item>
         <item>Modelo</item>
         <item>Color</item>
-        <item>Largo</item>
+        <item>Tipo de Vehículo</item>
     </string-array>
 
     <string-array name="itemsDatosEstacionamiento">
         <item>Comuna</item>
         <item>Dirección</item>
-        <item>Número</item>
         <item>Tipo</item>
         <item>Número Estacionamiento</item>
-        <item>Largo</item>
+        <item>¿Cámara de Vigilancia?</item>
+        <item>Piso ubicación</item>
+        <item>Valor hora</item>
     </string-array>
 
     <string name="vertical_form_stepper_form_confirm_button">Registrar</string>
@@ -92,5 +94,6 @@ El Cliente responderá de los daños y perjuicios de toda naturaleza que Mi Esta
 Mi Estacionamiento velará en todo momento por el respeto del ordenamiento jurídico vigente, y estará legitimada para interrumpir, a su entera discreción, el Servicio o excluir al Cliente del Sitio Web en caso de presunta comisión, completa o incompleta, de alguno de los delitos o faltas tipificados por el Código Penal vigente, o en caso de observar cualesquiera conductas que a juicio de Mi Estacionamiento resulten contrarias a estas Condiciones Generales, las Condiciones Generales de Contratación que operan para este Sitio Web, la Ley, las normas establecidas por Mi Estacionamiento o sus colaboradores o puedan perturbar el buen funcionamiento, imagen, credibilidad y/o prestigio de Mi Estacionamiento o sus colaboradores.</string>
     <string name="hintContraseña">Contraseña</string>
     <string name="hintEmail">Email</string>
+    <string name="hintLargo">Largo del vehiculo</string>
 
 </resources>

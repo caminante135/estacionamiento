@@ -11,10 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.model.Usuario;
+import com.example.gerardo.miestacionamiento.model.Vehiculo;
 import com.example.gerardo.miestacionamiento.view.ui.dialog.DialogWebPay;
 
 
@@ -38,7 +42,7 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
     EditText mMarca;
     EditText mModelo;
     EditText mColor;
-    EditText mLargo;
+    RadioGroup mTipoAuto;
 
 
     String jsonUsuario = null;
@@ -68,7 +72,7 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
         View root = inflater.inflate(R.layout.fragment_vehiculo, container, false);
 
         String[] mySteps = getActivity().getResources().getStringArray(R.array.itemsDatosVehiculo);
-        String[] mySubs = {"", "", "", "", "Largo aproximado en metros"};
+//        String[] mySubs = {"", "", "", "", "Largo aproximado en metros"};
         int colorPrimary = ContextCompat.getColor(getActivity().getApplicationContext(), R.color.colorPrimary);
         int colorPrimaryDark = ContextCompat.getColor(getActivity().getApplicationContext(), R.color.colorPrimaryDark);
 
@@ -81,7 +85,7 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
                 .primaryDarkColor(colorPrimaryDark)
                 .materialDesignInDisabledSteps(true)
                 .showVerticalLineWhenStepsAreCollapsed(true)
-                .stepsSubtitles(mySubs)
+//                .stepsSubtitles(mySubs)
                 .displayBottomNavigation(true) // It is true by default, so in this case this line is not necessary
                 .init();
 
@@ -113,7 +117,7 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
                 view = crearViewColor();
                 break;
             case 4:
-                view = crearViewLargo();
+                view = crearViewTipoauto();
                 break;
         }
         return view;
@@ -143,11 +147,26 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
 
     @Override
     public void sendData() {
-        DialogWebPay fragment = new DialogWebPay();
+        DialogWebPay fragment = DialogWebPay.newInstance(jsonUsuario,null,null);
         fragment.show(getActivity().getSupportFragmentManager(),"webpayFragment");
     }
 
 
+//    private String setIntentInfo(int tipo){
+//        Vehiculo vehiculo = new Vehiculo();
+//        usuario.setRut(mEditRut.getText().toString().trim());
+//        usuario.setNombre(mEditNombre.getText().toString().trim());
+//        usuario.setApellidoPaterno(mEditApellidoP.getText().toString().trim());
+//        usuario.setApellidoMaterno(mEditApellidoM.getText().toString().trim());
+//        usuario.setCorreo(mEditCorreo.getText().toString().trim());
+//        usuario.setTelefono(Integer.parseInt(mEditTelefono.getText().toString().trim()));
+//        usuario.setContraseña(mEditClave.getText().toString().trim());
+//        usuario.setTipoUsuario(tipo);
+//
+//        String json = GlobalFunction.createJSONObject(usuario);
+//        return json;
+//
+//    }
 
 
     private View crearViewPatente() {
@@ -195,17 +214,28 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
         mColor.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
         return mColor;
     }
-    private View crearViewLargo() {
-        mLargo = new EditText(getActivity());
-        mLargo.setSingleLine(true);
-        mLargo.setLayoutParams(lp);
-        mLargo.setHint(getActivity().getResources().getString(R.string.hintLargo));
-        mLargo.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
-        mLargo.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mLargo.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
-        mLargo.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
-        mLargo.setInputType(InputType.TYPE_CLASS_NUMBER);
-        return mLargo;
+    private View crearViewTipoauto() {
+        RadioButton[] radioButtons = new RadioButton[3];
+        mTipoAuto = new RadioGroup(getActivity());
+        mTipoAuto.setOrientation(RadioGroup.VERTICAL);
+
+        String[] texts = {"CityCar", "Camioneta","Moto"};
+
+        for (int i = 0; i < texts.length; i++) {
+            radioButtons[i] = new RadioButton(getActivity());
+            radioButtons[i].setText(texts[i]);
+            mTipoAuto.addView(radioButtons[i]);
+        }
+
+
+        return mTipoAuto;
     }
 
+
+
 }
+
+
+
+
+

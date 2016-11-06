@@ -31,6 +31,12 @@ public class Estacionamiento {
     public String direccionEstacionamiento;
     @SerializedName("idComuna")
     public int idComuna;
+    @SerializedName("costoHora")
+    public int costoHora;
+    @SerializedName("latitud")
+    public String latitud;
+    @SerializedName("longitud")
+    public String longitud;
 
     public Estacionamiento() {
     }
@@ -129,5 +135,29 @@ public class Estacionamiento {
 
     public void setIdComuna(int idComuna) {
         this.idComuna = idComuna;
+    }
+
+    public int getCostoHora() {
+        return costoHora;
+    }
+
+    public void setCostoHora(int costoHora) {
+        this.costoHora = costoHora;
+    }
+
+    public String getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(String latitud) {
+        this.latitud = latitud;
+    }
+
+    public String getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(String longitud) {
+        this.longitud = longitud;
     }
 }

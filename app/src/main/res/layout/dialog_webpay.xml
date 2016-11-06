@@ -98,6 +98,7 @@
         android:layout_height="35dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/edit_text_background_wp"
+        android:inputType="textCapCharacters"
         android:paddingEnd="15dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
