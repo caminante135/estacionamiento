@@ -2,8 +2,11 @@ package com.example.gerardo.miestacionamiento.view.ui.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
-import com.example.gerardo.miestacionamiento.view.ui.dialog.PagoDialog;
+import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
+import com.example.gerardo.miestacionamiento.model.Estacionamiento;
+import com.example.gerardo.miestacionamiento.model.Usuario;
+import com.example.gerardo.miestacionamiento.view.ui.dialog.PagoDialog;
+import com.google.gson.Gson;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,24 +41,71 @@ public class ResumenFragment extends Fragment {
     Button btnResumenCancelar;
     @Bind(R.id.btn_resumen_aceptar)
     Button mBtnAceptar;
+    @Bind(R.id.txt_resumen_direccion_comuna)
+    TextView txtDireccionComuna;
+    @Bind(R.id.txt_resumen_nombres_apellidos)
+    TextView txtnombreApellido;
+    @Bind(R.id.txt_resumen_correo)
+    TextView txtCorreo;
+    @Bind(R.id.txt_resumen_fecha_inicio)
+    TextView txtFechaInicio;
+    @Bind(R.id.txt_resumen_fecha_termino)
+    TextView txtFechaTermino;
+    @Bind(R.id.txt_resumen_total_horas)
+    TextView txtTotalHoras;
+    @Bind(R.id.txt_resumen_monto_hora)
+    TextView txtMontoHora;
+    @Bind(R.id.txt_resumen_total_costo)
+    TextView txtTotalCosto;
+
+
+    String jsonUsuario, jsonEstacionamiento,fechaInicio,fechaTermino;
+    int cantHoras;
 
     public ResumenFragment() {
         // Required empty public constructor
     }
 
-    public static ResumenFragment newInstance() {
+    public static ResumenFragment newInstance(String usuario, String est, int cant, String fechaInicio, String fechaTermino) {
         ResumenFragment fragment = new ResumenFragment();
-
+        Bundle b = new Bundle();
+        if (usuario != null) {
+            b.putString(GlobalConstant.BUNDLE_USUARIO, usuario);
+        }
+        if (est != null) {
+            b.putString(GlobalConstant.BUNDLE_ESTACIO, est);
+        }
+        b.putInt(GlobalConstant.BUNDLE_CANT_HORAS, cant);
+        b.putString(GlobalConstant.BUNDLE_FECHA_INICIO,fechaInicio);
+        b.putString(GlobalConstant.BUNDLE_FECHA_TERMINO,fechaTermino);
+        fragment.setArguments(b);
         return fragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        jsonUsuario = args.getString(GlobalConstant.BUNDLE_USUARIO, "");
+        jsonEstacionamiento = args.getString(GlobalConstant.BUNDLE_ESTACIO, "");
+        cantHoras = args.getInt(GlobalConstant.BUNDLE_CANT_HORAS, 0);
+        fechaInicio = args.getString(GlobalConstant.BUNDLE_FECHA_INICIO,"");
+        fechaTermino = args.getString(GlobalConstant.BUNDLE_FECHA_TERMINO,"");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_resumen, container, false);
         ButterKnife.bind(this, root);
+        setContentsView();
         return root;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Resumen del Arriendo");
     }
 
     @Override
@@ -73,11 +127,41 @@ public class ResumenFragment extends Fragment {
 
     @OnClick(R.id.btn_resumen_aceptar)
     public void onClick() {
-        if (mCheckTerminos.isChecked()){
+        if (mCheckTerminos.isChecked()) {
             PagoDialog dialog = PagoDialog.newInstance();
-            dialog.show(getActivity().getSupportFragmentManager(),"fragment");
-        }else{
+            dialog.show(getActivity().getSupportFragmentManager(), "fragment");
+        } else {
             Toast.makeText(getActivity(), "Debes aceptar los Términos y Condiciones", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void setContentsView() {
+        Log.d("JSONUSUARIO",jsonUsuario);
+        Usuario usuario = new Gson().fromJson(jsonUsuario, Usuario.class);
+        Estacionamiento est = new Gson().fromJson(jsonEstacionamiento, Estacionamiento.class);
+
+        if (est != null){
+            txtDireccionComuna.setText(getActivity().getResources().getString(R.string.resumenDireccionComuna,
+                    est.getDireccionEstacionamiento(),"San Joaquin"));
+            txtMontoHora.setText(getActivity().getResources().getString(R.string.resumenMontoHora,est.getCostoHora()));
+            int costo = est.getCostoHora()*cantHoras;
+            txtTotalCosto.setText(getActivity().getResources().getString(R.string.resumenTotalCosto,costo));
+        }
+        if (usuario!=null){
+            txtnombreApellido.setText(getActivity().getResources().getString(R.string.resumenDueño,
+                    usuario.getNombre(),usuario.getApellidoPaterno(),usuario.getApellidoMaterno()));
+            txtCorreo.setText(getActivity().getResources().getString(R.string.resumenCorreo,usuario.getCorreo()));
+
+        }
+        txtFechaInicio.setText(getActivity().getResources().getString(R.string.resumenFechaInicio,fechaInicio));
+        txtFechaTermino.setText(getActivity().getResources().getString(R.string.resumenFechaTermino,fechaTermino));
+        txtTotalHoras.setText(getActivity().getResources().getString(R.string.resumenTotalHoras,cantHoras));
+
+
+    }
+
+    @OnClick(R.id.btn_resumen_cancelar)
+    public void volver(){
+        getActivity().getSupportFragmentManager().popBackStackImmediate();
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detalle_scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,26 +8,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-<!--
-        <fragment
-            android:id="@+id/street_view"
-            android:name="com.example.gerardo.miestacionamiento.view.ui.fragment.DetalleFragment"
-            android:layout_width="match_parent"
-            android:layout_height="180dp" />
-
-            -->
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_height="wrap_content">
+            android:layout_height="180dp">
+
+            <fragment
+                android:id="@+id/street_view"
+                android:name="com.google.android.gms.maps.SupportStreetViewPanoramaFragment"
+                android:layout_width="match_parent"
+                android:layout_height="180dp" />
+
+            <ImageView
+                android:id="@+id/transparent_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@android:color/transparent" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:id="@+id/titulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
                 android:text="Estacionamiento"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="21dp" />
@@ -35,11 +47,11 @@
                 android:id="@+id/titComuna"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/titulo"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Comuna:"
-                android:layout_below="@+id/titulo"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="16dp" />
 
@@ -48,10 +60,10 @@
                 android:id="@+id/txt_detalle_comuna"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/titComuna"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/titComuna"
+                android:layout_marginTop="2dp"
                 android:text="Puente Alto"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18dp" />
@@ -60,12 +72,12 @@
                 android:id="@+id/titDireccion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/titulo"
                 android:layout_marginLeft="100dp"
                 android:layout_marginStart="100dp"
                 android:layout_marginTop="20dp"
-                android:text="Direccion:"
                 android:layout_toRightOf="@+id/titComuna"
-                android:layout_below="@+id/titulo"
+                android:text="Direccion:"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="16dp" />
 
@@ -74,10 +86,10 @@
                 android:id="@+id/txt_detalle_direccion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/titDireccion"
                 android:layout_marginLeft="100dp"
                 android:layout_marginStart="100dp"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/titDireccion"
+                android:layout_marginTop="2dp"
                 android:layout_toRightOf="@+id/titComuna"
                 android:text="Mapulemu 07183"
                 android:textColor="@color/colorPrimaryText"
@@ -88,11 +100,11 @@
                 android:id="@+id/titTamaño"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_detalle_comuna"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Tamaño::"
-                android:layout_below="@+id/txt_detalle_comuna"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="16dp" />
 
@@ -101,10 +113,10 @@
                 android:id="@+id/txt_detalle_tamaño"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/titTamaño"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/titTamaño"
+                android:layout_marginTop="2dp"
                 android:text="Normal"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18dp" />
@@ -113,12 +125,12 @@
                 android:id="@+id/titNumero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_detalle_direccion"
                 android:layout_marginLeft="100dp"
                 android:layout_marginStart="100dp"
                 android:layout_marginTop="20dp"
-                android:text="Número:"
                 android:layout_toRightOf="@+id/titTamaño"
-                android:layout_below="@+id/txt_detalle_direccion"
+                android:text="Número:"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="16dp" />
 
@@ -127,10 +139,10 @@
                 android:id="@+id/txt_detalle_numero"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/titNumero"
                 android:layout_marginLeft="100dp"
                 android:layout_marginStart="100dp"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/titNumero"
+                android:layout_marginTop="2dp"
                 android:layout_toRightOf="@+id/titTamaño"
                 android:text="102"
                 android:textColor="@color/colorPrimaryText"
@@ -141,11 +153,11 @@
                 android:id="@+id/titPiso"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_detalle_tamaño"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Piso:"
-                android:layout_below="@+id/txt_detalle_tamaño"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="16dp" />
 
@@ -154,10 +166,10 @@
                 android:id="@+id/txt_detalle_piso"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/titPiso"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/titPiso"
+                android:layout_marginTop="2dp"
                 android:text="2"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18dp" />
@@ -166,12 +178,12 @@
                 android:id="@+id/titCamaraVigilancia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_detalle_numero"
                 android:layout_marginLeft="100dp"
                 android:layout_marginStart="100dp"
                 android:layout_marginTop="20dp"
-                android:text="¿Cámara de Vigilancia?"
                 android:layout_toRightOf="@+id/titTamaño"
-                android:layout_below="@+id/txt_detalle_numero"
+                android:text="¿Cámara de Vigilancia?"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="16dp" />
 
@@ -180,10 +192,10 @@
                 android:id="@+id/txt_detalle_camara_vigilancia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/titCamaraVigilancia"
                 android:layout_marginLeft="100dp"
                 android:layout_marginStart="100dp"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/titCamaraVigilancia"
+                android:layout_marginTop="2dp"
                 android:layout_toRightOf="@+id/titTamaño"
                 android:text="No"
                 android:textColor="@color/colorPrimaryText"
@@ -193,11 +205,11 @@
                 android:id="@+id/titValor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_detalle_piso"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Valor / hora"
-                android:layout_below="@+id/txt_detalle_piso"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="16dp" />
 
@@ -206,10 +218,10 @@
                 android:id="@+id/txt_detalle_valor_hora"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/titValor"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/titValor"
+                android:layout_marginTop="2dp"
                 android:text="$2500"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18dp" />
@@ -218,12 +230,12 @@
                 android:id="@+id/view_detalle"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_below="@+id/txt_detalle_valor_hora"
                 android:layout_marginEnd="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_below="@+id/txt_detalle_valor_hora"
                 android:background="@color/colorDivider" />
 
 
@@ -231,10 +243,10 @@
                 android:id="@+id/titulo2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_centerHorizontal="true"
-                android:text="Dueño"
                 android:layout_below="@+id/view_detalle"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="Dueño"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="21dp" />
 
@@ -242,11 +254,11 @@
                 android:id="@+id/titNombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/titulo2"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="25dp"
                 android:text="Nombre:"
-                android:layout_below="@+id/titulo2"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="16dp" />
 
@@ -255,10 +267,10 @@
                 android:id="@+id/txt_detalle_nombre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/titNombre"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/titNombre"
+                android:layout_marginTop="2dp"
                 android:text="Gerardo Ignacio"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18dp" />
@@ -267,12 +279,12 @@
                 android:id="@+id/titApellido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/titulo2"
                 android:layout_marginLeft="100dp"
                 android:layout_marginStart="100dp"
                 android:layout_marginTop="25dp"
-                android:text="Apellido:"
                 android:layout_toRightOf="@+id/titTamaño"
-                android:layout_below="@+id/titulo2"
+                android:text="Apellido:"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="16dp" />
 
@@ -281,10 +293,10 @@
                 android:id="@+id/txt_detalle_apellido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/titApellido"
                 android:layout_marginLeft="100dp"
                 android:layout_marginStart="100dp"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/titApellido"
+                android:layout_marginTop="2dp"
                 android:layout_toRightOf="@+id/titNombre"
                 android:text="Mascayano Beroíza"
                 android:textColor="@color/colorPrimaryText"
@@ -294,11 +306,11 @@
                 android:id="@+id/titcorreo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_detalle_nombre"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Correo:"
-                android:layout_below="@+id/txt_detalle_nombre"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="16dp" />
 
@@ -307,10 +319,10 @@
                 android:id="@+id/txt_detalle_correo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/titcorreo"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_below="@+id/titcorreo"
+                android:layout_marginTop="2dp"
                 android:text="gerardo.mascayano@gmail.com"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18dp" />
@@ -319,11 +331,12 @@
                 android:id="@+id/titValoracion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_detalle_correo"
+                android:layout_marginBottom="-4dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:text="Valoración:"
-                android:layout_below="@+id/txt_detalle_correo"
                 android:textColor="@color/colorSecondaryText"
                 android:textSize="16dp" />
 
@@ -332,20 +345,20 @@
                 android:id="@+id/rating_detalle_valoracion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/titValoracion"
                 android:isIndicator="true"
                 android:numStars="5"
+                android:progressTint="@color/colorPrimary"
                 android:rating="4"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
-                android:progressTint="@color/colorPrimary"
-                android:layout_below="@+id/titValoracion"
                 android:textSize="18dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_below="@+id/rating_detalle_valoracion">
+                android:layout_below="@+id/rating_detalle_valoracion"
+                android:orientation="vertical">
 
                 <View
                     android:layout_width="match_parent"
@@ -360,13 +373,13 @@
                 <Button
                     android:id="@+id/btn_detalle_solicitar"
                     android:layout_width="180dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
                     android:background="@drawable/btn_bg"
                     android:text="Solicitar"
-                    android:textSize="16dp"
-                    android:layout_marginTop="20dp"
                     android:textColor="@color/colorPrimaryText"
-                    android:layout_height="wrap_content" />
+                    android:textSize="16dp" />
 
                 <View
                     android:layout_width="match_parent"

@@ -4,13 +4,16 @@ package com.example.gerardo.miestacionamiento.view.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
 import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
 
@@ -38,19 +41,22 @@ public class EstanciaFragment extends Fragment {
     Button mBtnAceptar;
 
     SwitchDateTimeDialogFragment dateTimeDialogFragment;
-
+    String jsonUsuario, jsonEst;
+    int cantH;
     String fechaHoraLlegada, fechaHoraSalida;
 
     public EstanciaFragment() {
         // Required empty public constructor
     }
 
-    public static EstanciaFragment newInstance() {
+    public static EstanciaFragment newInstance(String usuario, String est) {
         EstanciaFragment fragment = new EstanciaFragment();
-//        Bundle b = new Bundle();
+        Bundle b = new Bundle();
 //        b.putDouble("latitud", coordenadas.latitude);
 //        b.putDouble("longitud", coordenadas.longitude);
-//        fragment.setArguments(b);
+        b.putString(GlobalConstant.BUNDLE_USUARIO,usuario);
+        b.putString(GlobalConstant.BUNDLE_ESTACIO,est);
+        fragment.setArguments(b);
         return fragment;
 
     }
@@ -68,6 +74,10 @@ public class EstanciaFragment extends Fragment {
                     getString(R.string.negative_button_datetime_picker)
             );
         }
+        cantH = 0;
+        Bundle args = getArguments();
+        jsonUsuario = args.getString(GlobalConstant.BUNDLE_USUARIO,"");
+        jsonEst = args.getString(GlobalConstant.BUNDLE_ESTACIO,"");
 
     }
 
@@ -82,6 +92,12 @@ public class EstanciaFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Tiempo de Estancia");
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
@@ -89,9 +105,16 @@ public class EstanciaFragment extends Fragment {
 
     @OnClick(R.id.btn_estancia_aceptar)
     public void onClick() {
-        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
-                .replace(R.id.frame,ResumenFragment.newInstance())
-                .commitAllowingStateLoss();
+        if (cantH > 0){
+            getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                    .replace(R.id.frame,ResumenFragment.newInstance(
+                            jsonUsuario,jsonEst,cantH, fechaHoraLlegada,fechaHoraSalida))
+                    .commitAllowingStateLoss();
+        }else{
+            Toast.makeText(getActivity(), "Necesita de al menos 1 hora de estadía para arrendar el estacionamiento",
+                    Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @OnClick(R.id.txt_estancia_fecha_llegada)
@@ -140,7 +163,7 @@ public class EstanciaFragment extends Fragment {
 
     private void setCantHoras(){
         if (fechaHoraLlegada != null && fechaHoraSalida != null){
-            int cantH = GlobalFunction.hourBetweenDates(fechaHoraLlegada,fechaHoraSalida);
+            cantH = GlobalFunction.hourBetweenDates(fechaHoraLlegada,fechaHoraSalida);
             if (cantH >= 0){
                 mCantidadHoras.setText(getString(R.string.cantHoras,cantH));
             }else{

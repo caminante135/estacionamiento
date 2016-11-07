@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
@@ -52,7 +54,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     GoogleMap mGoogleMap;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
-    Map<Marker,Estacionamiento> marcadores;
+    Map<Marker, Estacionamiento> marcadores;
     LatLng coordenadasSave;
     CameraPosition cameraPosition;
 
@@ -79,7 +81,6 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         marcadores = new HashMap<>();
 
         getMapAsync(this);
-
 
 
         return root;
@@ -138,12 +139,12 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 //                .icon(BitmapDescriptorFactory.fromResource(R.drawable.redmark))
 //                .title("Estacionamiento 2"));
 
-        if (coordenadasSave == null){
+        if (coordenadasSave == null) {
             cameraPosition = CameraPosition.builder()
                     .target(green)
                     .zoom(15)
                     .build();
-        }else{
+        } else {
             cameraPosition = CameraPosition.builder()
                     .target(coordenadasSave)
                     .zoom(15)
@@ -160,12 +161,12 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     @Override
     public void onInfoWindowClick(Marker marker) {
         Estacionamiento est = marcadores.get(marker);
-        if (est != null){
-            Usuario user = GlobalFunction.getUsuarioByIDEstacionamiento(getActivity(),est.getIdEstacionamiento());
-            Log.d("FUNCIONO?",user.getNombre());
+        Usuario user = null;
+        if (est != null) {
+            user = GlobalFunction.getUsuarioByIDEstacionamiento(getActivity(), est.getIdEstacionamiento());
         }
 
-        DetalleFragment fragment = DetalleFragment.newInstance(marker.getPosition());
+        DetalleFragment fragment = DetalleFragment.newInstance(marker.getPosition(),user,est);
 
         getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.frame, fragment).commit();
     }
@@ -188,12 +189,12 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         View v = getActivity().getLayoutInflater().inflate(R.layout.googlemap_info_window, null);
         v.setLayoutParams(new LinearLayout.LayoutParams(750, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        setViewInfoContents(v,marker);
+        setViewInfoContents(v, marker);
 
         return v;
     }
 
-    private void setViewInfoContents(View view,Marker marker){
+    private void setViewInfoContents(View view, Marker marker) {
         TextView txtComuna = (TextView) view.findViewById(R.id.info_window_comuna);
         TextView txtDireccion = (TextView) view.findViewById(R.id.info_window_direccion);
         TextView txtTamaño = (TextView) view.findViewById(R.id.info_window_tamaño);
@@ -203,31 +204,32 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
         Estacionamiento est = marcadores.get(marker);
 
-        try{
+        try {
             txtComuna.setText("San Joaquín");
             txtDireccion.setText(est.getDireccionEstacionamiento());
-            if (est.getIdEstado() == GlobalConstant.ESTACIONAMIENTO_DISPONIBLE){
+            if (est.getIdEstado() == GlobalConstant.ESTACIONAMIENTO_DISPONIBLE) {
                 txtEstado.setText("Disponible");
                 txtEstado.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
-            }else{
+            } else {
                 txtEstado.setText("No Disponible");
                 txtEstado.setTextColor(getActivity().getResources().getColor(R.color.noDisponible));
             }
-            txtTamaño.setText(getActivity().getResources().getString(R.string.tamañoEst,"Normal"));
-            txtValorHora.setText(getActivity().getResources().getString(R.string.valorHora,est.getCostoHora()));
-        }catch (NullPointerException e){
+            txtTamaño.setText(getActivity().getResources().getString(R.string.tamañoEst, "Normal"));
+            txtValorHora.setText(getActivity().getResources().getString(R.string.valorHora, est.getCostoHora()));
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
 
     }
-    private void setPermisosLocation(){
+
+    private void setPermisosLocation() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mGoogleMap.setMyLocationEnabled(true);
-            if (!GlobalFunction.isGpsActive(getActivity())){
+            if (!GlobalFunction.isGpsActive(getActivity())) {
                 requestGPS();
             }
-        }else {
+        } else {
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
                 // Mostrar diálogo explicativo
@@ -240,7 +242,8 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
             }
         }
     }
-    private void crearMarksMap(List<ResponseAllEstacionamientos> datos,@Nullable ProgressDialog dialog){
+
+    private void crearMarksMap(List<ResponseAllEstacionamientos> datos, @Nullable ProgressDialog dialog) {
 
         int drawable = 0;
         for (int i = 0; i < datos.size(); i++) {
@@ -266,32 +269,34 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
         }
 
-        if (dialog!=null){
-            if (dialog.isShowing()){
+        if (dialog != null) {
+            if (dialog.isShowing()) {
                 dialog.dismiss();
             }
         }
 
     }
-    private void callWS(){
+
+    private void callWS() {
         dialog = new ProgressDialog(getActivity());
         dialog.setTitle("Cargando Estacionamientos");
         dialog.setMessage("Espere un momento...");
         dialog.setCancelable(false);
         dialog.show();
-        final RunnableArgs runnableArgs = new RunnableArgs(){
+        final RunnableArgs runnableArgs = new RunnableArgs() {
             @Override
             public void run() {
-                if (this.getResponse() == GlobalConstant.RESPONSE_LOGIN_CORRECT){
-                    crearMarksMap(GlobalFunction.convertToObjectGetEstacionamientos(prefs.getString(GlobalConstant.PREFS_JSON_GET_EST,"")),dialog);
-                }else{
+                if (this.getResponse() == GlobalConstant.RESPONSE_LOGIN_CORRECT) {
+                    crearMarksMap(GlobalFunction.convertToObjectGetEstacionamientos(prefs.getString(GlobalConstant.PREFS_JSON_GET_EST, "")), dialog);
+                } else {
                     dialog.dismiss();
                 }
             }
         };
-        GlobalFunction.getEstacionamientos(getActivity(),runnableArgs);
+        GlobalFunction.getEstacionamientos(getActivity(), runnableArgs);
     }
-    private void requestGPS(){
+
+    private void requestGPS() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 getActivity());
         alertDialogBuilder
@@ -314,6 +319,32 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                 });
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            // ¿Permisos asignados?
+            if (permissions.length > 0 &&
+                    permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION) &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                mGoogleMap.setMyLocationEnabled(true);
+            } else {
+                Toast.makeText(getActivity(), "Error de permisos", Toast.LENGTH_LONG).show();
+            }
+
+        }
     }
 
 }

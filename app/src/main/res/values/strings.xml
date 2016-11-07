@@ -53,6 +53,19 @@
     <string name="tamañoEst">Tamaño: %1$s</string>
     <string name="valorHora">Valor hora: $%1$d</string>
 
+    <!-- RESUMEN -->
+    <string name="resumenDireccionComuna">Estacionamiento: %1$s, %2$s</string>
+    <string name="resumenDueño">Dueño: %1$s %2$s %3$s</string>
+    <string name="resumenCorreo">Correo: %1$s</string>
+    <string name="resumenFechaInicio">Fecha de Inicio: %1$s</string>
+    <string name="resumenFechaTermino">Fecha de Termino: %1$s</string>
+    <string name="resumenTotalHoras">Horas de Arriendo: %1$d</string>
+    <string name="resumenMontoHora">Costo por Hora: $%1$d</string>
+    <string name="resumenTotalCosto">Total: $%1$d</string>
+
+
+    <string name="resumenApellido">%1$s %2$s</string>
+
     <string-array name="itemsDatosPersonales">
         <item>RUT</item>
         <item>Nombre</item>

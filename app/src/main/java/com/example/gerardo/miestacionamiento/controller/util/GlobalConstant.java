@@ -45,7 +45,7 @@ public class GlobalConstant {
     public static final String BUNDLE_USUARIO = "usuario";
     public static final String BUNDLE_VEHICULO = "vehiculo";
     public static final String BUNDLE_ESTACIO = "estacionamiento";
-
+    public static final String BUNDLE_CANT_HORAS = "cantidadHoras";
     /**
      * RESPONSES
      */
@@ -67,4 +67,7 @@ public class GlobalConstant {
     public static final int ESTACIONAMIENTO_NO_DISPONIBLE = 0;
     public static final int ESTACIONAMIENTO_DISPONIBLE = 1;
 
+
+    public static final String BUNDLE_FECHA_INICIO = "fechaInicio";
+    public static final String BUNDLE_FECHA_TERMINO = "fechaTermino";
 }
