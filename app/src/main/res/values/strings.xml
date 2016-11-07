@@ -50,6 +50,9 @@
     <string name="formatoFecha">%1$s/%2$s/%3$s - %4$s:%5$s</string>
     <string name="cantHoras">Cantidad de Horas: %1$s</string>
 
+    <string name="tamañoEst">Tamaño: %1$s</string>
+    <string name="valorHora">Valor hora: $%1$d</string>
+
     <string-array name="itemsDatosPersonales">
         <item>RUT</item>
         <item>Nombre</item>

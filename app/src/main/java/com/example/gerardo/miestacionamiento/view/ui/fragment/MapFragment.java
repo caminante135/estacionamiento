@@ -1,20 +1,25 @@
 package com.example.gerardo.miestacionamiento.view.ui.fragment;
 
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
@@ -22,10 +27,12 @@ import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
 import com.example.gerardo.miestacionamiento.controller.util.RunnableArgs;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
 import com.example.gerardo.miestacionamiento.model.ResponseAllEstacionamientos;
+import com.example.gerardo.miestacionamiento.model.Usuario;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -45,9 +52,11 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     GoogleMap mGoogleMap;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
-    Map<Marker,Integer> marcadores;
+    Map<Marker,Estacionamiento> marcadores;
     LatLng coordenadasSave;
     CameraPosition cameraPosition;
+
+    private static final int LOCATION_REQUEST_CODE = 1;
 
 
     public MapFragment() {
@@ -107,6 +116,14 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         mGoogleMap.setInfoWindowAdapter(this);
         mGoogleMap.setOnMapClickListener(this);
 
+        UiSettings settings = mGoogleMap.getUiSettings();
+        settings.setZoomControlsEnabled(true);
+        settings.setCompassEnabled(false);
+        settings.setMyLocationButtonEnabled(true);
+        settings.setMapToolbarEnabled(false);
+
+        setPermisosLocation();
+
         callWS();
 
 
@@ -142,6 +159,12 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     //EVENTO CLICK DE LA VENTANA DE INFORMACION
     @Override
     public void onInfoWindowClick(Marker marker) {
+        Estacionamiento est = marcadores.get(marker);
+        if (est != null){
+            Usuario user = GlobalFunction.getUsuarioByIDEstacionamiento(getActivity(),est.getIdEstacionamiento());
+            Log.d("FUNCIONO?",user.getNombre());
+        }
+
         DetalleFragment fragment = DetalleFragment.newInstance(marker.getPosition());
 
         getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.frame, fragment).commit();
@@ -149,10 +172,10 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
     @Override
     public void onMapClick(LatLng latLng) {
-        mGoogleMap.addMarker(new MarkerOptions()
-                .position(latLng)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.greenmark))
-                .title("Marker Dinámico"));
+//        mGoogleMap.addMarker(new MarkerOptions()
+//                .position(latLng)
+//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.greenmark))
+//                .title("Marker Dinámico"));
     }
 
     @Override
@@ -163,12 +186,60 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     @Override
     public View getInfoContents(Marker marker) {
         View v = getActivity().getLayoutInflater().inflate(R.layout.googlemap_info_window, null);
+        v.setLayoutParams(new LinearLayout.LayoutParams(750, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        v.setLayoutParams(new LinearLayout.LayoutParams(850, ViewGroup.LayoutParams.WRAP_CONTENT));
+        setViewInfoContents(v,marker);
 
         return v;
     }
 
+    private void setViewInfoContents(View view,Marker marker){
+        TextView txtComuna = (TextView) view.findViewById(R.id.info_window_comuna);
+        TextView txtDireccion = (TextView) view.findViewById(R.id.info_window_direccion);
+        TextView txtTamaño = (TextView) view.findViewById(R.id.info_window_tamaño);
+        TextView txtEstado = (TextView) view.findViewById(R.id.info_window_estado);
+        TextView txtValorHora = (TextView) view.findViewById(R.id.info_window_valor_hora);
+        TextView txtComentarios = (TextView) view.findViewById(R.id.info_window_comentarios);
+
+        Estacionamiento est = marcadores.get(marker);
+
+        try{
+            txtComuna.setText("San Joaquín");
+            txtDireccion.setText(est.getDireccionEstacionamiento());
+            if (est.getIdEstado() == GlobalConstant.ESTACIONAMIENTO_DISPONIBLE){
+                txtEstado.setText("Disponible");
+                txtEstado.setTextColor(getActivity().getResources().getColor(R.color.colorPrimary));
+            }else{
+                txtEstado.setText("No Disponible");
+                txtEstado.setTextColor(getActivity().getResources().getColor(R.color.noDisponible));
+            }
+            txtTamaño.setText(getActivity().getResources().getString(R.string.tamañoEst,"Normal"));
+            txtValorHora.setText(getActivity().getResources().getString(R.string.valorHora,est.getCostoHora()));
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
+    }
+    private void setPermisosLocation(){
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mGoogleMap.setMyLocationEnabled(true);
+            if (!GlobalFunction.isGpsActive(getActivity())){
+                requestGPS();
+            }
+        }else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // Mostrar diálogo explicativo
+            } else {
+                // Solicitar permiso
+                ActivityCompat.requestPermissions(
+                        getActivity(),
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        LOCATION_REQUEST_CODE);
+            }
+        }
+    }
     private void crearMarksMap(List<ResponseAllEstacionamientos> datos,@Nullable ProgressDialog dialog){
 
         int drawable = 0;
@@ -190,7 +261,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                         .position(latLng)
                         .icon(BitmapDescriptorFactory.fromResource(drawable)));
 
-                marcadores.put(marker, est.getIdEstacionamiento());
+                marcadores.put(marker, est);
             }
 
         }
@@ -202,7 +273,6 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         }
 
     }
-
     private void callWS(){
         dialog = new ProgressDialog(getActivity());
         dialog.setTitle("Cargando Estacionamientos");
@@ -220,6 +290,30 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
             }
         };
         GlobalFunction.getEstacionamientos(getActivity(),runnableArgs);
+    }
+    private void requestGPS(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getActivity());
+        alertDialogBuilder
+                .setMessage("GPS esta desactivado. ¿Deseas encenderlo?")
+                .setCancelable(false)
+                .setPositiveButton("Activar GPS",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                Intent callGPSSettingIntent = new Intent(
+                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                getActivity().startActivity(callGPSSettingIntent);
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton("Cancelar",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 
 }

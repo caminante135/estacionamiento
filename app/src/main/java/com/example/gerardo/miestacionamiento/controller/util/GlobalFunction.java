@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.location.LocationManager;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
@@ -171,6 +172,15 @@ public final class GlobalFunction {
         usuario.setContraseña(prefs.getString(GlobalConstant.PREFS_CLAVE,""));
 
         return usuario;
+    }
+
+    public static boolean isGpsActive(Context context){
+        LocationManager manager = (LocationManager) context.getSystemService( Context.LOCATION_SERVICE );
+
+        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            return false;
+        }
+        return true;
     }
 
     //Wed Oct 19 08:27:41 GMT-03:00 2016
@@ -394,6 +404,31 @@ public final class GlobalFunction {
             e.printStackTrace();
         }
         return cantidad;
+    }
+
+    public static List<ResponseAllEstacionamientos> estStatic = new ArrayList<>();
+
+    public static Usuario getUsuarioByIDEstacionamiento(Context context,int idEst){
+        SharedPreferences prefs = context.getSharedPreferences(GlobalConstant.PREFS_NAME,Context.MODE_PRIVATE);
+        Usuario usuario = new Usuario();
+        List<ResponseAllEstacionamientos> datos = convertToObjectGetEstacionamientos(prefs.getString(GlobalConstant.PREFS_JSON_GET_EST,""));
+
+        for (int i = 0; i < datos.size(); i++) {
+            ResponseAllEstacionamientos res = datos.get(i);
+
+            for (int j = 0; j < res.getEstacionamientos().size(); j++) {
+                Estacionamiento est = res.getEstacionamientos().get(j);
+
+                if (est.getIdEstacionamiento() == idEst){
+                    usuario = res.getUsuario();
+                }
+
+            }
+
+        }
+
+        return usuario;
+
     }
 
 
