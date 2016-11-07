@@ -18,6 +18,7 @@ import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
 import com.example.gerardo.miestacionamiento.model.Usuario;
+import com.example.gerardo.miestacionamiento.view.ui.MainActivity;
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.StreetViewPanoramaFragment;
@@ -120,7 +121,8 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Detalle Estacionamiento");
+        MainActivity.txtToolbar.setText("Detalle Estacionamiento");
+
     }
 
     @OnClick(R.id.btn_detalle_solicitar)

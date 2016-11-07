@@ -431,5 +431,4 @@ public final class GlobalFunction {
 
     }
 
-
 }

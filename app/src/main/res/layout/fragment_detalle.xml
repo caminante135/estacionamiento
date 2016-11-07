@@ -11,13 +11,13 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="180dp">
+            android:layout_height="200dp">
 
             <fragment
                 android:id="@+id/street_view"
                 android:name="com.google.android.gms.maps.SupportStreetViewPanoramaFragment"
                 android:layout_width="match_parent"
-                android:layout_height="180dp" />
+                android:layout_height="200dp" />
 
             <ImageView
                 android:id="@+id/transparent_image"

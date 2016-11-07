@@ -20,6 +20,7 @@ import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
 import com.example.gerardo.miestacionamiento.model.Usuario;
+import com.example.gerardo.miestacionamiento.view.ui.MainActivity;
 import com.example.gerardo.miestacionamiento.view.ui.dialog.PagoDialog;
 import com.google.gson.Gson;
 
@@ -105,7 +106,7 @@ public class ResumenFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Resumen del Arriendo");
+        MainActivity.txtToolbar.setText("Resumen del Arriendo");
     }
 
     @Override

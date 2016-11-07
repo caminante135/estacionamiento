@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
+import com.example.gerardo.miestacionamiento.view.ui.MainActivity;
 import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
 
 import java.util.Date;
@@ -94,7 +95,7 @@ public class EstanciaFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Tiempo de Estancia");
+        MainActivity.txtToolbar.setText("Tiempo de Estancia");
     }
 
     @Override

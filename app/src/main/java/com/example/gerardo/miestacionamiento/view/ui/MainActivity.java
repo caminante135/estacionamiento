@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Bind(R.id.txt_header_tipo)
     TextView txtHeaderTipo;
 
-    TextView txtToolbar;
+    public static TextView txtToolbar;
 
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
