@@ -4,7 +4,6 @@ package com.example.gerardo.miestacionamiento.view.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +41,8 @@ public class EstanciaFragment extends Fragment {
     Button mBtnAceptar;
 
     SwitchDateTimeDialogFragment dateTimeDialogFragment;
-    String jsonUsuario, jsonEst;
+    String rutUsuario;
+    int idEstacio;
     int cantH;
     String fechaHoraLlegada, fechaHoraSalida;
 
@@ -50,13 +50,13 @@ public class EstanciaFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static EstanciaFragment newInstance(String usuario, String est) {
+    public static EstanciaFragment newInstance(String usuario, int est) {
         EstanciaFragment fragment = new EstanciaFragment();
         Bundle b = new Bundle();
 //        b.putDouble("latitud", coordenadas.latitude);
 //        b.putDouble("longitud", coordenadas.longitude);
-        b.putString(GlobalConstant.BUNDLE_USUARIO,usuario);
-        b.putString(GlobalConstant.BUNDLE_ESTACIO,est);
+        b.putString(GlobalConstant.BUNDLE_RUT_USUARIO,usuario);
+        b.putInt(GlobalConstant.BUNDLE_ID_ESTACIO,est);
         fragment.setArguments(b);
         return fragment;
 
@@ -77,8 +77,8 @@ public class EstanciaFragment extends Fragment {
         }
         cantH = 0;
         Bundle args = getArguments();
-        jsonUsuario = args.getString(GlobalConstant.BUNDLE_USUARIO,"");
-        jsonEst = args.getString(GlobalConstant.BUNDLE_ESTACIO,"");
+        rutUsuario = args.getString(GlobalConstant.BUNDLE_RUT_USUARIO,"");
+        idEstacio = args.getInt(GlobalConstant.BUNDLE_ID_ESTACIO,0);
 
     }
 
@@ -109,7 +109,7 @@ public class EstanciaFragment extends Fragment {
         if (cantH > 0){
             getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
                     .replace(R.id.frame,ResumenFragment.newInstance(
-                            jsonUsuario,jsonEst,cantH, fechaHoraLlegada,fechaHoraSalida))
+                            rutUsuario, idEstacio,cantH, fechaHoraLlegada,fechaHoraSalida))
                     .commitAllowingStateLoss();
         }else{
             Toast.makeText(getActivity(), "Necesita de al menos 1 hora de estadía para arrendar el estacionamiento",

@@ -64,7 +64,6 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="2dp"
-                android:text="Puente Alto"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18dp" />
 
@@ -91,7 +90,6 @@
                 android:layout_marginStart="100dp"
                 android:layout_marginTop="2dp"
                 android:layout_toRightOf="@+id/titComuna"
-                android:text="Mapulemu 07183"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18dp" />
 
@@ -117,7 +115,6 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="2dp"
-                android:text="Normal"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18dp" />
 
@@ -144,7 +141,6 @@
                 android:layout_marginStart="100dp"
                 android:layout_marginTop="2dp"
                 android:layout_toRightOf="@+id/titTamaño"
-                android:text="102"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18dp" />
 
@@ -170,7 +166,6 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="2dp"
-                android:text="2"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18dp" />
 
@@ -197,7 +192,6 @@
                 android:layout_marginStart="100dp"
                 android:layout_marginTop="2dp"
                 android:layout_toRightOf="@+id/titTamaño"
-                android:text="No"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18dp" />
 
@@ -222,7 +216,6 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="2dp"
-                android:text="$2500"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18dp" />
 
@@ -271,7 +264,6 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="2dp"
-                android:text="Gerardo Ignacio"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18dp" />
 
@@ -298,7 +290,6 @@
                 android:layout_marginStart="100dp"
                 android:layout_marginTop="2dp"
                 android:layout_toRightOf="@+id/titNombre"
-                android:text="Mascayano Beroíza"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18dp" />
 
@@ -323,7 +314,6 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="2dp"
-                android:text="gerardo.mascayano@gmail.com"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="18dp" />
 

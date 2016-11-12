@@ -8,6 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -57,7 +60,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     GoogleMap mGoogleMap;
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
-    Map<Marker, Estacionamiento> marcadores;
+    private static Map<Marker, Estacionamiento> marcadores;
     LatLng coordenadasSave;
     CameraPosition cameraPosition;
 
@@ -81,7 +84,11 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                              Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
         prefs = getActivity().getSharedPreferences(GlobalConstant.PREFS_NAME, Context.MODE_PRIVATE);
-        marcadores = new HashMap<>();
+
+        if (marcadores == null) {
+            marcadores = new HashMap<>();
+        }
+
 
         getMapAsync(this);
 
@@ -129,9 +136,33 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         setPermisosLocation();
 
         callWS();
+        Location myLocation = null;
+        if (GlobalFunction.isGpsActive(getActivity())) {
 
-
-        LatLng green = new LatLng(-33.500316, -70.616127);
+            if (ActivityCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+            String provider = locationManager.getBestProvider(criteria, true);
+            myLocation = locationManager.getLastKnownLocation(provider);
+        }
+        LatLng green=null;
+        if (myLocation != null){
+            green = new LatLng(myLocation.getLatitude(),myLocation.getLongitude());
+        }else{
+            green = new LatLng(-33.500316, -70.616127);
+        }
 //        LatLng red = new LatLng(-33.500593, -70.616803);
 //        mGoogleMap.addMarker(new MarkerOptions()
 //                .position(green)
@@ -156,6 +187,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
 
         dialog.dismiss();
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(20));
         mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
@@ -166,7 +198,11 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         Estacionamiento est = marcadores.get(marker);
         Usuario user = null;
         if (est != null) {
-            user = GlobalFunction.getUsuarioByIDEstacionamiento(getActivity(), est.getIdEstacionamiento());
+            Realm realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
+            Estacionamiento estApoyo = realm.where(Estacionamiento.class).equalTo("idEstacionamiento",est.getIdEstacionamiento()).findFirst();
+            user = realm.where(Usuario.class).equalTo("rutUsuario",estApoyo.getRutUsuario()).findFirst();
+            realm.commitTransaction();
         }
 
         DetalleFragment fragment = DetalleFragment.newInstance(marker.getPosition(),user,est);

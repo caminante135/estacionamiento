@@ -43,8 +43,10 @@ public class GlobalConstant {
      * BUNDLES
      */
     public static final String BUNDLE_USUARIO = "usuario";
+    public static final String BUNDLE_RUT_USUARIO = "rutUsuario";
     public static final String BUNDLE_VEHICULO = "vehiculo";
     public static final String BUNDLE_ESTACIO = "estacionamiento";
+    public static final String BUNDLE_ID_ESTACIO = "idEstacionamiento";
     public static final String BUNDLE_CANT_HORAS = "cantidadHoras";
     /**
      * RESPONSES

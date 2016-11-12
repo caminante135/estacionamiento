@@ -285,6 +285,15 @@ public final class GlobalFunction {
                     List<Vehiculo> vehiculos = response.body().getVehiculos();
                     List<Tarjeta> tarjetas = response.body().getTarjetas();
 
+                    Gson gson = new Gson();
+                    String jTarjeta = gson.toJson(response.body().getTarjetas());
+
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+                    realm.createOrUpdateAllFromJson(Tarjeta.class,jTarjeta);
+                    realm.commitTransaction();
+
+
 
                     saveInfo(context, usuario, estacionamientos, vehiculos, tarjetas);
                     if (block != null) {
@@ -318,7 +327,6 @@ public final class GlobalFunction {
         retroCall.enqueue(new Callback<List<ResponseAllEstacionamientos>>() {
             @Override
             public void onResponse(Call<List<ResponseAllEstacionamientos>> call, final Response<List<ResponseAllEstacionamientos>> response) {
-                Log.d("RESPONSE", "CORRECTO");
 //                Log.d("RESPONSE",response.body().getUsuario().getRut());
                 convertToJsonGetEstacionamientos(context, response.body());
 
@@ -328,69 +336,6 @@ public final class GlobalFunction {
                     @Override
                     public void execute(Realm realm) {
 
-//                        for (int i = 0; i < response.body().size(); i++) {
-//                            ListaEstacionamientosRealm r;
-//                            if (existResponseAllEst(response.body().get(i).getUsuario().getRut())) {
-//                                r = realm.where(ListaEstacionamientosRealm.class).equalTo("idR",
-//                                        response.body().get(i).getUsuario().getRut()).findFirst();
-//                            } else {
-//                                r = realm.createObject(ListaEstacionamientosRealm.class, response.body().get(i).getUsuario().getRut());
-//                            }
-//                            Usuario user = response.body().get(i).getUsuario();
-//                            Usuario u;
-//                            Usuario usuarioTemporal = realm.where(Usuario.class).equalTo("idUsuario", user.getRut()).findFirst();
-////                            ResponseAllEstacionamientos estTemporal = realm.where(ResponseAllEstacionamientos.class).equalTo("")
-//                            if (usuarioTemporal != null) {
-//                                u = realm.where(Usuario.class).equalTo("idUsuario", user.getRut()).findFirst();
-//                            } else {
-//                                u = realm.createObject(Usuario.class,user.getRut());
-//                                u.setRut(user.getRut());
-//                                u.setNombre(user.getNombre());
-//                                u.setApellidoPaterno(user.getApellidoPaterno());
-//                                u.setApellidoMaterno(user.getApellidoMaterno());
-//                                u.setCorreo(user.getCorreo());
-//                                u.setTelefono(user.getTelefono());
-//                                u.setContraseña(user.getContraseña());
-//                                u.setTipoUsuario(user.getTipoUsuario());
-//                                u.setEstado(user.getEstado());
-//                            }
-//                            RealmList<Estacionamiento> es = new RealmList<Estacionamiento>();
-//                            //U TIENE SOLO EL RUT, DEBO PONERLE LOS DEMAS DATOS
-//                            u = realm.copyToRealmOrUpdate(u);
-//                            r.setUsuario(u);
-//
-//                            for (int j = 0; j < response.body().get(i).getEstacionamientos().size(); j++) {
-//                                Estacionamiento e;
-//                                Estacionamiento estTemporal = realm.where(Estacionamiento.class).equalTo("idEst", response.body().get(i).getEstacionamientos().get(j).getIdEstacionamiento()).findFirst();
-//                                if (estTemporal != null)
-//                                {
-//                                    e = realm.where(Estacionamiento.class).equalTo("idEst", response.body().get(i).getEstacionamientos().get(j).getIdEstacionamiento()).findFirst();
-//                                    es.add(e);
-//                                }else{
-//                                    Estacionamiento esta = response.body().get(i).getEstacionamientos().get(j);
-//                                    e = realm.createObject(Estacionamiento.class, response.body().get(i).getEstacionamientos().get(j).getIdEstacionamiento());
-//                                    e.setIdEstacionamiento(esta.getIdEstacionamiento());
-//                                    e.setAltura(esta.getAltura());
-//                                    e.setLargo(esta.getLargo());
-//                                    e.setAncho(esta.getAncho());
-//                                    e.setPisoUbicacion(esta.getPisoUbicacion());
-//                                    e.setNumeroEst(esta.getNumeroEst());
-//                                    e.setIdEstado(esta.getIdEstado());
-//                                    e.setCamaraVigilancia(esta.getCamaraVigilancia());
-//                                    e.setDireccionEstacionamiento(esta.getDireccionEstacionamiento());
-//                                    e.setIdComuna(esta.getIdComuna());
-//                                    e.setCostoHora(esta.getCostoHora());
-//                                    e.setLatitud(esta.getLatitud());
-//                                    e.setLongitud(esta.getLongitud());
-//                                }
-//                                es.add(e);
-//                                e= realm.copyToRealmOrUpdate(e);
-//                            }
-//
-//                            r.setEstacionamientos(es);
-//                            realm.copyToRealmOrUpdate(r);
-
-//                        }
                         Gson gson = new Gson();
                         for (int i = 0; i < response.body().size(); i++) {
 
@@ -427,36 +372,6 @@ public final class GlobalFunction {
             }
         });
 
-    }
-
-    private static boolean existResponseAllEst(String rut) {
-        Realm realm = Realm.getDefaultInstance();
-        ListaEstacionamientosRealm r = realm.where(ListaEstacionamientosRealm.class).equalTo("idR", rut).findFirst();
-        if (r == null) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private static boolean existUsuario(String rut) {
-        Realm realm = Realm.getDefaultInstance();
-        Usuario r = realm.where(Usuario.class).equalTo("rut", rut).findFirst();
-        if (r == null) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private static boolean existEst(int id) {
-        Realm realm = Realm.getDefaultInstance();
-        Estacionamiento r = realm.where(Estacionamiento.class).equalTo("idEst", id).findFirst();
-        if (r == null) {
-            return false;
-        } else {
-            return true;
-        }
     }
 
     //GUARDA LA INFO DEL USUARIO, Y LA DE ESTACIONAMIENTOS,VEHICULOS, TARJETAS EN FORMATO JSON
@@ -535,32 +450,27 @@ public final class GlobalFunction {
 
     public static List<ResponseAllEstacionamientos> estStatic = new ArrayList<>();
 
-    public static Usuario getUsuarioByIDEstacionamiento(Context context, int idEst) {
-        SharedPreferences prefs = context.getSharedPreferences(GlobalConstant.PREFS_NAME, Context.MODE_PRIVATE);
-        Usuario usuario = new Usuario();
-        List<ResponseAllEstacionamientos> datos = convertToObjectGetEstacionamientos(prefs.getString(GlobalConstant.PREFS_JSON_GET_EST, ""));
-
-        for (int i = 0; i < datos.size(); i++) {
-            ResponseAllEstacionamientos res = datos.get(i);
-
-            for (int j = 0; j < res.getEstacionamientos().size(); j++) {
-                Estacionamiento est = res.getEstacionamientos().get(j);
-
-                if (est.getIdEstacionamiento() == idEst) {
-                    usuario = res.getUsuario();
-                }
-
-            }
-
-        }
-
-        return usuario;
-
-    }
-
-    private Usuario createUsuarioFromUsuario(Usuario user){
-        Usuario usuario = user;
-        return usuario;
-    }
+//    public static Usuario getUsuarioByIDEstacionamiento(Context context, int idEst) {
+//        SharedPreferences prefs = context.getSharedPreferences(GlobalConstant.PREFS_NAME, Context.MODE_PRIVATE);
+//        Usuario usuario = new Usuario();
+//        List<ResponseAllEstacionamientos> datos = convertToObjectGetEstacionamientos(prefs.getString(GlobalConstant.PREFS_JSON_GET_EST, ""));
+//
+//        for (int i = 0; i < datos.size(); i++) {
+//            ResponseAllEstacionamientos res = datos.get(i);
+//
+//            for (int j = 0; j < res.getEstacionamientos().size(); j++) {
+//                Estacionamiento est = res.getEstacionamientos().get(j);
+//
+//                if (est.getIdEstacionamiento() == idEst) {
+//                    usuario = res.getUsuario();
+//                }
+//
+//            }
+//
+//        }
+//
+//        return usuario;
+//
+//    }
 
 }

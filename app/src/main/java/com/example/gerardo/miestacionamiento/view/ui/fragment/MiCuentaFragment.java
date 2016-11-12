@@ -17,13 +17,19 @@ import android.widget.TextView;
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
+import com.example.gerardo.miestacionamiento.model.Estacionamiento;
+import com.example.gerardo.miestacionamiento.model.Tarjeta;
 import com.example.gerardo.miestacionamiento.model.Usuario;
+import com.example.gerardo.miestacionamiento.model.Vehiculo;
 import com.example.gerardo.miestacionamiento.view.adapter.EstacionamientoAdapter;
 import com.example.gerardo.miestacionamiento.view.adapter.TarjetaAdapter;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -107,7 +113,8 @@ public class MiCuentaFragment extends Fragment {
 
     private void setRecyclers() {
         SharedPreferences prefs = getActivity().getSharedPreferences(GlobalConstant.PREFS_NAME, Context.MODE_PRIVATE);
-
+        String rut = prefs.getString(GlobalConstant.PREFS_RUT,"");
+        Realm realm = Realm.getDefaultInstance();
 
         if (prefs.getString(GlobalConstant.PREFS_JSON_VEHICULOS, "").equals("[]")) {
             layoutVeh.setVisibility(View.GONE);
@@ -117,14 +124,24 @@ public class MiCuentaFragment extends Fragment {
         if (prefs.getString(GlobalConstant.PREFS_JSON_ESTACIONAMIENTOS, "").equals("[]")) {
             layoutEst.setVisibility(View.GONE);
         } else {
-            adapterEstacionamiento = new EstacionamientoAdapter(getActivity());
+            realm.beginTransaction();
+            List<Estacionamiento> estacionamientos = realm.where(Estacionamiento.class).equalTo("rutUsuario",rut).findAll();
+            realm.commitTransaction();
+            adapterEstacionamiento = new EstacionamientoAdapter(getActivity(),estacionamientos);
             recyclerViewEstacionamiento.setAdapter(adapterEstacionamiento);
         }
 
         if (prefs.getString(GlobalConstant.PREFS_JSON_TARJETAS, "").equals("[]")) {
             layoutTar.setVisibility(View.GONE);
         } else {
-            adapterTarjeta = new TarjetaAdapter(getActivity(), prefs.getString(GlobalConstant.PREFS_JSON_TARJETAS, ""));
+            realm.beginTransaction();
+            List<Tarjeta> tarjetas = realm.where(Tarjeta.class).equalTo("rutUsuario",rut).findAll();
+            realm.commitTransaction();
+            adapterTarjeta = new TarjetaAdapter(getActivity(),tarjetas);
+            if (tarjetas.size()==1){
+                ViewGroup.LayoutParams params=recyclerViewTarjeta.getLayoutParams();
+                params.height= ViewGroup.LayoutParams.WRAP_CONTENT;
+            }
             recyclerViewTarjeta.setAdapter(adapterTarjeta);
         }
 

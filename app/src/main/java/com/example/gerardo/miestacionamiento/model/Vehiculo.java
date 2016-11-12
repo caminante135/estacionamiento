@@ -1,10 +1,14 @@
 package com.example.gerardo.miestacionamiento.model;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Gerardo on 05/11/2016.
  */
-public class Vehiculo {
+public class Vehiculo extends RealmObject {
 
+    @PrimaryKey
     private String patente;
     private String marca;
     private String modelo;

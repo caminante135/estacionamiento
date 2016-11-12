@@ -26,6 +26,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.model.Estacionamiento;
+import com.example.gerardo.miestacionamiento.model.Tarjeta;
+import com.example.gerardo.miestacionamiento.model.Vehiculo;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.MapFragment;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.MiCuentaFragment;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.PreferenciasFragment;
@@ -33,11 +36,13 @@ import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
 import com.google.android.gms.maps.GoogleMap;
 
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.realm.Realm;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -104,12 +109,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //SETEO DATOS HEADER DEL MENU IZQUIERDO
         String nombre = prefs.getString(GlobalConstant.PREFS_NOMBRE, "");
         String apellido = prefs.getString(GlobalConstant.PREFS_APELLIDO_P, "");
+        String rut = prefs.getString(GlobalConstant.PREFS_RUT,"");
 
         int cantV = GlobalFunction.calcularSizeArray(prefs.getString(GlobalConstant.PREFS_JSON_VEHICULOS,""));
-        int cantE = GlobalFunction.calcularSizeArray(prefs.getString(GlobalConstant.PREFS_JSON_ESTACIONAMIENTOS,""));
 
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        List<Estacionamiento> estacionamientos = realm.where(Estacionamiento.class).equalTo("rutUsuario",rut).findAll();
+//        List<Vehiculo> vehiculos = realm.where(Vehiculo.class).equalTo("rutUsuario",rut).findAll();
+        realm.commitTransaction();
 
-        setDatosDrawerAndHeader(nombre, apellido, prefs.getInt(GlobalConstant.PREFS_IDROL,4), cantV, cantE);
+        setDatosDrawerAndHeader(nombre, apellido, prefs.getInt(GlobalConstant.PREFS_IDROL,4), cantV, estacionamientos.size());
 
         disableCollapse();
 

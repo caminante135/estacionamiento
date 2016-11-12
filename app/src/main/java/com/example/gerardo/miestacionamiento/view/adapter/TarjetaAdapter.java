@@ -47,10 +47,10 @@ public class TarjetaAdapter extends RecyclerView.Adapter<TarjetaAdapter.TarjetaV
     Context context;
     List<Tarjeta> tarjetas;
 
-    public TarjetaAdapter(Context context, String tarjetasArray) {
+    public TarjetaAdapter(Context context, List<Tarjeta> tarjetasArray) {
         this.context = context;
 
-        this.tarjetas = convertJsonArrayList(tarjetasArray);
+        this.tarjetas = tarjetasArray;
     }
 
     @Override

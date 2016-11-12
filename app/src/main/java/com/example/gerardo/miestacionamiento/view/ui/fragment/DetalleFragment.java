@@ -1,6 +1,7 @@
 package com.example.gerardo.miestacionamiento.view.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
@@ -30,6 +32,7 @@ import com.google.gson.Gson;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.realm.Realm;
 
 /**
  * Created by Gerardo on 10/10/2016.
@@ -69,8 +72,8 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
     @Bind(R.id.transparent_image)
     ImageView transparentImageView;
 
-    String jsonUsuario;
-    String jsonEstacionamiento;
+    String rutUsuario;
+    int idEstacio;
 
 
     public static DetalleFragment newInstance(LatLng coordenadas, Usuario usuario, Estacionamiento est) {
@@ -79,10 +82,10 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
         b.putDouble("latitud", coordenadas.latitude);
         b.putDouble("longitud", coordenadas.longitude);
         if (usuario!= null){
-            b.putString(GlobalConstant.BUNDLE_USUARIO,GlobalFunction.createJSONObject(usuario));
+            b.putString(GlobalConstant.BUNDLE_RUT_USUARIO,usuario.getRut());
         }
         if (est != null){
-            b.putString(GlobalConstant.BUNDLE_ESTACIO,GlobalFunction.createJSONObject(est));
+            b.putInt(GlobalConstant.BUNDLE_ID_ESTACIO,est.getIdEstacionamiento());
         }
         fragment.setArguments(b);
         return fragment;
@@ -96,8 +99,8 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
         Double la = args.getDouble("latitud");
         Double lo = args.getDouble("longitud");
         coordenadas = new LatLng(la, lo);
-        jsonUsuario = args.getString(GlobalConstant.BUNDLE_USUARIO,"");
-        jsonEstacionamiento = args.getString(GlobalConstant.BUNDLE_ESTACIO,"");
+        rutUsuario = args.getString(GlobalConstant.BUNDLE_RUT_USUARIO,"");
+        idEstacio = args.getInt(GlobalConstant.BUNDLE_ID_ESTACIO,0);
     }
 
     @Override
@@ -128,13 +131,18 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
     @OnClick(R.id.btn_detalle_solicitar)
     public void solicitar(){
         getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
-                .replace(R.id.frame,EstanciaFragment.newInstance(jsonUsuario,jsonEstacionamiento))
+                .replace(R.id.frame,EstanciaFragment.newInstance(rutUsuario,idEstacio))
                 .commitAllowingStateLoss();
     }
 
     private void setContentViews(){
-        Usuario usuario = new Gson().fromJson(jsonUsuario,Usuario.class);
-        Estacionamiento est = new Gson().fromJson(jsonEstacionamiento, Estacionamiento.class);
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        Usuario usuario = realm.where(Usuario.class).equalTo("rutUsuario",rutUsuario).findFirst();
+        Estacionamiento est = realm.where(Estacionamiento.class).equalTo("idEstacionamiento",idEstacio).findFirst();
+        realm.commitTransaction();
+
+
 
         if (est!= null){
             mComuna.setText("San Joaquín");
@@ -167,12 +175,20 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
     }
 
     @Override
-    public void onStreetViewPanoramaReady(StreetViewPanorama panorama) {
-//        Estacionamiento est = new Gson().fromJson(jsonEstacionamiento, Estacionamiento.class);
-//
-//        LatLng latLng = new LatLng(Double.valueOf(est.getLatitud()),Double.valueOf(est.getLongitud()));
+    public void onStreetViewPanoramaReady(final StreetViewPanorama panorama) {
 
         panorama.setPosition(coordenadas);
+
+        Handler mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (panorama.getLocation() == null) {
+                    Toast.makeText(getActivity(), "No se encontró la previsualización en Street View", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, 3000);
+
 
     }
 

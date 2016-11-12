@@ -2,98 +2,222 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:layout_height="160dp"
     android:layout_marginTop="10dp"
-    android:layout_height="120dp"
     app:cardCornerRadius="5dp"
     app:elevation="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="10dp"
-        android:paddingStart="10dp"
-        android:paddingRight="10dp"
-        android:paddingEnd="10dp"
+        android:orientation="vertical">
+        <!-- CABEZAL -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_item_est_comuna"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="San Joaquín"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="20dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="8dp"
+                android:paddingStart="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_item_est_direccion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_address_item"
+                    android:drawablePadding="6dp"
+                    android:drawableStart="@drawable/ic_address_item"
+                    android:gravity="center_vertical"
+                    android:text="Mapulemu 7183"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/txt_item_est_estado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:drawableLeft="@drawable/ic_marker_green"
+                    android:drawableStart="@drawable/ic_marker_green"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:text="No Disponible"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/txt_item_est_valor_hora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_price"
+                    android:drawableStart="@drawable/ic_price"
+                    android:gravity="center_vertical"
+                    android:drawablePadding="6dp"
+                    android:text="$2500"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="15dp" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.8">
+
+                <ImageView
+                    android:id="@+id/img_item_est_estado"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="fitCenter"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/available"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:paddingLeft="30dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingRight="30dp"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+        <TextView
+            android:id="@+id/txt_item_est_editar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Editar"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15dp" />
 
-            <TextView
-                android:id="@+id/txt_item_est_direccion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_address"
-                android:drawableStart="@drawable/ic_address"
-                android:gravity="center_vertical"
-                android:text="Mapulemu 7183"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="14dp" />
-
-            <TextView
-                android:id="@+id/txt_item_est_estado"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="5dp"
-                android:drawableLeft="@drawable/ic_state"
-                android:drawableStart="@drawable/ic_state"
-                android:gravity="center_vertical"
-                android:text="Disponible"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="14dp" />
-
-            <TextView
-                android:id="@+id/txt_item_est_tamaño"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_size"
-                android:drawableStart="@drawable/ic_size"
-                android:gravity="center_vertical"
-                android:text="Normal"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="14dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/txt_item_est_editar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:drawableLeft="@drawable/ic_edit"
-                android:drawableStart="@drawable/ic_edit"
-                android:gravity="center_vertical"
-                android:text="Editar"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="15dp" />
-
-            <TextView
-                android:id="@+id/txt_item_est_eliminar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:drawableLeft="@drawable/ic_delete2"
-                android:drawableStart="@drawable/ic_delete2"
-                android:gravity="center_vertical"
-                android:text="Eliminar"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="15dp" />
-
-        </LinearLayout>
-
+        <TextView
+            android:id="@+id/txt_item_est_eliminar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Eliminar"
+            android:layout_marginLeft="50dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15dp" />
 
     </LinearLayout>
 
+
+    </LinearLayout>
+    <!--
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:paddingRight="10dp"
+            android:paddingEnd="10dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_item_est_direccion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_address"
+                    android:drawableStart="@drawable/ic_address"
+                    android:gravity="center_vertical"
+                    android:text="Mapulemu 7183"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/txt_item_est_estado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:drawableLeft="@drawable/ic_state"
+                    android:drawableStart="@drawable/ic_state"
+                    android:gravity="center_vertical"
+                    android:text="Disponible"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/txt_item_est_tamaño"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_size"
+                    android:drawableStart="@drawable/ic_size"
+                    android:gravity="center_vertical"
+                    android:text="Normal"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_item_est_editar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:drawableLeft="@drawable/ic_edit"
+                    android:drawableStart="@drawable/ic_edit"
+                    android:gravity="center_vertical"
+                    android:text="Editar"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/txt_item_est_eliminar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/ic_delete2"
+                    android:drawableStart="@drawable/ic_delete2"
+                    android:gravity="center_vertical"
+                    android:text="Eliminar"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="15dp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    -->
 </android.support.v7.widget.CardView>

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +26,7 @@ import com.google.gson.Gson;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.realm.Realm;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,21 +60,22 @@ public class ResumenFragment extends Fragment {
     TextView txtTotalCosto;
 
 
-    String jsonUsuario, jsonEstacionamiento,fechaInicio,fechaTermino;
+    String rutUsuario,fechaInicio,fechaTermino;
+    int idEstacio;
     int cantHoras;
 
     public ResumenFragment() {
         // Required empty public constructor
     }
 
-    public static ResumenFragment newInstance(String usuario, String est, int cant, String fechaInicio, String fechaTermino) {
+    public static ResumenFragment newInstance(String usuario, Integer est, int cant, String fechaInicio, String fechaTermino) {
         ResumenFragment fragment = new ResumenFragment();
         Bundle b = new Bundle();
         if (usuario != null) {
-            b.putString(GlobalConstant.BUNDLE_USUARIO, usuario);
+            b.putString(GlobalConstant.BUNDLE_RUT_USUARIO, usuario);
         }
         if (est != null) {
-            b.putString(GlobalConstant.BUNDLE_ESTACIO, est);
+            b.putInt(GlobalConstant.BUNDLE_ID_ESTACIO, est);
         }
         b.putInt(GlobalConstant.BUNDLE_CANT_HORAS, cant);
         b.putString(GlobalConstant.BUNDLE_FECHA_INICIO,fechaInicio);
@@ -87,8 +88,8 @@ public class ResumenFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        jsonUsuario = args.getString(GlobalConstant.BUNDLE_USUARIO, "");
-        jsonEstacionamiento = args.getString(GlobalConstant.BUNDLE_ESTACIO, "");
+        rutUsuario = args.getString(GlobalConstant.BUNDLE_RUT_USUARIO, "");
+        idEstacio = args.getInt(GlobalConstant.BUNDLE_ID_ESTACIO, 0);
         cantHoras = args.getInt(GlobalConstant.BUNDLE_CANT_HORAS, 0);
         fechaInicio = args.getString(GlobalConstant.BUNDLE_FECHA_INICIO,"");
         fechaTermino = args.getString(GlobalConstant.BUNDLE_FECHA_TERMINO,"");
@@ -129,7 +130,7 @@ public class ResumenFragment extends Fragment {
     @OnClick(R.id.btn_resumen_aceptar)
     public void onClick() {
         if (mCheckTerminos.isChecked()) {
-            PagoDialog dialog = PagoDialog.newInstance();
+            PagoDialog dialog = PagoDialog.newInstance(rutUsuario);
             dialog.show(getActivity().getSupportFragmentManager(), "fragment");
         } else {
             Toast.makeText(getActivity(), "Debes aceptar los Términos y Condiciones", Toast.LENGTH_SHORT).show();
@@ -137,9 +138,11 @@ public class ResumenFragment extends Fragment {
     }
 
     private void setContentsView() {
-        Log.d("JSONUSUARIO",jsonUsuario);
-        Usuario usuario = new Gson().fromJson(jsonUsuario, Usuario.class);
-        Estacionamiento est = new Gson().fromJson(jsonEstacionamiento, Estacionamiento.class);
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        Usuario usuario = realm.where(Usuario.class).equalTo("rutUsuario",rutUsuario).findFirst();
+        Estacionamiento est = realm.where(Estacionamiento.class).equalTo("idEstacionamiento",idEstacio).findFirst();
+        realm.commitTransaction();
 
         if (est != null){
             txtDireccionComuna.setText(getActivity().getResources().getString(R.string.resumenDireccionComuna,

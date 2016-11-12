@@ -27,7 +27,6 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:lines="2"
-            android:text="Estacionamiento: Mapulemu 7180, Puente Alto"
             android:textColor="@android:color/black"
             android:textSize="16dp" />
 
@@ -37,7 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:text="Dueño: Gerardo Mascayano"
             android:textColor="@android:color/black"
             android:textSize="16dp" />
 
@@ -47,7 +45,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:text="Correo: g.mascayano@alumnos.duoc.cl"
             android:textColor="@android:color/black"
             android:textSize="16dp" />
 
@@ -57,7 +54,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:text="Fecha Inicio: 16:00"
             android:textColor="@android:color/black"
             android:textSize="16dp" />
 
@@ -67,7 +63,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:text="Fecha Término: 20:00"
             android:textColor="@android:color/black"
             android:textSize="16dp" />
 
@@ -77,7 +72,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:text="Total horas: 4"
             android:textColor="@android:color/black"
             android:textSize="16dp" />
 
@@ -87,7 +81,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:text="Monto por Hora: $2500"
             android:textColor="@android:color/black"
             android:textSize="16dp" />
 
@@ -106,7 +99,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="25dp"
-            android:text="Total: $10000"
             android:textColor="@android:color/black"
             android:textSize="18dp" />
 

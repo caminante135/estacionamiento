@@ -12,10 +12,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
+import com.example.gerardo.miestacionamiento.model.Tarjeta;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 /**
  * Created by Gerardo on 21/10/2016.
@@ -26,9 +31,21 @@ public class PagoDialog extends DialogFragment {
     @Bind(R.id.spn_pagar_tarjetas)
     Spinner mSpnTarjetas;
 
-    public static PagoDialog newInstance() {
+    String rutUsuario;
+
+    public static PagoDialog newInstance(String rutUsuario) {
         PagoDialog dialog = new PagoDialog();
+        Bundle b = new Bundle();
+        b.putString(GlobalConstant.BUNDLE_RUT_USUARIO,rutUsuario);
+        dialog.setArguments(b);
         return dialog;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        rutUsuario = args.getString(GlobalConstant.BUNDLE_RUT_USUARIO,"");
     }
 
     @Nullable
@@ -43,6 +60,12 @@ public class PagoDialog extends DialogFragment {
     }
 
     private void setSpinner() {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        List<Tarjeta> tarjetas = realm.where(Tarjeta.class).equalTo("rutUsuario",pre)
+        realm.commitTransaction();
+
+
         String[] medios = {"MasterCard", "American Express", "VISA", "pobree"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_text, medios);
         mSpnTarjetas.setAdapter(adapter);
