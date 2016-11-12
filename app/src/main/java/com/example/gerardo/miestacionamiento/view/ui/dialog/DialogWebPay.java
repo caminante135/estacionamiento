@@ -3,6 +3,7 @@ package com.example.gerardo.miestacionamiento.view.ui.dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,24 @@ import android.widget.EditText;
 import com.devmarvel.creditcardentry.library.CreditCard;
 import com.devmarvel.creditcardentry.library.CreditCardForm;
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.controller.rest.ApiAdapter;
+import com.example.gerardo.miestacionamiento.controller.rest.ApiConstants;
 import com.example.gerardo.miestacionamiento.controller.util.ExpirationFormatWatcher;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
+import com.example.gerardo.miestacionamiento.model.Estacionamiento;
+import com.example.gerardo.miestacionamiento.model.RegistroFullUsuario;
+import com.example.gerardo.miestacionamiento.model.Tarjeta;
+import com.example.gerardo.miestacionamiento.model.Usuario;
+import com.example.gerardo.miestacionamiento.model.Vehiculo;
+import com.google.gson.Gson;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Gerardo on 02/10/2016.
@@ -99,8 +112,63 @@ public class DialogWebPay extends DialogFragment {
                 break;
             case R.id.btn_wp_registrar:
                 CreditCard card = mCcform.getCreditCard();
+                Gson gson = new Gson();
+                Usuario usuario = gson.fromJson(jsonUsuario, Usuario.class);
+                usuario.setEstado(1);
+                Estacionamiento estacionamiento = null;
+                Vehiculo vehiculo = null;
+//                if (!jsonEstacionamiento.equals("")){
+//                    estacionamiento = gson.fromJson(jsonEstacionamiento, Estacionamiento.class);
+//                }
+//                if (!jsonVehiculo.equals("")){
+//                    vehiculo = gson.fromJson(jsonVehiculo, Vehiculo.class);
+//                }
+                Tarjeta tarjeta = new Tarjeta();
+                tarjeta.setNumeroTarjeta(card.getCardNumber().trim());
+                tarjeta.setTipoTarjeta(getTipoTarjeta(card.getCardType().toString()));
+                tarjeta.setFechaExpiracion(mExpiracion.getText().toString().trim());
+                tarjeta.setCodigoVerificacion(Integer.parseInt(mCvc.getText().toString()));
+                tarjeta.setRutUsuario(usuario.getRut());
+
+                RegistroFullUsuario r = new RegistroFullUsuario();
+                r.setUsuario(usuario);
+                r.setVehiculo(vehiculo);
+                r.setEstacionamiento(estacionamiento);
+                r.setTarjeta(tarjeta);
+
+                Call<RegistroFullUsuario.ResponseRegistroFull> response = ApiAdapter.getApiService().registrarFullUsuario(r);
+                response.enqueue(new Callback<RegistroFullUsuario.ResponseRegistroFull>() {
+                    @Override
+                    public void onResponse(Call<RegistroFullUsuario.ResponseRegistroFull> call, Response<RegistroFullUsuario.ResponseRegistroFull> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<RegistroFullUsuario.ResponseRegistroFull> call, Throwable t) {
+
+                    }
+                });
+
 //                Toast.makeText(getActivity(), "Tipo: "+card.getCardType() + " Numero: "+ card.getCardNumber(), Toast.LENGTH_SHORT).show();
                 break;
         }
     }
+
+    private int getTipoTarjeta(String tipoTarjeta){
+        switch (tipoTarjeta){
+            case "MasterCard":
+                return GlobalConstant.TARJETA_TIPO_MC;
+
+            case "VISA":
+                return GlobalConstant.TARJETA_TIPO_VISA;
+
+            case "American Express":
+                return GlobalConstant.TARJETA_TIPO_AE;
+
+            default:
+                return GlobalConstant.TARJETA_TIPO_BEBITO;
+
+        }
+    }
+
 }

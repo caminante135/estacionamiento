@@ -15,6 +15,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.model.Usuario;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
 
@@ -181,9 +182,9 @@ public class PersonalFragment extends Fragment {
         FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
 
         if (tipo.equals(ARGUMENTO_PROP)){
-            fragment = EstacionamientoFragment.newInstance(setIntentInfo(1));
+            fragment = EstacionamientoFragment.newInstance(setIntentInfo(GlobalConstant.TIPO_DUEÑO));
         }else{
-            fragment = VehiculoFragment.newInstance(setIntentInfo(2));
+            fragment = VehiculoFragment.newInstance(setIntentInfo(GlobalConstant.TIPO_CLIENTE));
         }
 
         if (fragment!=null){

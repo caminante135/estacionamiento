@@ -45,6 +45,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -243,30 +246,23 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         }
     }
 
-    private void crearMarksMap(List<ResponseAllEstacionamientos> datos, @Nullable ProgressDialog dialog) {
+    private void crearMarksMap(List<Estacionamiento> datos, @Nullable ProgressDialog dialog) {
 
         int drawable = 0;
         for (int i = 0; i < datos.size(); i++) {
-            ResponseAllEstacionamientos res = datos.get(i);
-
-            for (int j = 0; j < res.getEstacionamientos().size(); j++) {
-                Estacionamiento est = res.getEstacionamientos().get(j);
-
-                if (est.getIdEstado() == GlobalConstant.ESTACIONAMIENTO_DISPONIBLE) {
-                    drawable = R.drawable.greenmark;
-                } else {
-                    drawable = R.drawable.redmark;
-                }
-
-                LatLng latLng = new LatLng(Double.valueOf(est.getLatitud()), Double.valueOf(est.getLongitud()));
-
-                Marker marker = mGoogleMap.addMarker(new MarkerOptions()
-                        .position(latLng)
-                        .icon(BitmapDescriptorFactory.fromResource(drawable)));
-
-                marcadores.put(marker, est);
+            Estacionamiento estacionamiento = datos.get(i);
+            if (estacionamiento.getIdEstado() == GlobalConstant.ESTACIONAMIENTO_DISPONIBLE) {
+                drawable = R.drawable.greenmark;
+            } else {
+                drawable = R.drawable.redmark;
             }
+            LatLng latLng = new LatLng(Double.valueOf(estacionamiento.getLatitud()), Double.valueOf(estacionamiento.getLongitud()));
 
+            Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .icon(BitmapDescriptorFactory.fromResource(drawable)));
+
+            marcadores.put(marker, estacionamiento);
         }
 
         if (dialog != null) {
@@ -287,7 +283,11 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
             @Override
             public void run() {
                 if (this.getResponse() == GlobalConstant.RESPONSE_LOGIN_CORRECT) {
-                    crearMarksMap(GlobalFunction.convertToObjectGetEstacionamientos(prefs.getString(GlobalConstant.PREFS_JSON_GET_EST, "")), dialog);
+//                    crearMarksMap(GlobalFunction.convertToObjectGetEstacionamientos(prefs.getString(GlobalConstant.PREFS_JSON_GET_EST, "")), dialog);
+                    Realm realm = Realm.getDefaultInstance();
+                    RealmResults<Estacionamiento> estacionamientoses = realm.where(Estacionamiento.class)
+                            .findAll();
+                    crearMarksMap(estacionamientoses,dialog);
                 } else {
                     dialog.dismiss();
                 }

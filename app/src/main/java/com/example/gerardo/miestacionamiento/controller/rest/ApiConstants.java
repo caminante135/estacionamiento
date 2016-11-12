@@ -12,9 +12,11 @@ public class ApiConstants {
     public static final String PATH_MI_EST_WEB = "/mi-estacionamiento-web";
     public static final String PATH_USUARIO = "/usuario";
     public static final String PATH_ESTACIONAMIENTO = "/estacionamiento";
-//    public static final String PATH_LOGIN = "/login";
+
+    //Metodos
     public static final String PATH_LOGIN = "/loginFull";
     public static final String PATH_ALL_ESTACIONAMIENTOS = "/selectAllEstAndOwners";
+    public static final String PATH_REGISTRAR_USUARIO = "/insertFull";
 
     //PARAMETROS
     public static final String PARAM_RUT = "rut";
@@ -23,6 +25,7 @@ public class ApiConstants {
     //URL'S
     public static final String URL_LOGIN = PATH_MI_EST_WEB+PATH_USUARIO+PATH_LOGIN;
     public static final String URL_GET_ESTACIONAMIENTOS = PATH_MI_EST_WEB+PATH_ESTACIONAMIENTO+PATH_ALL_ESTACIONAMIENTOS;
+    public static final String URL_REGISTRAR_USUARIO = PATH_MI_EST_WEB+PATH_USUARIO+PATH_REGISTRAR_USUARIO;
 
 
 }

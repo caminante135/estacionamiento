@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 public class Tarjeta {
 
     @SerializedName("idTarjeta")
-    public int idTarjeta;
+    public Integer idTarjeta;
     @SerializedName("numeroTarjeta")
     public String numeroTarjeta;
     @SerializedName("tipoTarjeta")

@@ -1,6 +1,10 @@
 package com.example.gerardo.miestacionamiento.model;
 
 import com.google.gson.annotations.SerializedName;
+
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
 
  * @author Gerardo Mascayano
@@ -13,10 +17,13 @@ import com.google.gson.annotations.SerializedName;
  * Usuario de la Base de Datos
 
  */
-public class Usuario {
+public class Usuario extends RealmObject{
 
+
+//    private String idUsuario;
+    @PrimaryKey
     @SerializedName("rutUsuario")
-    private String rut;
+    private String rutUsuario;
     @SerializedName("nombre")
     private String nombre;
     @SerializedName("apellidoPaterno")
@@ -24,30 +31,38 @@ public class Usuario {
     @SerializedName("apellidoMaterno")
     private String apellidoMaterno;
     @SerializedName("correoUsuario")
-    private String correo;
+    private String correoUsuario;
     @SerializedName("fonoUsuario")
-    private int telefono;
+    private int fonoUsuario;
     @SerializedName("claveUsuario")
-    private String contraseña;
+    private String claveUsuario;
     @SerializedName("idRol")
-    private int tipoUsuario;
+    private int idRol;
     @SerializedName("idEstado")
-    private int estado;
+    private int idEstado;
 
     public Usuario() {
     }
 
     public Usuario(String correo, String contraseña) {
-        this.correo = correo;
-        this.contraseña = contraseña;
+        this.correoUsuario = correo;
+        this.claveUsuario = contraseña;
     }
 
+//    public String getIdUsuario() {
+//        return idUsuario;
+//    }
+//
+//    public void setIdUsuario(String idUsuario) {
+//        this.idUsuario = idUsuario;
+//    }
+
     public String getRut() {
-        return rut;
+        return rutUsuario;
     }
 
     public void setRut(String rut) {
-        this.rut = rut;
+        this.rutUsuario = rut;
     }
 
     public String getNombre() {
@@ -75,42 +90,42 @@ public class Usuario {
     }
 
     public String getCorreo() {
-        return correo;
+        return correoUsuario;
     }
 
     public void setCorreo(String correo) {
-        this.correo = correo;
+        this.correoUsuario = correo;
     }
 
     public int getTelefono() {
-        return telefono;
+        return fonoUsuario;
     }
 
     public void setTelefono(int telefono) {
-        this.telefono = telefono;
+        this.fonoUsuario = telefono;
     }
 
     public String getContraseña() {
-        return contraseña;
+        return claveUsuario;
     }
 
     public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+        this.claveUsuario = contraseña;
     }
 
     public int getTipoUsuario() {
-        return tipoUsuario;
+        return idRol;
     }
 
     public void setTipoUsuario(int tipoUsuario) {
-        this.tipoUsuario = tipoUsuario;
+        this.idRol = tipoUsuario;
     }
 
     public int getEstado() {
-        return estado;
+        return idEstado;
     }
 
     public void setEstado(int estado) {
-        this.estado = estado;
+        this.idEstado = estado;
     }
 }

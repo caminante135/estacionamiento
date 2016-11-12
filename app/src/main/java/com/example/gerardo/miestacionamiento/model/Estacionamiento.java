@@ -2,11 +2,17 @@ package com.example.gerardo.miestacionamiento.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Gerardo on 01/11/2016.
  */
-public class Estacionamiento {
+public class Estacionamiento extends RealmObject{
 
+
+//    private int idEst;
+    @PrimaryKey
     @SerializedName("idEstacionamiento")
     public int idEstacionamiento;
     @SerializedName("altura")
@@ -37,6 +43,8 @@ public class Estacionamiento {
     public String latitud;
     @SerializedName("longitud")
     public String longitud;
+    @SerializedName("rutUsuario")
+    public String rutUsuario;
 
     public Estacionamiento() {
     }
@@ -48,6 +56,14 @@ public class Estacionamiento {
     public void setIdEstacionamiento(int idEstacionamiento) {
         this.idEstacionamiento = idEstacionamiento;
     }
+
+//    public int getIdEst() {
+//        return idEst;
+//    }
+//
+//    public void setIdEst(int idEst) {
+//        this.idEst = idEst;
+//    }
 
     public Double getAltura() {
         return altura;
@@ -159,5 +175,13 @@ public class Estacionamiento {
 
     public void setLongitud(String longitud) {
         this.longitud = longitud;
+    }
+
+    public String getRutUsuario() {
+        return rutUsuario;
+    }
+
+    public void setRutUsuario(String rutUsuario) {
+        this.rutUsuario = rutUsuario;
     }
 }

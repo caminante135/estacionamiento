@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -147,26 +148,24 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
 
     @Override
     public void sendData() {
-        DialogWebPay fragment = DialogWebPay.newInstance(jsonUsuario,null,null);
+        DialogWebPay fragment = DialogWebPay.newInstance(jsonUsuario,setIntentInfo(),null);
         fragment.show(getActivity().getSupportFragmentManager(),"webpayFragment");
     }
 
 
-//    private String setIntentInfo(int tipo){
-//        Vehiculo vehiculo = new Vehiculo();
-//        usuario.setRut(mEditRut.getText().toString().trim());
-//        usuario.setNombre(mEditNombre.getText().toString().trim());
-//        usuario.setApellidoPaterno(mEditApellidoP.getText().toString().trim());
-//        usuario.setApellidoMaterno(mEditApellidoM.getText().toString().trim());
-//        usuario.setCorreo(mEditCorreo.getText().toString().trim());
-//        usuario.setTelefono(Integer.parseInt(mEditTelefono.getText().toString().trim()));
-//        usuario.setContraseña(mEditClave.getText().toString().trim());
-//        usuario.setTipoUsuario(tipo);
-//
-//        String json = GlobalFunction.createJSONObject(usuario);
-//        return json;
-//
-//    }
+    private String setIntentInfo(){
+        Vehiculo vehiculo = new Vehiculo();
+        vehiculo.setPatente(mPatente.getText().toString().trim());
+        vehiculo.setMarca(mMarca.getText().toString().trim());
+        vehiculo.setModelo(mModelo.getText().toString().trim());
+        vehiculo.setColor(mColor.getText().toString().trim());
+        vehiculo.setTipoVehiculo(mTipoAuto.getCheckedRadioButtonId());
+
+
+        String json = GlobalFunction.createJSONObject(vehiculo);
+        return json;
+
+    }
 
 
     private View crearViewPatente() {
@@ -219,7 +218,7 @@ public class VehiculoFragment extends Fragment implements VerticalStepperForm  {
         mTipoAuto = new RadioGroup(getActivity());
         mTipoAuto.setOrientation(RadioGroup.VERTICAL);
 
-        String[] texts = {"CityCar", "Camioneta","Moto"};
+        String[] texts = {"Automóvil", "Moto","Camioneta"};
 
         for (int i = 0; i < texts.length; i++) {
             radioButtons[i] = new RadioButton(getActivity());

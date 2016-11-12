@@ -58,10 +58,22 @@ public class GlobalConstant {
     /**
      * VALORES / ESTADOS
      */
+    //TIPO USUARIO
     public static final int TIPO_DUEÑO = 1;
     public static final int TIPO_CLIENTE = 2;
     public static final int TIPO_ADMINISTRADOR = 3;
     public static final int TIPO_CONSULTOR = 4;
+
+    //TIPO VEHICULO
+    public static final int VEHICULO_TIPO_AUTOMOVIL = 1;
+    public static final int VEHICULO_TIPO_MOTO = 2;
+    public static final int VEHICULO_TIPO_CAMION = 3;
+
+    //TIPO TARJETA
+    public static final int TARJETA_TIPO_MC = 1;
+    public static final int TARJETA_TIPO_VISA = 2;
+    public static final int TARJETA_TIPO_AE = 3;
+    public static final int TARJETA_TIPO_BEBITO = 4;
 
     //ESTADOS ESTACIONAMIENTOS
     public static final int ESTACIONAMIENTO_NO_DISPONIBLE = 0;

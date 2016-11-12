@@ -1,5 +1,6 @@
 package com.example.gerardo.miestacionamiento.controller.rest;
 
+import com.example.gerardo.miestacionamiento.model.RegistroFullUsuario;
 import com.example.gerardo.miestacionamiento.model.ResponseAllEstacionamientos;
 import com.example.gerardo.miestacionamiento.model.ResponseLogin;
 import com.example.gerardo.miestacionamiento.model.Usuario;
@@ -24,6 +25,9 @@ public interface IApiService {
 
     @POST(ApiConstants.URL_GET_ESTACIONAMIENTOS)
     Call<List<ResponseAllEstacionamientos>> getEstacionamientos();
+
+    @POST(ApiConstants.URL_REGISTRAR_USUARIO)
+    Call<RegistroFullUsuario.ResponseRegistroFull> registrarFullUsuario(@Body RegistroFullUsuario registroFullUsuario);
 
 
 }
