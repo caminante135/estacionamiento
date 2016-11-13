@@ -99,22 +99,6 @@ public class PersonalFragment extends Fragment {
     }
 
 
-//    public void sendData() {
-//        if (tipoUsuario.equals(ARGUMENTO_PROP)) {
-//            EstacionamientoFragment fragment = EstacionamientoFragment.newInstance();
-//            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//            ft.replace(R.id.container, fragment);
-//            ft.commitAllowingStateLoss();
-//        } else {
-//            if (tipoUsuario.equals(ARGUMENTO_ARREN)) {
-//                VehiculoFragment fragment = VehiculoFragment.newInstance();
-//                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//                ft.replace(R.id.container, fragment);
-//                ft.commitAllowingStateLoss();
-//            }
-//        }
-//    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

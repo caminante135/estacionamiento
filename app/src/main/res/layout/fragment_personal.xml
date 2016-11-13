@@ -16,21 +16,37 @@
         android:paddingStart="10dp"
         tools:context=".view.ui.fragment.PersonalFragment">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="25dp"
-            android:text="Datos Personales"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="25dp" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Nuevo Usuario"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="22dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="1 / 3"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16dp"/>
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="¿Como deseas registrarte?"
+            android:layout_marginTop="20dp"
             android:textColor="@color/colorSecondaryText"
-            android:textSize="17dp" />
+            android:textSize="16dp" />
 
         <RadioGroup
             android:id="@+id/rg_persona_tipo"
@@ -92,7 +108,7 @@
                 android:drawableStart="@drawable/ic_user_green"
                 android:ems="10"
                 android:hint="Nombre"
-                android:inputType="textPersonName"
+                android:inputType="textCapSentences"
                 android:textColor="@color/colorPrimaryText"
                 android:textColorHint="@color/colorPrimary" />
 
@@ -113,7 +129,7 @@
                 android:drawableStart="@drawable/ic_apellido_green"
                 android:ems="10"
                 android:hint="Apellido paterno"
-                android:inputType="textPersonName"
+                android:inputType="textCapSentences"
                 android:textColor="@color/colorPrimaryText"
                 android:textColorHint="@color/colorPrimary" />
 
@@ -134,7 +150,7 @@
                 android:drawableStart="@drawable/ic_apellido_green"
                 android:ems="10"
                 android:hint="Apellido materno"
-                android:inputType="textPersonName"
+                android:inputType="textCapSentences"
                 android:textColor="@color/colorPrimaryText"
                 android:textColorHint="@color/colorPrimary" />
 
@@ -207,9 +223,9 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="50dp"
             android:layout_marginTop="30dp"
-            android:background="@drawable/btn_background"
+            android:background="@drawable/btn_bg"
             android:text="Continuar"
-            android:textColor="@color/colorPrimaryText" />
+            android:textColor="@color/white" />
 
 
     </LinearLayout>

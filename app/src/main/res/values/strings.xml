@@ -94,6 +94,12 @@
         <item>Valor hora</item>
     </string-array>
 
+    <string-array name="tiposDeVehiculo">
+        <item>Automóvil</item>
+        <item>Motocicleta</item>
+        <item>Camioneta</item>
+    </string-array>
+
     <string name="vertical_form_stepper_form_confirm_button">Registrar</string>
     <string name="action_vehiculo">+ Vehículo</string>
     <string name="action_estacionamiento">+ Estacionamiento</string>
