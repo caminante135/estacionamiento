@@ -9,7 +9,7 @@ public class GlobalConstant {
      * PREFERENCIAS
      */
     public static final String PREFS_NAME = "Pref_estacionamiento";
-
+    public static final String PREFS_FIRST_TIME = "firstTimeOpenApp";
     //PREFERENCIAS USUARIO
     public static final String PREFS_RUT = "rut";
     public static final String PREFS_NOMBRE = "nombre";

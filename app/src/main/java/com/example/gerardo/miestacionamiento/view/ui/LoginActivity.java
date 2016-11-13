@@ -17,6 +17,7 @@ import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
 import com.example.gerardo.miestacionamiento.controller.util.RunnableArgs;
+import com.example.gerardo.miestacionamiento.view.intro.IntroActivty;
 
 import org.joda.time.LocalDate;
 
@@ -53,13 +54,26 @@ public class LoginActivity extends AppCompatActivity {
 //        }
 
         prefs = getSharedPreferences(GlobalConstant.PREFS_NAME, MODE_PRIVATE);
-
-        if (prefs.getBoolean(GlobalConstant.PREFS_AUTOLOGIN,false)){
-            startActivity(new Intent(LoginActivity.this,MainActivity.class));
+        editor = prefs.edit();
+        if (prefs.getBoolean(GlobalConstant.PREFS_AUTOLOGIN, false)) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
-        editUsuario.setText(prefs.getString(GlobalConstant.PREFS_CORREO,""));
-        editPassword.setText(prefs.getString(GlobalConstant.PREFS_CLAVE,""));
+        editUsuario.setText(prefs.getString(GlobalConstant.PREFS_CORREO, ""));
+        editPassword.setText(prefs.getString(GlobalConstant.PREFS_CLAVE, ""));
 
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean isFirstStart = prefs.getBoolean(GlobalConstant.PREFS_FIRST_TIME, true);
+
+                if (isFirstStart) {
+                    editor.putBoolean(GlobalConstant.PREFS_FIRST_TIME, false);
+                    editor.apply();
+                    startActivity(new Intent(LoginActivity.this, IntroActivty.class));
+                }
+            }
+        });
+        thread.start();
         //CARGO LAS COMUNAS
         GlobalFunction.cargarComunas(this);
 
@@ -76,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
 //            editor.putString(GlobalConstant.PREFS_PASS,editPassword.getText().toString().trim());
 //            editor.apply();
 
-            final ProgressDialog dialog = new ProgressDialog(this,R.style.ProgressDialog);
+            final ProgressDialog dialog = new ProgressDialog(this, R.style.ProgressDialog);
             dialog.setTitle("Login");
             dialog.setMessage("Cargando...");
             dialog.setCancelable(false);
@@ -86,20 +100,20 @@ public class LoginActivity extends AppCompatActivity {
             String email = editUsuario.getText().toString().trim();
             String pass = editPassword.getText().toString().trim();
 
-            final RunnableArgs runnableArgs = new RunnableArgs(){
+            final RunnableArgs runnableArgs = new RunnableArgs() {
                 @Override
                 public void run() {
-                   dialog.dismiss();
-                    if (this.getResponse() == GlobalConstant.RESPONSE_LOGIN_CORRECT){
+                    dialog.dismiss();
+                    if (this.getResponse() == GlobalConstant.RESPONSE_LOGIN_CORRECT) {
 
-                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                    }else{
-                        if (this.getResponse() == GlobalConstant.RESPONSE_LOGIN_INCORRECT){
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    } else {
+                        if (this.getResponse() == GlobalConstant.RESPONSE_LOGIN_INCORRECT) {
 
 
                             Toast.makeText(LoginActivity.this, "Usuario y/o contraseña incorrectos", Toast.LENGTH_SHORT).show();
-                        }else{
-                            if (this.getResponse() == GlobalConstant.RESPONSE_CONNECTION_ERROR){
+                        } else {
+                            if (this.getResponse() == GlobalConstant.RESPONSE_CONNECTION_ERROR) {
 
                                 Toast.makeText(LoginActivity.this, "Problemas al conectar, reintentelo en unos minutos", Toast.LENGTH_SHORT).show();
                             }
@@ -107,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
             };
-            GlobalFunction.loginConnect(LoginActivity.this, email, pass,runnableArgs);
+            GlobalFunction.loginConnect(LoginActivity.this, email, pass, runnableArgs);
 
         } else {
             Toast.makeText(LoginActivity.this, "Debe ingresar todos los campos solicitados", Toast.LENGTH_SHORT).show();

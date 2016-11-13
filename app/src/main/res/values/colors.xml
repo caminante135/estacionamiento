@@ -5,21 +5,32 @@
     <color name="colorAccent">#FF9800</color>
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#757575</color>
+    <color name="colorHintText">#c8212121</color>
     <color name="colorDivider">#BDBDBD</color>
 
     <color name="btnPress">#1e6e22</color>
 
+    <color name="colorBackImage">#00c976</color>
 
     <color name="blueOpaco90">#603f51b5</color>
-    <color name="blackTransparecy">#6e000000</color>
-    <color name="greenTransparecy">#32105313</color>
+    <color name="blackTransparecy">#79000000</color>
+    <color name="greenTransparecy">#32388e3c</color>
     <color name="white">#FFFFFF</color>
     <color name="whiteTransparecy">#32ffffff</color>
+    <color name="whiteTransparecyLogin">#46ffffff</color>
     <color name="whiteHint">#6effffff</color>
     <color name="whiteLittleDark">#c5c5c5</color>
 
     <color name="AccentTransparecy">#83ff9800</color>
 
-   <color name="noDisponible">#bf0a00</color>
+    <color name="noDisponible">#bf0a00</color>
+    <color name="introTitleColor">#d3ffffff</color>
+    <color name="fullTransparent">#00ffffff</color>
+
+    <color name="secondSlideIntro">#FFC107</color>
+    <color name="tercerSlideIntro">#F44336</color>
+    <color name="cuartoSlideIntro">#795548</color>
+    <color name="quintoSlideIntro">#2196F3</color>
+    <color name="sextoSlideIntro">#009688</color>
 
 </resources>

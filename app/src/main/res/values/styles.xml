@@ -8,11 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="colorControlNormal">@color/whiteLittleDark</item>
-        <item name="colorControlActivated">@color/colorAccent</item>
-        <item name="colorControlHighlight">@color/colorAccent</item>
-        <item name="android:textColor">@color/whiteLittleDark</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
+        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
 
-        <item name="android:textColorHint">@color/whiteLittleDark</item>
+        <item name="android:textColorHint">@color/colorHintText</item>
 
         <item name="android:actionMenuTextColor">@color/colorPrimaryText</item>
 
