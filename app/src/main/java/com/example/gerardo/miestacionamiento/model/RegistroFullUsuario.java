@@ -53,7 +53,21 @@ public class RegistroFullUsuario {
     }
 
     public class ResponseRegistroFull{
+           @SerializedName("msg")
+        public String response;
+        @SerializedName("response")
+        public String mensaje;
 
+        public ResponseRegistroFull() {
+        }
+
+        public String getResponse() {
+            return response;
+        }
+
+        public String getMensaje() {
+            return mensaje;
+        }
     }
 
 

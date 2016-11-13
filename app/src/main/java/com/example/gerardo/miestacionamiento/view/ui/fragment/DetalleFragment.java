@@ -219,11 +219,4 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
             }
         });
     }
-
-//    @Override
-//    public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
-//        mStreetView = streetViewPanorama;
-//        mStreetView.setPosition(coordenadas);
-//
-//    }
 }

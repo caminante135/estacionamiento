@@ -1,20 +1,20 @@
 package com.example.gerardo.miestacionamiento.view.ui.dialog;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.devmarvel.creditcardentry.library.CreditCard;
 import com.devmarvel.creditcardentry.library.CreditCardForm;
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.rest.ApiAdapter;
-import com.example.gerardo.miestacionamiento.controller.rest.ApiConstants;
 import com.example.gerardo.miestacionamiento.controller.util.ExpirationFormatWatcher;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
@@ -22,12 +22,12 @@ import com.example.gerardo.miestacionamiento.model.RegistroFullUsuario;
 import com.example.gerardo.miestacionamiento.model.Tarjeta;
 import com.example.gerardo.miestacionamiento.model.Usuario;
 import com.example.gerardo.miestacionamiento.model.Vehiculo;
+import com.example.gerardo.miestacionamiento.view.ui.AnimacionLoadinActivity;
 import com.google.gson.Gson;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -113,7 +113,7 @@ public class DialogWebPay extends DialogFragment {
             case R.id.btn_wp_registrar:
                 CreditCard card = mCcform.getCreditCard();
                 Gson gson = new Gson();
-                Usuario usuario = gson.fromJson(jsonUsuario, Usuario.class);
+                final Usuario usuario = gson.fromJson(jsonUsuario, Usuario.class);
                 usuario.setEstado(1);
                 Estacionamiento estacionamiento = null;
                 Vehiculo vehiculo = null;
@@ -140,7 +140,14 @@ public class DialogWebPay extends DialogFragment {
                 response.enqueue(new Callback<RegistroFullUsuario.ResponseRegistroFull>() {
                     @Override
                     public void onResponse(Call<RegistroFullUsuario.ResponseRegistroFull> call, Response<RegistroFullUsuario.ResponseRegistroFull> response) {
-
+                        if (response.body().getResponse().equals("true")){
+                            Intent intent = new Intent(getActivity(),AnimacionLoadinActivity.class);
+                            intent.putExtra(GlobalConstant.PREFS_CORREO,usuario.getCorreo());
+                            intent.putExtra(GlobalConstant.PREFS_CLAVE,usuario.getContraseña());
+                            getActivity().startActivity(intent);
+                        }else{
+                            Toast.makeText(getActivity(), "Error: "+response.body().getMensaje(), Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -149,7 +156,6 @@ public class DialogWebPay extends DialogFragment {
                     }
                 });
 
-//                Toast.makeText(getActivity(), "Tipo: "+card.getCardType() + " Numero: "+ card.getCardNumber(), Toast.LENGTH_SHORT).show();
                 break;
         }
     }

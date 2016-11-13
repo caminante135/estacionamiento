@@ -5,6 +5,13 @@
     android:background="@drawable/bg_dialog"
     android:orientation="vertical">
 
+    <ImageButton
+        android:id="@+id/btn_cerrar_dialog_paagar"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="right"
+        android:src="@drawable/ic_delete_equis"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,7 +21,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="Seleccione su tarjeta"
         android:textColor="@color/colorPrimaryText"
         android:textSize="20dp" />
@@ -48,6 +55,7 @@
 
 
     <Button
+        android:id="@+id/btn_dialog_pagar"
         android:layout_width="160dp"
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"

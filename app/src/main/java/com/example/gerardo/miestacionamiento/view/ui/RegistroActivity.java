@@ -19,20 +19,10 @@ public class RegistroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registro);
         setTitle("Registrar nuevo usuario");
 
-        Bundle extras = getIntent().getExtras();
-        String tipo = "";
-        if (extras != null) {
-            tipo = extras.getString("tipo");
-        }
         PersonalFragment personalFragment = PersonalFragment.newInstance();
-
-
-//        Bundle args = new Bundle();
-//        args.putString("tipo",tipo);
 
         if (personalFragment!=null){
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//            personalFragment.setArguments(args);
             ft.replace(R.id.container, personalFragment);
             ft.commit();
         }

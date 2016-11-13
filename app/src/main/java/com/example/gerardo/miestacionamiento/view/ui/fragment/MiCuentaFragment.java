@@ -115,7 +115,10 @@ public class MiCuentaFragment extends Fragment {
         SharedPreferences prefs = getActivity().getSharedPreferences(GlobalConstant.PREFS_NAME, Context.MODE_PRIVATE);
         String rut = prefs.getString(GlobalConstant.PREFS_RUT,"");
         Realm realm = Realm.getDefaultInstance();
-
+        realm.beginTransaction();
+        List<Estacionamiento> estacionamientos = realm.where(Estacionamiento.class).equalTo("rutUsuario",rut).findAll();
+        List<Tarjeta> tarjetas = realm.where(Tarjeta.class).equalTo("rutUsuario",rut).findAll();
+        realm.commitTransaction();
         if (prefs.getString(GlobalConstant.PREFS_JSON_VEHICULOS, "").equals("[]")) {
             layoutVeh.setVisibility(View.GONE);
         } else {
@@ -124,19 +127,17 @@ public class MiCuentaFragment extends Fragment {
         if (prefs.getString(GlobalConstant.PREFS_JSON_ESTACIONAMIENTOS, "").equals("[]")) {
             layoutEst.setVisibility(View.GONE);
         } else {
-            realm.beginTransaction();
-            List<Estacionamiento> estacionamientos = realm.where(Estacionamiento.class).equalTo("rutUsuario",rut).findAll();
-            realm.commitTransaction();
             adapterEstacionamiento = new EstacionamientoAdapter(getActivity(),estacionamientos);
+            if (estacionamientos.size()==1){
+                ViewGroup.LayoutParams params=recyclerViewEstacionamiento.getLayoutParams();
+                params.height= ViewGroup.LayoutParams.WRAP_CONTENT;
+            }
             recyclerViewEstacionamiento.setAdapter(adapterEstacionamiento);
         }
 
         if (prefs.getString(GlobalConstant.PREFS_JSON_TARJETAS, "").equals("[]")) {
             layoutTar.setVisibility(View.GONE);
         } else {
-            realm.beginTransaction();
-            List<Tarjeta> tarjetas = realm.where(Tarjeta.class).equalTo("rutUsuario",rut).findAll();
-            realm.commitTransaction();
             adapterTarjeta = new TarjetaAdapter(getActivity(),tarjetas);
             if (tarjetas.size()==1){
                 ViewGroup.LayoutParams params=recyclerViewTarjeta.getLayoutParams();

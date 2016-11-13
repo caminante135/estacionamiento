@@ -1,0 +1,99 @@
+ [{
+ 	"idComuna": 2,
+ 	"nombreComuna": "CERRILLOS"
+ }, {
+ 	"idComuna": 3,
+ 	"nombreComuna": "CERRO NAVIA"
+ }, {
+ 	"idComuna": 4,
+ 	"nombreComuna": "CONCHALI"
+ }, {
+ 	"idComuna": 5,
+ 	"nombreComuna": "EL BOSQUE"
+ }, {
+ 	"idComuna": 6,
+ 	"nombreComuna": "ESTACION CENTRAL"
+ }, {
+ 	"idComuna": 7,
+ 	"nombreComuna": "HUECHURABA"
+ }, {
+ 	"idComuna": 8,
+ 	"nombreComuna": "INDEPENDENCIA"
+ }, {
+ 	"idComuna": 9,
+ 	"nombreComuna": "LA CISTERNA"
+ }, {
+ 	"idComuna": 11,
+
+ 	"nombreComuna": "LA FLORIDA"
+ }, {
+ 	"idComuna": 10,
+ 	"nombreComuna": "LA GRANJA"
+ }, {
+ 	"idComuna": 12,
+ 	"nombreComuna": "LA PINTANA"
+ }, {
+ 	"idComuna": 13,
+ 	"nombreComuna": "LA REINA"
+ }, {
+ 	"idComuna": 14,
+ 	"nombreComuna": "LAS CONDES"
+ }, {
+ 	"idComuna": 15,
+ 	"nombreComuna": "LO BARNECHEA"
+ }, {
+ 	"idComuna": 16,
+ 	"nombreComuna": "LO ESPEJO"
+ }, {
+ 	"idComuna": 17,
+ 	"nombreComuna": "LO PRADO"
+ }, {
+ 	"idComuna": 18,
+ 	"nombreComuna": "MACUL"
+ }, {
+ 	"idComuna": 19,
+ 	"nombreComuna": "MAIPU"
+ }, {
+ 	"idComuna": 20,
+ 	"nombreComuna": "NUNOA"
+ }, {
+ 	"idComuna": 21,
+ 	"nombreComuna": "PEDRO AGUIRRE CERCA"
+ }, {
+ 	"idComuna": 22,
+ 	"nombreComuna": "PENALOLEN"
+ }, {
+ 	"idComuna": 23,
+ 	"nombreComuna": "PROVIDENCIA"
+ }, {
+ 	"idComuna": 24,
+ 	"nombreComuna": "PUDAHUEL"
+ }, {
+ 	"idComuna": 25,
+ 	"nombreComuna": "QUILICURA"
+ }, {
+ 	"idComuna": 26,
+ 	"nombreComuna": "QUINTA NORMAL"
+ }, {
+ 	"idComuna": 27,
+ 	"nombreComuna": "RECOLETA"
+ }, {
+ 	"idComuna": 28,
+ 	"nombreComuna": "RENCA"
+ }, {
+ 	"idComuna": 30,
+ 	"nombreComuna": "SAN JOAQUIN"
+ }, {
+ 	"idComuna": 29,
+ 	"nombreComuna": "SAN MIGUEL"
+ }, {
+ 	"idComuna": 31,
+ 	"nombreComuna": "SAN RAMON"
+ }, {
+ 	"idComuna": 1,
+ 	"idRegion": 1,
+ 	"nombreComuna": "SANTIAGO"
+ }, {
+ 	"idComuna": 32,
+ 	"nombreComuna": "VITACURA"
+ }]

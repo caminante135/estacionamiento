@@ -60,8 +60,8 @@ public class LoginActivity extends AppCompatActivity {
         editUsuario.setText(prefs.getString(GlobalConstant.PREFS_CORREO,""));
         editPassword.setText(prefs.getString(GlobalConstant.PREFS_CLAVE,""));
 
-        Log.d("PREFERENCIAS_AUTLOGIN", String.valueOf(prefs.getBoolean(GlobalConstant.PREFS_AUTOLOGIN,false)));
-        Log.d("PREFERENCIAS_USUARIO",prefs.getString(GlobalConstant.PREFS_CORREO,""));
+        //CARGO LAS COMUNAS
+        GlobalFunction.cargarComunas(this);
 
     }
 

@@ -15,7 +15,9 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
+import com.example.gerardo.miestacionamiento.model.Comuna;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
 import com.example.gerardo.miestacionamiento.model.ListaEstacionamientosRealm;
 import com.example.gerardo.miestacionamiento.model.ResponseAllEstacionamientos;
@@ -33,6 +35,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -267,6 +271,54 @@ public final class GlobalFunction {
         return json;
     }
 
+    public static void cargarComunas(final Context context){
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                List<Comuna> comunas = realm.where(Comuna.class).findAll();
+                if (comunas.size()==0){
+                    realm.createOrUpdateAllFromJson(Comuna.class,loadJSONFromAsset("jsonComunas.json",context));
+                }
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                Log.d("cargacomunas", "CARGARON BIEN LAS COMUNAS");
+            }
+        }, new Realm.Transaction.OnError() {
+            @Override
+            public void onError(Throwable error) {
+                Log.d("cargacomunas", "FALLO LA CARGA");
+            }
+        });
+    }
+    //CARGAR JSON DSDE LOS ASSETS
+    public static String loadJSONFromAsset(String jsonFileName, Context context) {
+        String json = null;
+        try {
+
+            InputStream is = context.getAssets().open(jsonFileName);
+
+            int size = is.available();
+
+            byte[] buffer = new byte[size];
+
+            is.read(buffer);
+
+            is.close();
+
+            json = new String(buffer, "UTF-8");
+
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+
+    }
+
     //LLAMADA AL SERVICIODEL LOGIN
     public static void loginConnect(final Context context, String email, String pass, final RunnableArgs block) {
 
@@ -382,38 +434,17 @@ public final class GlobalFunction {
 
         //USUARIO
         editor.putString(GlobalConstant.PREFS_RUT, usuario.getRut());
-        editor.putString(GlobalConstant.PREFS_NOMBRE, usuario.getNombre());
-        editor.putString(GlobalConstant.PREFS_APELLIDO_P, usuario.getApellidoPaterno());
-        editor.putString(GlobalConstant.PREFS_APELLIDO_M, usuario.getApellidoMaterno());
-        editor.putString(GlobalConstant.PREFS_CORREO, usuario.getCorreo());
-        editor.putInt(GlobalConstant.PREFS_IDESTADO, usuario.getEstado());
-        editor.putInt(GlobalConstant.PREFS_IDROL, usuario.getTipoUsuario());
-        editor.putInt(GlobalConstant.PREFS_TELEFONO, usuario.getTelefono());
-        editor.putString(GlobalConstant.PREFS_CLAVE, usuario.getContraseña());
 
         //AUTO LOGIN
         editor.putBoolean(GlobalConstant.PREFS_AUTOLOGIN, true);
 
         Gson gson = new Gson();
 
-        //JSON ESTACIONAMIENTOS
-        if (estacionamientos != null) {
-            String jsonEst = gson.toJson(estacionamientos);
-            editor.putString(GlobalConstant.PREFS_JSON_ESTACIONAMIENTOS, jsonEst);
-        }
-
         //JSON VEHICULOS
         if (vehiculos != null) {
             String jsonVeh = gson.toJson(vehiculos);
             editor.putString(GlobalConstant.PREFS_JSON_VEHICULOS, jsonVeh);
         }
-
-        //JSON TARJETAS
-        if (tarjetas != null) {
-            String jsonTar = gson.toJson(tarjetas);
-            editor.putString(GlobalConstant.PREFS_JSON_TARJETAS, jsonTar);
-        }
-
         editor.apply();
     }
 
@@ -448,29 +479,6 @@ public final class GlobalFunction {
         return cantidad;
     }
 
-    public static List<ResponseAllEstacionamientos> estStatic = new ArrayList<>();
 
-//    public static Usuario getUsuarioByIDEstacionamiento(Context context, int idEst) {
-//        SharedPreferences prefs = context.getSharedPreferences(GlobalConstant.PREFS_NAME, Context.MODE_PRIVATE);
-//        Usuario usuario = new Usuario();
-//        List<ResponseAllEstacionamientos> datos = convertToObjectGetEstacionamientos(prefs.getString(GlobalConstant.PREFS_JSON_GET_EST, ""));
-//
-//        for (int i = 0; i < datos.size(); i++) {
-//            ResponseAllEstacionamientos res = datos.get(i);
-//
-//            for (int j = 0; j < res.getEstacionamientos().size(); j++) {
-//                Estacionamiento est = res.getEstacionamientos().get(j);
-//
-//                if (est.getIdEstacionamiento() == idEst) {
-//                    usuario = res.getUsuario();
-//                }
-//
-//            }
-//
-//        }
-//
-//        return usuario;
-//
-//    }
 
 }

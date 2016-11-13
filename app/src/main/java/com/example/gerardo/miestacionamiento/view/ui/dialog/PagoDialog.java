@@ -9,7 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
@@ -20,6 +23,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.realm.Realm;
 
 /**
@@ -30,6 +34,10 @@ public class PagoDialog extends DialogFragment {
 
     @Bind(R.id.spn_pagar_tarjetas)
     Spinner mSpnTarjetas;
+    @Bind(R.id.btn_cerrar_dialog_paagar)
+    ImageButton btnCerrar;
+    @Bind(R.id.btn_dialog_pagar)
+    Button pagar;
 
     String rutUsuario;
 
@@ -56,17 +64,35 @@ public class PagoDialog extends DialogFragment {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setSpinner();
+
         return root;
     }
 
     private void setSpinner() {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        List<Tarjeta> tarjetas = realm.where(Tarjeta.class).equalTo("rutUsuario",pre)
+        List<Tarjeta> tarjetas = realm.where(Tarjeta.class).equalTo("rutUsuario",rutUsuario).findAll();
         realm.commitTransaction();
+        String[] medios = new String[tarjetas.size()];
+        for (int i = 0; i < tarjetas.size(); i++) {
+            String nombreTarjeta = "";
+            int tipoTarjeta = tarjetas.get(i).getTipoTarjeta();
+            if (tipoTarjeta == GlobalConstant.TARJETA_TIPO_MC){
+                nombreTarjeta = "MasterCard";
+            }else{
+                if (tipoTarjeta == GlobalConstant.TARJETA_TIPO_VISA){
+                    nombreTarjeta = "VISA";
+                }else{
+                    if (tipoTarjeta == GlobalConstant.TARJETA_TIPO_AE){
+                        nombreTarjeta = "American Express";
+                    }
+                }
+
+            }
+            medios[i] = nombreTarjeta;
+        }
 
 
-        String[] medios = {"MasterCard", "American Express", "VISA", "pobree"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_text, medios);
         mSpnTarjetas.setAdapter(adapter);
 //        ArrayAdapter<CharSequence> langAdapter = new ArrayAdapter<CharSequence>(getActivity(), R.layout.spinner_text, years );
@@ -87,4 +113,15 @@ public class PagoDialog extends DialogFragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
+    @OnClick(R.id.btn_cerrar_dialog_paagar)
+    public void cerrar(){
+        dismissAllowingStateLoss();
+    }
+
+    @OnClick(R.id.btn_dialog_pagar)
+    public void pagar(){
+        Toast.makeText(getActivity(), "Ya pagaste :D!", Toast.LENGTH_SHORT).show();
+    }
+
 }
