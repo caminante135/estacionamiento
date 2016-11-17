@@ -21,6 +21,9 @@ import com.example.gerardo.miestacionamiento.model.Vehiculo;
 import com.example.gerardo.miestacionamiento.view.ui.MainActivity;
 import com.example.gerardo.miestacionamiento.view.ui.dialog.DialogWebPay;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -97,10 +100,17 @@ public class VehiculoFragment extends Fragment {
     private String setIntentInfo() {
         Vehiculo vehiculo = new Vehiculo();
         vehiculo.setPatente(editPatente.getText().toString().trim());
-        vehiculo.setMarca(editMarca.getText().toString().trim());
-        vehiculo.setModelo(editModelo.getText().toString().trim());
+        vehiculo.setMarca(String.valueOf(1));
+        vehiculo.setModelo(String.valueOf(1));
         vehiculo.setColor(editColor.getText().toString().trim());
         vehiculo.setTipoVehiculo((int) spnTipo.getSelectedItemId()+1);
+
+        try {
+            JSONObject usuarioObject = new JSONObject(jsonUsuario);
+            vehiculo.setRutUsuario(usuarioObject.getString("rutUsuario"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         String json = GlobalFunction.createJSONObject(vehiculo);
         return json;

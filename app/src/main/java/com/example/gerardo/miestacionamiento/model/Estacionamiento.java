@@ -14,7 +14,7 @@ public class Estacionamiento extends RealmObject{
 //    private int idEst;
     @PrimaryKey
     @SerializedName("idEstacionamiento")
-    public int idEstacionamiento;
+    public Integer idEstacionamiento;
     @SerializedName("altura")
     public Double altura;
     @SerializedName("largo")
@@ -29,8 +29,6 @@ public class Estacionamiento extends RealmObject{
     public int idEstado;
     @SerializedName("camaraVigilancia")
     public int camaraVigilancia;
-    @SerializedName("idResidencia")
-    public int idResidencia;
     @SerializedName("tipoEstacionamiento")
     public int tipoEstacionamiento;
     @SerializedName("direccionEstacionamiento")
@@ -89,7 +87,7 @@ public class Estacionamiento extends RealmObject{
         this.ancho = ancho;
     }
 
-    public int getPisoUbicacion() {
+    public Integer getPisoUbicacion() {
         return pisoUbicacion;
     }
 
@@ -97,7 +95,7 @@ public class Estacionamiento extends RealmObject{
         this.pisoUbicacion = pisoUbicacion;
     }
 
-    public int getNumeroEst() {
+    public Integer getNumeroEst() {
         return numeroEst;
     }
 
@@ -119,14 +117,6 @@ public class Estacionamiento extends RealmObject{
 
     public void setCamaraVigilancia(int camaraVigilancia) {
         this.camaraVigilancia = camaraVigilancia;
-    }
-
-    public int getIdResidencia() {
-        return idResidencia;
-    }
-
-    public void setIdResidencia(int idResidencia) {
-        this.idResidencia = idResidencia;
     }
 
     public int getTipoEstacionamiento() {

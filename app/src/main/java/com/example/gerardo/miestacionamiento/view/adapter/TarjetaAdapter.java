@@ -68,23 +68,23 @@ public class TarjetaAdapter extends RecyclerView.Adapter<TarjetaAdapter.TarjetaV
         String nombre = "";
 
 
-        switch (EnumCardType.detect(currentTarjeta.getNumeroTarjeta())){
-            case MASTERCARD:
+        switch (currentTarjeta.getTipoTarjeta()){
+            case 1:
                 res = ContextCompat.getDrawable(context,R.drawable.ic_mastercard);
                 nombre = "MasterCard";
 
                 break;
-            case VISA:
+            case 2:
                 res = ContextCompat.getDrawable(context,R.drawable.ic_visa);
                 nombre = "VISA";
 
                 break;
-            case AMERICAN_EXPRESS:
+            case 3:
                 res = ContextCompat.getDrawable(context,R.drawable.ic_americanexpress);
                 nombre = "American Express";
 
                 break;
-            case UNKNOWN:
+            default:
                 res = ContextCompat.getDrawable(context,R.drawable.ic_discover);
                 nombre = "Unknow";
 

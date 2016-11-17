@@ -131,7 +131,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.txt_Registrar)
     public void registrar() {
-//        new DialogTipoUsuario(this).show();
         startActivity(new Intent(this, RegistroActivity.class));
     }
 

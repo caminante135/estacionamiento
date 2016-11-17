@@ -145,15 +145,15 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
 
 
         if (est!= null){
-            mComuna.setText("San Joaquín");
+            mComuna.setText(GlobalFunction.getComunaNombrebyID(est.getIdComuna()));
             mDireccion.setText(est.getDireccionEstacionamiento());
             mTamaño.setText("Normal");
-            if (est.getNumeroEst()!=0){
+            if (est.getNumeroEst()!=0 && est.getNumeroEst()!=null){
                 mNumero.setText(String.valueOf(est.getNumeroEst()));
             }else{
                 mNumero.setText("N/A");
             }
-            if (est.getPisoUbicacion()!=0){
+            if (est.getPisoUbicacion()!=0 && est.getPisoUbicacion()!=null){
                 mPiso.setText(String.valueOf(est.getPisoUbicacion()));
             }else{
                 mPiso.setText("N/A");

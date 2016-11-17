@@ -14,6 +14,7 @@ public class Vehiculo extends RealmObject {
     private String modelo;
     private String color;
     private int tipoVehiculo;
+    private String rutUsuario;
 
     public Vehiculo() {
     }
@@ -56,5 +57,13 @@ public class Vehiculo extends RealmObject {
 
     public void setTipoVehiculo(int tipoVehiculo) {
         this.tipoVehiculo = tipoVehiculo;
+    }
+
+    public String getRutUsuario() {
+        return rutUsuario;
+    }
+
+    public void setRutUsuario(String rutUsuario) {
+        this.rutUsuario = rutUsuario;
     }
 }

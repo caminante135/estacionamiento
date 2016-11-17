@@ -117,12 +117,12 @@ public class DialogWebPay extends DialogFragment {
                 usuario.setEstado(1);
                 Estacionamiento estacionamiento = null;
                 Vehiculo vehiculo = null;
-//                if (!jsonEstacionamiento.equals("")){
-//                    estacionamiento = gson.fromJson(jsonEstacionamiento, Estacionamiento.class);
-//                }
-//                if (!jsonVehiculo.equals("")){
-//                    vehiculo = gson.fromJson(jsonVehiculo, Vehiculo.class);
-//                }
+                if (!jsonEstacionamiento.equals("")){
+                    estacionamiento = gson.fromJson(jsonEstacionamiento, Estacionamiento.class);
+                }
+                if (!jsonVehiculo.equals("")){
+                    vehiculo = gson.fromJson(jsonVehiculo, Vehiculo.class);
+                }
                 Tarjeta tarjeta = new Tarjeta();
                 tarjeta.setNumeroTarjeta(card.getCardNumber().trim());
                 tarjeta.setTipoTarjeta(getTipoTarjeta(card.getCardType().toString()));

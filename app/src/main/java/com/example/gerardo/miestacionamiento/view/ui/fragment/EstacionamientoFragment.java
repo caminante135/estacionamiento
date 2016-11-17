@@ -1,45 +1,79 @@
 package com.example.gerardo.miestacionamiento.view.ui.fragment;
 
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.Toast;
 
-import com.example.gerardo.miestacionamiento.model.Estacionamiento;
-import com.example.gerardo.miestacionamiento.model.Usuario;
-import com.example.gerardo.miestacionamiento.view.ui.dialog.DialogWebPay;
+import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
-import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.model.Comuna;
+import com.example.gerardo.miestacionamiento.model.Estacionamiento;
+import com.example.gerardo.miestacionamiento.view.ui.dialog.DialogWebPay;
+import com.google.android.gms.maps.model.LatLng;
 
-import ernestoyaquello.com.verticalstepperform.VerticalStepperFormLayout;
-import ernestoyaquello.com.verticalstepperform.interfaces.VerticalStepperForm;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EstacionamientoFragment extends Fragment implements VerticalStepperForm {
+public class EstacionamientoFragment extends Fragment {
 
 
-    VerticalStepperFormLayout verticalStepperForm;
-    ViewGroup.LayoutParams lp;
-
-    EditText mDireccion;
-    EditText mComuna;
-    EditText mPiso;
-    RadioGroup mTipoResidencia;
-    RadioGroup mCamaraVigilancia;
-    EditText mNumEstacionamiento;
-    EditText mValorHora;
+    @Bind(R.id.spn_estacionamiento_comuna)
+    Spinner spnComuna;
+    @Bind(R.id.edit_estacionamiento_direccion)
+    TextInputEditText editDireccion;
+    @Bind(R.id.rb_estacionamiento_tipo_casa)
+    RadioButton rbCasa;
+    @Bind(R.id.rb_estacionamiento_tipo_dpto)
+    RadioButton rbDpto;
+    @Bind(R.id.rg_estacionamiento_tipo)
+    RadioGroup rgTipo;
+    @Bind(R.id.edit_estacionamiento_numero)
+    TextInputEditText editNumero;
+    @Bind(R.id.rb_estacionamiento_camara_si)
+    RadioButton rbCamaraSi;
+    @Bind(R.id.rb_estacionamiento_camara_no)
+    RadioButton rbCamaraNo;
+    @Bind(R.id.rg_estacionamiento_camara)
+    RadioGroup rgCamara;
+    @Bind(R.id.edit_estacionamiento_piso)
+    TextInputEditText editPiso;
+    @Bind(R.id.edit_estacionamiento_valor_hora)
+    TextInputEditText editValorHora;
+    @Bind(R.id.btn_estacionamiento_siguiente)
+    Button btnSiguiente;
 
     String jsonUsuario;
 
@@ -50,7 +84,7 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
     public static EstacionamientoFragment newInstance(String jsonUsuario) {
         EstacionamientoFragment fragment = new EstacionamientoFragment();
         Bundle b = new Bundle();
-        b.putString(GlobalConstant.BUNDLE_USUARIO,jsonUsuario);
+        b.putString(GlobalConstant.BUNDLE_USUARIO, jsonUsuario);
         fragment.setArguments(b);
         return fragment;
     }
@@ -59,33 +93,16 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        jsonUsuario = args.getString(GlobalConstant.BUNDLE_USUARIO,"");
+        jsonUsuario = args.getString(GlobalConstant.BUNDLE_USUARIO, "");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_estacionamiento, container, false);
+        ButterKnife.bind(this, root);
 
-        String[] mySteps = getActivity().getResources().getStringArray(R.array.itemsDatosEstacionamiento);
-
-//        String[] mySubs = {"Ingre su nombre", "Ingresa tu EMAIL", "Ingresa tu numero de telefono"};
-        int colorPrimary = ContextCompat.getColor(getActivity().getApplicationContext(), R.color.colorPrimary);
-        int colorPrimaryDark = ContextCompat.getColor(getActivity().getApplicationContext(), R.color.colorPrimaryDark);
-
-        verticalStepperForm = (VerticalStepperFormLayout) root.findViewById(R.id.vertical_stepper_form_estacionamiento);
-        lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, GlobalFunction.ConvertDpToPx(35));
-
-        // Setting up and initializing the form
-        VerticalStepperFormLayout.Builder.newInstance(verticalStepperForm, mySteps, this, getActivity())
-                .primaryColor(colorPrimary)
-                .primaryDarkColor(colorPrimaryDark)
-                .materialDesignInDisabledSteps(true)
-                .showVerticalLineWhenStepsAreCollapsed(true)
-//                .stepsSubtitles(mySubs)
-                .displayBottomNavigation(true) // It is true by default, so in this case this line is not necessary
-                .init();
-
+        setSpinner();
 
         return root;
     }
@@ -96,174 +113,103 @@ public class EstacionamientoFragment extends Fragment implements VerticalStepper
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Nuevo Estacionamiento");
     }
 
-    @Override
-    public View createStepContentView(int stepNumber) {
-        View view = null;
-        switch (stepNumber) {
-            case 0:
-                view = crearViewComuna();
-                break;
-            case 1:
-                view = crearViewDireccion();
-                break;
-            case 2:
-                view = crearViewTipo();
-                break;
-            case 3:
-                view = crearViewNumEst();
-                break;
-            case 4:
-                view = crearViewCamaraVigilancia();
-                break;
-            case 5:
-                view = crearviewPiso();
-                break;
-            case 6:
-                view = crearViewValorHora();
-                break;
-        }
-        return view;
-    }
-
-    @Override
-    public void onStepOpening(int stepNumber) {
-        switch (stepNumber) {
-            case 0:
-                verticalStepperForm.setActiveStepAsCompleted();
-                break;
-            case 1:
-                verticalStepperForm.setActiveStepAsCompleted();
-                break;
-            case 2:
-                verticalStepperForm.setActiveStepAsCompleted();
-                break;
-            case 3:
-                verticalStepperForm.setActiveStepAsCompleted();
-                break;
-            case 4:
-                verticalStepperForm.setActiveStepAsCompleted();
-                break;
-            case 5:
-                verticalStepperForm.setActiveStepAsCompleted();
-                break;
-            case 6:
-                verticalStepperForm.setStepAsCompleted(6);
-                break;
-        }
-    }
-
-    @Override
-    public void sendData() {
-        DialogWebPay fragment = DialogWebPay.newInstance(jsonUsuario,null,null);
-        fragment.show(getActivity().getSupportFragmentManager(),"webpayFragment");
-    }
 //
-//    private String setIntentInfo(int tipo){
-//        Estacionamiento est = new Estacionamiento();
-//        est.setIdComuna(mEditRut.getText().toString().trim());
-//        usuario.setNombre(mEditNombre.getText().toString().trim());
-//        usuario.setApellidoPaterno(mEditApellidoP.getText().toString().trim());
-//        usuario.setApellidoMaterno(mEditApellidoM.getText().toString().trim());
-//        usuario.setCorreo(mEditCorreo.getText().toString().trim());
-//        usuario.setTelefono(Integer.parseInt(mEditTelefono.getText().toString().trim()));
-//        usuario.setContraseña(mEditClave.getText().toString().trim());
-//        usuario.setTipoUsuario(tipo);
-//
-//        String json = GlobalFunction.createJSONObject(usuario);
-//        return json;
-//
-//    }
+    private String setIntentInfo( LatLng coordenadas){
+        Estacionamiento est = new Estacionamiento();
+        est.setAltura(2.0);
+        est.setLargo(6.0);
+        est.setAncho(3.0);
+        if (!editPiso.getText().toString().equals("")){
+            est.setPisoUbicacion(Integer.parseInt(editPiso.getText().toString()));
+        }else{
+            est.setPisoUbicacion(0);
+        }
+        if (!editNumero.getText().toString().equals("")){
+            est.setNumeroEst(Integer.parseInt(editNumero.getText().toString()));
+        }else{
+            est.setNumeroEst(0);
+        }
+        est.setIdEstado(1);
+        if (rbCamaraSi.isChecked()){
+            est.setCamaraVigilancia(1);
+        }else{
+            est.setCamaraVigilancia(0);
+        }
+        est.setTipoEstacionamiento(1);
+        est.setDireccionEstacionamiento(editDireccion.getText().toString());
+        est.setIdComuna(GlobalFunction.getComunaIDbyNombre(spnComuna.getSelectedItem().toString()));
+        est.setCostoHora(Integer.parseInt(editValorHora.getText().toString()));
+        est.setLatitud(String.valueOf(coordenadas.latitude));
+        est.setLongitud(String.valueOf(coordenadas.longitude));
 
-    private View crearViewComuna() {
-        mComuna = new EditText(getActivity());
-        mComuna.setSingleLine(true);
-        mComuna.setLayoutParams(lp);
-        mComuna.setHint(getActivity().getResources().getString(R.string.hintComuna));
-        mComuna.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
-        mComuna.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mComuna.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
-        mComuna.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
-        return mComuna;
-    }
-    private View crearViewDireccion() {
-        mDireccion = new EditText(getActivity());
-        mDireccion.setSingleLine(true);
-        mDireccion.setLayoutParams(lp);
-        mDireccion.setHint(getActivity().getResources().getString(R.string.hintDireccion));
-        mDireccion.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
-        mDireccion.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mDireccion.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
-        mDireccion.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
-        return mDireccion;
-    }
-    private View crearviewPiso() {
-        mPiso = new EditText(getActivity());
-        mPiso.setSingleLine(true);
-        mPiso.setLayoutParams(lp);
-        mPiso.setHint(getActivity().getResources().getString(R.string.hintPiso));
-        mPiso.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
-        mPiso.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mPiso.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
-        mPiso.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
-        mPiso.setInputType(InputType.TYPE_CLASS_NUMBER);
-        return mPiso;
-    }
-    private View crearViewTipo() {
-        RadioButton[] radioButtons = new RadioButton[2];
-        mTipoResidencia = new RadioGroup(getActivity());
-        mTipoResidencia.setOrientation(RadioGroup.HORIZONTAL);
-
-        String[] texts = {"Casa", "Departamento"};
-
-        for (int i = 0; i < 2; i++) {
-            radioButtons[i] = new RadioButton(getActivity());
-            radioButtons[i].setText(texts[i]);
-            mTipoResidencia.addView(radioButtons[i]);
+        try {
+            JSONObject usuarioObject = new JSONObject(jsonUsuario);
+            est.setRutUsuario(usuarioObject.getString("rutUsuario"));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        return mTipoResidencia;
+        String json = GlobalFunction.createJSONObject(est);
+        return json;
 
     }
-    private View crearViewCamaraVigilancia() {
-        RadioButton[] radioButtons = new RadioButton[2];
-        mCamaraVigilancia = new RadioGroup(getActivity());
-        mCamaraVigilancia.setOrientation(RadioGroup.HORIZONTAL);
 
-        String[] texts = {"Si", "No"};
+    private void setSpinner() {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        RealmResults<Comuna> comunas = realm.where(Comuna.class).findAllSorted("nombreComuna", Sort.ASCENDING);
+        realm.commitTransaction();
+        String[] nombres = new String[comunas.size()];
 
-        for (int i = 0; i < 2; i++) {
-            radioButtons[i] = new RadioButton(getActivity());
-            radioButtons[i].setText(texts[i]);
-            mCamaraVigilancia.addView(radioButtons[i]);
+        for (int i = 0; i < comunas.size(); i++) {
+            nombres[i] = comunas.get(i).getNombreComuna();
         }
 
-        return mCamaraVigilancia;
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_text, nombres);
+        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);
+        spnComuna.setAdapter(adapter);
 
     }
-    private View crearViewNumEst() {
-        mNumEstacionamiento = new EditText(getActivity());
-        mNumEstacionamiento.setSingleLine(true);
-        mNumEstacionamiento.setLayoutParams(lp);
-        mNumEstacionamiento.setHint(getActivity().getResources().getString(R.string.hintNumeroEst));
-        mNumEstacionamiento.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
-        mNumEstacionamiento.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mNumEstacionamiento.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
-        mNumEstacionamiento.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
-        mNumEstacionamiento.setInputType(InputType.TYPE_CLASS_NUMBER);
-        return mNumEstacionamiento;
-    }
-    private View crearViewValorHora() {
-        mValorHora = new EditText(getActivity());
-        mValorHora.setSingleLine(true);
-        mValorHora.setLayoutParams(lp);
-        mValorHora.setHint(getActivity().getResources().getString(R.string.hintValorHora));
-        mValorHora.setHintTextColor(ContextCompat.getColor(getActivity(), R.color.whiteHint));
-        mValorHora.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
-        mValorHora.setPadding(GlobalFunction.ConvertDpToPx(10), 0, GlobalFunction.ConvertDpToPx(10), 0);
-        mValorHora.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.edit_text_background));
-        mValorHora.setInputType(InputType.TYPE_CLASS_NUMBER);
-        return mValorHora;
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
+    private boolean validarCampos() {
+        if (rgTipo.getCheckedRadioButtonId() == -1) {
+            return false;
+        }
+        if (editDireccion.getText().toString().equals("")) {
+            return false;
+        }
+        if (editValorHora.getText().toString().equals("")) {
+            return false;
+        }
+        if (rgCamara.getCheckedRadioButtonId() == -1) {
+            return false;
+        }
+        return true;
+    }
 
+    @OnClick(R.id.btn_estacionamiento_siguiente)
+    public void onClick() {
+        if (validarCampos()) {
+            LatLng latLng = GlobalFunction.getCoordinatesFromAddress(getActivity(),String.format(new Locale("es", "CL"), "%1$s, %2$s",
+                    editDireccion.getText().toString().trim(),
+                    spnComuna.getSelectedItem().toString()));
+            if (latLng != null) {
+                String jsonEst = setIntentInfo(latLng);
+                DialogWebPay fragment = DialogWebPay.newInstance(jsonUsuario, null, jsonEst);
+                fragment.show(getActivity().getSupportFragmentManager(), "webpayFragment");
+            }else{
+                Toast.makeText(getActivity(), "La dirección no se pudo encontrar", Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            Toast.makeText(getActivity(), "Debe completar todos los campos obligatorios antes de continuar", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
 }

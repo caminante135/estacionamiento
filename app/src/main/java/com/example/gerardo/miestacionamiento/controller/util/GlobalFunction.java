@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.LocationManager;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
@@ -26,6 +28,7 @@ import com.example.gerardo.miestacionamiento.model.Tarjeta;
 import com.example.gerardo.miestacionamiento.model.Usuario;
 import com.example.gerardo.miestacionamiento.controller.rest.ApiAdapter;
 import com.example.gerardo.miestacionamiento.model.Vehiculo;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -271,14 +274,14 @@ public final class GlobalFunction {
         return json;
     }
 
-    public static void cargarComunas(final Context context){
+    public static void cargarComunas(final Context context) {
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 List<Comuna> comunas = realm.where(Comuna.class).findAll();
-                if (comunas.size()==0){
-                    realm.createOrUpdateAllFromJson(Comuna.class,loadJSONFromAsset("jsonComunas.json",context));
+                if (comunas.size() == 0) {
+                    realm.createOrUpdateAllFromJson(Comuna.class, loadJSONFromAsset("jsonComunas.json", context));
                 }
             }
         }, new Realm.Transaction.OnSuccess() {
@@ -293,6 +296,7 @@ public final class GlobalFunction {
             }
         });
     }
+
     //CARGAR JSON DSDE LOS ASSETS
     public static String loadJSONFromAsset(String jsonFileName, Context context) {
         String json = null;
@@ -319,6 +323,26 @@ public final class GlobalFunction {
 
     }
 
+    public static LatLng getCoordinatesFromAddress(Context context,String addres) {
+        LatLng coordenadas;
+        Geocoder geocoder = new Geocoder(context, new Locale("es", "CL"));
+
+        try {
+            List<Address> coor = geocoder.getFromLocationName(addres, 1);
+            if (coor == null) {
+                return null;
+            }
+            coordenadas = new LatLng(coor.get(0).getLatitude(), coor.get(0).getLongitude());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
+        return coordenadas;
+    }
+
+
     //LLAMADA AL SERVICIODEL LOGIN
     public static void loginConnect(final Context context, String email, String pass, final RunnableArgs block) {
 
@@ -342,9 +366,8 @@ public final class GlobalFunction {
 
                     Realm realm = Realm.getDefaultInstance();
                     realm.beginTransaction();
-                    realm.createOrUpdateAllFromJson(Tarjeta.class,jTarjeta);
+                    realm.createOrUpdateAllFromJson(Tarjeta.class, jTarjeta);
                     realm.commitTransaction();
-
 
 
                     saveInfo(context, usuario, estacionamientos, vehiculos, tarjetas);
@@ -394,10 +417,10 @@ public final class GlobalFunction {
                             try {
                                 String json = gson.toJson(response.body().get(i).getUsuario());
                                 JSONObject jsonObject = new JSONObject(json);
-                                realm.createOrUpdateObjectFromJson(Usuario.class,jsonObject);
+                                realm.createOrUpdateObjectFromJson(Usuario.class, jsonObject);
 
                                 String jsonEst = gson.toJson(response.body().get(i).getEstacionamientos());
-                                realm.createOrUpdateAllFromJson(Estacionamiento.class,jsonEst);
+                                realm.createOrUpdateAllFromJson(Estacionamiento.class, jsonEst);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -459,13 +482,6 @@ public final class GlobalFunction {
         editor.commit();
     }
 
-    public static List<ResponseAllEstacionamientos> convertToObjectGetEstacionamientos(String json) {
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<ResponseAllEstacionamientos>>() {
-        }.getType();
-        List<ResponseAllEstacionamientos> e = new Gson().fromJson(json, type);
-        return e;
-    }
 
     //CALCULA EL TAMAÑO DE UN JSONARRAY
     public static int calcularSizeArray(String array) {
@@ -479,6 +495,22 @@ public final class GlobalFunction {
         return cantidad;
     }
 
+    public static int getComunaIDbyNombre(String nombre){
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
 
+        Comuna comuna = realm.where(Comuna.class).equalTo("nombreComuna",nombre).findFirst();
+        realm.commitTransaction();
+        return comuna.getIdComuna();
+    }
+
+    public static String getComunaNombrebyID(int id){
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+
+        Comuna comuna = realm.where(Comuna.class).equalTo("idComuna",id).findFirst();
+        realm.commitTransaction();
+        return comuna.getNombreComuna();
+    }
 
 }
