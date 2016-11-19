@@ -1,4 +1,4 @@
-package com.example.gerardo.miestacionamiento.controller.util;
+package com.example.gerardo.miestacionamiento.controller;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -19,9 +19,13 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
+import com.example.gerardo.miestacionamiento.controller.util.RunnableArgs;
 import com.example.gerardo.miestacionamiento.model.Comuna;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
 import com.example.gerardo.miestacionamiento.model.ListaEstacionamientosRealm;
+import com.example.gerardo.miestacionamiento.model.Marca;
+import com.example.gerardo.miestacionamiento.model.Modelo;
 import com.example.gerardo.miestacionamiento.model.ResponseAllEstacionamientos;
 import com.example.gerardo.miestacionamiento.model.ResponseLogin;
 import com.example.gerardo.miestacionamiento.model.Tarjeta;
@@ -51,6 +55,7 @@ import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmList;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -297,6 +302,89 @@ public final class GlobalFunction {
         });
     }
 
+    public static void cargarMarcasVehiculo(Context context) {
+        Call<ResponseBody> retroCall = ApiAdapter.getApiService().getMarcasVehiculo();
+
+        retroCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, final Response<ResponseBody> response) {
+                Realm realm = Realm.getDefaultInstance();
+                realm.executeTransactionAsync(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.body().string());
+                            JSONArray jsonArray = jsonObject.getJSONArray("listaMarcaVehiculo");
+                            realm.createOrUpdateAllFromJson(Marca.class, jsonArray);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException io) {
+                            io.printStackTrace();
+                        }
+                    }
+                }, new Realm.Transaction.OnSuccess() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d("cargaMarcas", "CARGARON BIEN LAS MARCAS");
+                    }
+                }, new Realm.Transaction.OnError() {
+                    @Override
+                    public void onError(Throwable error) {
+                        error.printStackTrace();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public static void cargarModelosVehiculo(Context context) {
+        Call<ResponseBody> retroCall = ApiAdapter.getApiService().getModeloVehiculo();
+
+        retroCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, final Response<ResponseBody> response) {
+                Realm realm = Realm.getDefaultInstance();
+                realm.executeTransactionAsync(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.body().string());
+                            JSONArray jsonArray = jsonObject.getJSONArray("listaModelos");
+                            realm.createOrUpdateAllFromJson(Modelo.class, jsonArray);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Realm.Transaction.OnSuccess() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d("cargaModelos", "CARGARON BIEN LOS MODELOS");
+                    }
+                }, new Realm.Transaction.OnError() {
+                    @Override
+                    public void onError(Throwable error) {
+                        error.printStackTrace();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+
     //CARGAR JSON DSDE LOS ASSETS
     public static String loadJSONFromAsset(String jsonFileName, Context context) {
         String json = null;
@@ -323,7 +411,7 @@ public final class GlobalFunction {
 
     }
 
-    public static LatLng getCoordinatesFromAddress(Context context,String addres) {
+    public static LatLng getCoordinatesFromAddress(Context context, String addres) {
         LatLng coordenadas;
         Geocoder geocoder = new Geocoder(context, new Locale("es", "CL"));
 
@@ -495,20 +583,20 @@ public final class GlobalFunction {
         return cantidad;
     }
 
-    public static int getComunaIDbyNombre(String nombre){
+    public static int getComunaIDbyNombre(String nombre) {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
 
-        Comuna comuna = realm.where(Comuna.class).equalTo("nombreComuna",nombre).findFirst();
+        Comuna comuna = realm.where(Comuna.class).equalTo("nombreComuna", nombre).findFirst();
         realm.commitTransaction();
         return comuna.getIdComuna();
     }
 
-    public static String getComunaNombrebyID(int id){
+    public static String getComunaNombrebyID(int id) {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
 
-        Comuna comuna = realm.where(Comuna.class).equalTo("idComuna",id).findFirst();
+        Comuna comuna = realm.where(Comuna.class).equalTo("idComuna", id).findFirst();
         realm.commitTransaction();
         return comuna.getNombreComuna();
     }

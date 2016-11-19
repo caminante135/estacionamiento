@@ -1,6 +1,6 @@
 package com.example.gerardo.miestacionamiento;
 
-import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
+import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
 
 import junit.framework.TestCase;
 

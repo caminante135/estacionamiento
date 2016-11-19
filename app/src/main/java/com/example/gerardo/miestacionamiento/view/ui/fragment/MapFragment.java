@@ -12,37 +12,39 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
-import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
+import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
 import com.example.gerardo.miestacionamiento.controller.util.RunnableArgs;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
-import com.example.gerardo.miestacionamiento.model.ResponseAllEstacionamientos;
 import com.example.gerardo.miestacionamiento.model.Usuario;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -50,14 +52,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapFragment extends SupportMapFragment implements OnMapReadyCallback, GoogleMap.InfoWindowAdapter
-        , GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMapClickListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.InfoWindowAdapter
+        , GoogleMap.OnInfoWindowClickListener, GoogleMap.OnMapClickListener, TextWatcher {
+
+    @Bind(R.id.btn_buscar_mapfragment)
+    ImageButton btnBuscar;
+    @Bind(R.id.edit_direccion_mapfragment)
+    EditText editDireccion;
+    @Bind(R.id.btn_borrar_mapfragment)
+    ImageButton btnBorrar;
+
 
     GoogleMap mGoogleMap;
     SharedPreferences prefs;
@@ -67,6 +80,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     CameraPosition cameraPosition;
 
     private static final int LOCATION_REQUEST_CODE = 1;
+
 
 
     public MapFragment() {
@@ -84,16 +98,18 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = super.onCreateView(inflater, container, savedInstanceState);
+        View root = inflater.inflate(R.layout.fragment_map, container, false);
+        ButterKnife.bind(this, root);
         prefs = getActivity().getSharedPreferences(GlobalConstant.PREFS_NAME, Context.MODE_PRIVATE);
 
         if (marcadores == null) {
             marcadores = new HashMap<>();
         }
 
+        SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
+        supportMapFragment.getMapAsync(this);
 
-        getMapAsync(this);
-
+        editDireccion.addTextChangedListener(this);
 
         return root;
     }
@@ -135,6 +151,8 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         settings.setMyLocationButtonEnabled(true);
         settings.setMapToolbarEnabled(false);
 
+        mGoogleMap.setPadding(0, GlobalFunction.ConvertDpToPx(60), 0, 0);
+
         setPermisosLocation();
 
         callWS();
@@ -159,10 +177,10 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
             String provider = locationManager.getBestProvider(criteria, true);
             myLocation = locationManager.getLastKnownLocation(provider);
         }
-        LatLng green=null;
-        if (myLocation != null){
-            green = new LatLng(myLocation.getLatitude(),myLocation.getLongitude());
-        }else{
+        LatLng green = null;
+        if (myLocation != null) {
+            green = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+        } else {
             green = new LatLng(-33.500316, -70.616127);
         }
 //        LatLng red = new LatLng(-33.500593, -70.616803);
@@ -202,12 +220,12 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         if (est != null) {
             Realm realm = Realm.getDefaultInstance();
             realm.beginTransaction();
-            Estacionamiento estApoyo = realm.where(Estacionamiento.class).equalTo("idEstacionamiento",est.getIdEstacionamiento()).findFirst();
-            user = realm.where(Usuario.class).equalTo("rutUsuario",estApoyo.getRutUsuario()).findFirst();
+            Estacionamiento estApoyo = realm.where(Estacionamiento.class).equalTo("idEstacionamiento", est.getIdEstacionamiento()).findFirst();
+            user = realm.where(Usuario.class).equalTo("rutUsuario", estApoyo.getRutUsuario()).findFirst();
             realm.commitTransaction();
         }
 
-        DetalleFragment fragment = DetalleFragment.newInstance(marker.getPosition(),user,est);
+        DetalleFragment fragment = DetalleFragment.newInstance(marker.getPosition(), user, est);
 
         getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.frame, fragment).commit();
     }
@@ -325,7 +343,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                     Realm realm = Realm.getDefaultInstance();
                     RealmResults<Estacionamiento> estacionamientoses = realm.where(Estacionamiento.class)
                             .findAll();
-                    crearMarksMap(estacionamientoses,dialog);
+                    crearMarksMap(estacionamientoses, dialog);
                 } else {
                     dialog.dismiss();
                 }
@@ -345,7 +363,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                             public void onClick(DialogInterface dialog,
                                                 int id) {
                                 Intent callGPSSettingIntent = new Intent(
-                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                        Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                                 getActivity().startActivity(callGPSSettingIntent);
                             }
                         });
@@ -382,6 +400,109 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                 Toast.makeText(getActivity(), "Error de permisos", Toast.LENGTH_LONG).show();
             }
 
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        if (!editable.toString().equals("")){
+            if (editable.toString().length()==1){
+                btnBuscar.setVisibility(View.VISIBLE);
+                btnBorrar.setVisibility(View.VISIBLE);
+            }
+//            Animation fadeIn = new AlphaAnimation(0,1);
+//            fadeIn.setInterpolator(new DecelerateInterpolator());
+//            fadeIn.setDuration(1000);
+//
+//            btnBorrar.animate()
+//                    .alpha(0.1f)
+//                    .setDuration(500);
+//            btnBuscar.setAnimation(fadeIn);
+//            btnBorrar.setAnimation(fadeIn);
+//            btnBuscar.animate()
+//                    .alpha(0.1f)
+//                    .setDuration(500)
+//                    .setListener(new Animator.AnimatorListener() {
+//                @Override
+//                public void onAnimationStart(Animator animator) {
+//
+//                }
+//
+//                @Override
+//                public void onAnimationEnd(Animator animator) {
+//                    btnBuscar.setVisibility(View.VISIBLE);
+//                    btnBorrar.setVisibility(View.VISIBLE);
+//                }
+//
+//                @Override
+//                public void onAnimationCancel(Animator animator) {
+//
+//                }
+//
+//                @Override
+//                public void onAnimationRepeat(Animator animator) {
+//
+//                }
+//            });
+//            Animation fadeIn = new AlphaAnimation(0, 1);
+//            fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
+//            fadeIn.setDuration(1000);
+//
+//            Animation fadeOut = new AlphaAnimation(1, 0);
+//            fadeOut.setInterpolator(new AccelerateInterpolator()); //and this
+//            fadeOut.setStartOffset(1000);
+//            fadeOut.setDuration(1000);
+//
+//            AnimationSet animation = new AnimationSet(false); //change to false
+//            animation.addAnimation(fadeIn);
+//            animation.addAnimation(fadeOut);
+//
+//            btnBuscar.setAnimation(animation);
+//            btnBuscar.startAnimation(animation);
+
+        }else{
+            btnBuscar.setVisibility(View.GONE);
+            btnBorrar.setVisibility(View.GONE);
+        }
+    }
+
+    @OnClick(R.id.btn_buscar_mapfragment)
+    public void buscarDireccion(){
+        LatLng coordenadas = GlobalFunction.getCoordinatesFromAddress(getActivity(),editDireccion.getText().toString());
+        GlobalFunction.hideKeyboardFrom(getActivity(),editDireccion);
+        if (coordenadas != null){
+            cameraPosition = CameraPosition.builder()
+                    .target(coordenadas)
+                    .zoom(15)
+                    .build();
+            mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+            mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }else{
+            Toast.makeText(getActivity(), "Dirección no encontrada", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @OnClick(R.id.btn_borrar_mapfragment)
+    public void borrarTexto(){
+        if (editDireccion.getText().toString().length() > 0){
+            editDireccion.setText("");
+            editDireccion.clearFocus();
         }
     }
 

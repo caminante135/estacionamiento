@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
-import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
+import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
 import com.example.gerardo.miestacionamiento.controller.util.RunnableArgs;
 import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
 

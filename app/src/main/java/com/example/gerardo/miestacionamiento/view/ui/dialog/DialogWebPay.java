@@ -124,7 +124,8 @@ public class DialogWebPay extends DialogFragment {
                     vehiculo = gson.fromJson(jsonVehiculo, Vehiculo.class);
                 }
                 Tarjeta tarjeta = new Tarjeta();
-                tarjeta.setNumeroTarjeta(card.getCardNumber().trim());
+                String numTarjeta = card.getCardNumber();
+                tarjeta.setNumeroTarjeta(numTarjeta.trim());
                 tarjeta.setTipoTarjeta(getTipoTarjeta(card.getCardType().toString()));
                 tarjeta.setFechaExpiracion(mExpiracion.getText().toString().trim());
                 tarjeta.setCodigoVerificacion(Integer.parseInt(mCvc.getText().toString()));

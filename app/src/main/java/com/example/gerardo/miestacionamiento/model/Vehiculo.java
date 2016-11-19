@@ -1,5 +1,7 @@
 package com.example.gerardo.miestacionamiento.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -8,13 +10,19 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Vehiculo extends RealmObject {
 
+    @SerializedName("patente")
     @PrimaryKey
     private String patente;
+    @SerializedName("idMarca")
     private String marca;
-    private String modelo;
     private String color;
+    @SerializedName("idTipoVehiculo")
     private int tipoVehiculo;
+    @SerializedName("rutUsuario")
     private String rutUsuario;
+    @SerializedName("rutPropietario")
+    private String rutPropietario;
+
 
     public Vehiculo() {
     }
@@ -27,21 +35,14 @@ public class Vehiculo extends RealmObject {
         this.patente = patente;
     }
 
-    public String getMarca() {
+    public String getIdMarca() {
         return marca;
     }
 
-    public void setMarca(String marca) {
+    public void setIdMarca(String marca) {
         this.marca = marca;
     }
 
-    public String getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
 
     public String getColor() {
         return color;
@@ -65,5 +66,13 @@ public class Vehiculo extends RealmObject {
 
     public void setRutUsuario(String rutUsuario) {
         this.rutUsuario = rutUsuario;
+    }
+
+    public String getRutPropietario() {
+        return rutPropietario;
+    }
+
+    public void setRutPropietario(String rutPropietario) {
+        this.rutPropietario = rutPropietario;
     }
 }

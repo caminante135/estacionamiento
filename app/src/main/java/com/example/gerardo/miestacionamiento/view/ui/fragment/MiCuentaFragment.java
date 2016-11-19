@@ -16,11 +16,10 @@ import android.widget.TextView;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
-import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
+import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
 import com.example.gerardo.miestacionamiento.model.Tarjeta;
 import com.example.gerardo.miestacionamiento.model.Usuario;
-import com.example.gerardo.miestacionamiento.model.Vehiculo;
 import com.example.gerardo.miestacionamiento.view.adapter.EstacionamientoAdapter;
 import com.example.gerardo.miestacionamiento.view.adapter.TarjetaAdapter;
 

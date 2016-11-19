@@ -33,4 +33,6 @@
     <color name="quintoSlideIntro">#2196F3</color>
     <color name="sextoSlideIntro">#009688</color>
 
+    <color name="editTextWhiteTransparent">#ebffffff</color>
+
 </resources>

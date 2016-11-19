@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@drawable/bg_dialog"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fijar tiempo de estancia"
+        android:layout_gravity="center"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:text="Fecha de llegada"
+        android:layout_marginTop="20dp"
+        android:textSize="16dp"/>
+
+    <TextView
+        android:id="@+id/dialog_estancia_txt_llegada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="21:00 Miercoles 21 de Octubre"
+        android:drawableLeft="@drawable/ic_calendar"
+        android:gravity="center_vertical"
+        android:drawableStart="@drawable/ic_calendar"
+        android:drawablePadding="6dp"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:text="Fecha de salida"
+        android:layout_marginTop="10dp"
+        android:textSize="16dp"/>
+
+    <TextView
+        android:id="@+id/dialog_estancia_txt_salida"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_calendar"
+        android:gravity="center_vertical"
+        android:drawableStart="@drawable/ic_calendar"
+        android:drawablePadding="6dp"
+        android:text="21:00 Miercoles 21 de Octubre"
+        android:layout_marginTop="5dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/dialog_estancia_btn_cancelar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="-4dp"
+            android:layout_marginEnd="-4dp"
+            android:background="@drawable/btn_back_top_border"
+            android:text="Cancelar"
+            android:textColor="@color/colorPrimaryText"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/dialog_estancia_btn_aceptar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-4dp"
+            android:layout_marginStart="-4dp"
+            android:background="@drawable/btn_back_top__left_border"
+            android:text="Aceptar"
+            android:textColor="@color/colorPrimaryText"
+            android:layout_weight="1"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

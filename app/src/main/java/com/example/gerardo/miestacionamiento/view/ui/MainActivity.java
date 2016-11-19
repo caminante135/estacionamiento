@@ -18,7 +18,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,13 +26,11 @@ import android.widget.TextView;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
-import com.example.gerardo.miestacionamiento.model.Tarjeta;
-import com.example.gerardo.miestacionamiento.model.Vehiculo;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.MapFragment;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.MiCuentaFragment;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.PreferenciasFragment;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
-import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
+import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
 import com.google.android.gms.maps.GoogleMap;
 
 import java.util.List;

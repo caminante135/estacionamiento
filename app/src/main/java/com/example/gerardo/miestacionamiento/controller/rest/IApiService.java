@@ -1,5 +1,6 @@
 package com.example.gerardo.miestacionamiento.controller.rest;
 
+import com.example.gerardo.miestacionamiento.model.Marca;
 import com.example.gerardo.miestacionamiento.model.RegistroFullUsuario;
 import com.example.gerardo.miestacionamiento.model.ResponseAllEstacionamientos;
 import com.example.gerardo.miestacionamiento.model.ResponseLogin;
@@ -7,6 +8,7 @@ import com.example.gerardo.miestacionamiento.model.Usuario;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -29,5 +31,13 @@ public interface IApiService {
     @POST(ApiConstants.URL_REGISTRAR_USUARIO)
     Call<RegistroFullUsuario.ResponseRegistroFull> registrarFullUsuario(@Body RegistroFullUsuario registroFullUsuario);
 
+//    @POST(ApiConstants.URL_GET_MARCAS_VEHICULO)
+//    Call<List<Marca>> getMarcasVehiculo();
+
+    @POST(ApiConstants.URL_GET_MARCAS_VEHICULO)
+    Call<ResponseBody> getMarcasVehiculo();
+
+    @POST(ApiConstants.URL_GET_MODELO_VEHICULO)
+    Call<ResponseBody> getModeloVehiculo();
 
 }

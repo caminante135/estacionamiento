@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,11 +14,9 @@ import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
-import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
+import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
 import com.example.gerardo.miestacionamiento.controller.util.RunnableArgs;
 import com.example.gerardo.miestacionamiento.view.intro.IntroActivty;
-
-import org.joda.time.LocalDate;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -76,7 +73,8 @@ public class LoginActivity extends AppCompatActivity {
         thread.start();
         //CARGO LAS COMUNAS
         GlobalFunction.cargarComunas(this);
-
+        GlobalFunction.cargarMarcasVehiculo(this);
+        GlobalFunction.cargarModelosVehiculo(this);
     }
 
     @OnClick(R.id.btn_login)

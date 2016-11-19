@@ -1,12 +1,12 @@
-package com.example.gerardo.miestacionamiento.view.ui.fragment;
-
+package com.example.gerardo.miestacionamiento.view.ui.dialog;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
-import com.example.gerardo.miestacionamiento.view.ui.MainActivity;
+import com.example.gerardo.miestacionamiento.view.ui.fragment.ResumenFragment;
 import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
 
 import java.util.Date;
@@ -24,42 +24,33 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Created by Gerardo on 17/11/2016.
  */
-public class EstanciaFragment extends Fragment {
+public class EstanciaDialog extends DialogFragment {
+
+    @Bind(R.id.dialog_estancia_txt_llegada)
+    TextView txtLlegada;
+    @Bind(R.id.dialog_estancia_txt_salida)
+    TextView txtSalida;
+    @Bind(R.id.dialog_estancia_btn_cancelar)
+    Button btnCancelar;
+    @Bind(R.id.dialog_estancia_btn_aceptar)
+    Button btnAceptar;
 
     private static final String TAG_DATETIME_FRAGMENT = "TAG_DATETIME_FRAGMENT";
-
-
-    @Bind(R.id.txt_estancia_fecha_llegada)
-    TextView mFechaLlegada;
-    @Bind(R.id.txt_estancia_fecha_salida)
-    TextView mFechaSalida;
-    @Bind(R.id.txt_estancia_cantidad)
-    TextView mCantidadHoras;
-    @Bind(R.id.btn_estancia_aceptar)
-    Button mBtnAceptar;
-
     SwitchDateTimeDialogFragment dateTimeDialogFragment;
     String rutUsuario;
     int idEstacio;
     int cantH;
     String fechaHoraLlegada, fechaHoraSalida;
 
-    public EstanciaFragment() {
-        // Required empty public constructor
-    }
-
-    public static EstanciaFragment newInstance(String usuario, int est) {
-        EstanciaFragment fragment = new EstanciaFragment();
+    public static EstanciaDialog newInstance(String usuario, int est) {
+        EstanciaDialog dialog = new EstanciaDialog();
         Bundle b = new Bundle();
-//        b.putDouble("latitud", coordenadas.latitude);
-//        b.putDouble("longitud", coordenadas.longitude);
         b.putString(GlobalConstant.BUNDLE_RUT_USUARIO,usuario);
         b.putInt(GlobalConstant.BUNDLE_ID_ESTACIO,est);
-        fragment.setArguments(b);
-        return fragment;
-
+        dialog.setArguments(b);
+        return dialog;
     }
 
     @Override
@@ -79,23 +70,15 @@ public class EstanciaFragment extends Fragment {
         Bundle args = getArguments();
         rutUsuario = args.getString(GlobalConstant.BUNDLE_RUT_USUARIO,"");
         idEstacio = args.getInt(GlobalConstant.BUNDLE_ID_ESTACIO,0);
-
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_estancia, container, false);
-
-
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.dialog_estancia, container, false);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         ButterKnife.bind(this, root);
         return root;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        MainActivity.txtToolbar.setText("Tiempo de Estancia");
     }
 
     @Override
@@ -104,11 +87,12 @@ public class EstanciaFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.btn_estancia_aceptar)
+    @OnClick(R.id.dialog_estancia_btn_aceptar)
     public void onClick() {
         if (cantH > 0){
+
             getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
-                    .replace(R.id.frame,ResumenFragment.newInstance(
+                    .replace(R.id.frame, ResumenFragment.newInstance(
                             rutUsuario, idEstacio,cantH, fechaHoraLlegada,fechaHoraSalida))
                     .commitAllowingStateLoss();
         }else{
@@ -118,7 +102,7 @@ public class EstanciaFragment extends Fragment {
 
     }
 
-    @OnClick(R.id.txt_estancia_fecha_llegada)
+    @OnClick(R.id.dialog_estancia_txt_llegada)
     public void definirLlegada() {
         dateTimeDialogFragment.show(getActivity().getSupportFragmentManager(),TAG_DATETIME_FRAGMENT);
 
@@ -126,7 +110,7 @@ public class EstanciaFragment extends Fragment {
             @Override
             public void onPositiveButtonClick(Date date) {
                 String fechaTemp = GlobalFunction.formatDate(date.toString());
-                mFechaLlegada.setText(fechaTemp);
+                txtLlegada.setText(fechaTemp);
                 fechaHoraLlegada = fechaTemp;
                 setCantHoras();
             }
@@ -149,7 +133,7 @@ public class EstanciaFragment extends Fragment {
             @Override
             public void onPositiveButtonClick(Date date) {
                 String fechaTemp = GlobalFunction.formatDate(date.toString());
-                mFechaSalida.setText(fechaTemp);
+                txtSalida.setText(fechaTemp);
                 fechaHoraSalida = fechaTemp;
                 setCantHoras();
             }
@@ -166,12 +150,11 @@ public class EstanciaFragment extends Fragment {
         if (fechaHoraLlegada != null && fechaHoraSalida != null){
             cantH = GlobalFunction.hourBetweenDates(fechaHoraLlegada,fechaHoraSalida);
             if (cantH >= 0){
-                mCantidadHoras.setText(getString(R.string.cantHoras,cantH));
+//                mCantidadHoras.setText(getString(R.string.cantHoras,cantH));
             }else{
-                mCantidadHoras.setText(getString(R.string.cantHoras,"-"));
+//                mCantidadHoras.setText(getString(R.string.cantHoras,"-"));
             }
 
         }
     }
-
 }

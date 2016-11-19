@@ -6,27 +6,31 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Spinner;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
-import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
+import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
+import com.example.gerardo.miestacionamiento.model.Marca;
 import com.example.gerardo.miestacionamiento.model.Vehiculo;
-import com.example.gerardo.miestacionamiento.view.ui.MainActivity;
 import com.example.gerardo.miestacionamiento.view.ui.dialog.DialogWebPay;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.realm.Realm;
+import io.realm.Sort;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,7 +56,7 @@ public class VehiculoFragment extends Fragment {
     Button btnSiguiente;
 
     String jsonUsuario = null;
-
+    Realm realm;
 
     public VehiculoFragment() {
         // Required empty public constructor
@@ -77,9 +81,10 @@ public class VehiculoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_vehiculo, container, false);
-
-
         ButterKnife.bind(this, root);
+
+        realm = Realm.getDefaultInstance();
+        setAutoCompleteMarca();
         return root;
     }
 
@@ -100,14 +105,13 @@ public class VehiculoFragment extends Fragment {
     private String setIntentInfo() {
         Vehiculo vehiculo = new Vehiculo();
         vehiculo.setPatente(editPatente.getText().toString().trim());
-        vehiculo.setMarca(String.valueOf(1));
-        vehiculo.setModelo(String.valueOf(1));
-        vehiculo.setColor(editColor.getText().toString().trim());
+        vehiculo.setIdMarca(String.valueOf(1));
         vehiculo.setTipoVehiculo((int) spnTipo.getSelectedItemId()+1);
 
         try {
             JSONObject usuarioObject = new JSONObject(jsonUsuario);
             vehiculo.setRutUsuario(usuarioObject.getString("rutUsuario"));
+            vehiculo.setRutPropietario(usuarioObject.getString("rutUsuario"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -117,6 +121,15 @@ public class VehiculoFragment extends Fragment {
 
     }
 
+    private void setAutoCompleteMarca(){
+        final List<Marca> marcas = realm.where(Marca.class).findAllSorted("nombre", Sort.ASCENDING);
+        final String[] nombreMarcas = new String[marcas.size()];
+        for (int i = 0; i < marcas.size(); i++) {
+            nombreMarcas[i] = marcas.get(i).getNombre();
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, nombreMarcas);
+        editMarca.setAdapter(adapter);
+    }
 
     @Override
     public void onDestroyView() {

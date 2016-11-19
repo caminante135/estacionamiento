@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,17 +16,16 @@ import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
-import com.example.gerardo.miestacionamiento.controller.util.GlobalFunction;
+import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
 import com.example.gerardo.miestacionamiento.model.Usuario;
 import com.example.gerardo.miestacionamiento.view.ui.MainActivity;
+import com.example.gerardo.miestacionamiento.view.ui.dialog.EstanciaDialog;
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
-import com.google.android.gms.maps.StreetViewPanoramaFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.SupportStreetViewPanoramaFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.gson.Gson;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -130,9 +128,12 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
 
     @OnClick(R.id.btn_detalle_solicitar)
     public void solicitar(){
-        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
-                .replace(R.id.frame,EstanciaFragment.newInstance(rutUsuario,idEstacio))
-                .commitAllowingStateLoss();
+//        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
+//                .replace(R.id.frame,EstanciaFragment.newInstance(rutUsuario,idEstacio))
+//                .commitAllowingStateLoss();
+
+        EstanciaDialog dialog = EstanciaDialog.newInstance(rutUsuario,idEstacio);
+        dialog.show(getActivity().getSupportFragmentManager(),"ftEstancia");
     }
 
     private void setContentViews(){
