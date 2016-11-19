@@ -3,6 +3,7 @@ package com.example.gerardo.miestacionamiento.view.ui.dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.transition.Transition;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,8 +77,8 @@ public class EstanciaDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.dialog_estancia, container, false);
-        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         ButterKnife.bind(this, root);
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         return root;
     }
 
@@ -123,7 +124,7 @@ public class EstanciaDialog extends DialogFragment {
 
     }
 
-    @OnClick(R.id.txt_estancia_fecha_salida)
+    @OnClick(R.id.dialog_estancia_txt_salida)
     public void definirSalida() {
         dateTimeDialogFragment.show(getActivity().getSupportFragmentManager(),TAG_DATETIME_FRAGMENT);
         if (fechaHoraSalida != null){
@@ -156,5 +157,16 @@ public class EstanciaDialog extends DialogFragment {
             }
 
         }
+    }
+    
+    @Override
+    public int getTheme() {
+        return R.style.DialogAnim;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getDialog().getWindow().setLayout(GlobalFunction.ConvertDpToPx(350), ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 }

@@ -202,10 +202,11 @@ public final class GlobalFunction {
 
     //Wed Oct 19 08:27:41 GMT-03:00 2016
     public static String formatDate(String prevDate) {
-        String outputPattern = "dd/MM/yyyy HH:mm";
+//        String outputPattern = "dd/MM/yyyy HH:mm";
+        String outputPattern = "HH:mm EEEE', ' dd 'de' MMMM";
         String inputPattern = "EEE MMM dd hh:mm:ss z yyyy";
         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.US);
-        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, new Locale("es","CL"));
 
 //        inputFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
@@ -228,8 +229,9 @@ public final class GlobalFunction {
 
     //CALCULO LA CANTIDAD DE HORAS ENTRE 2 FECHAS
     public static int hourBetweenDates(String date1, String date2) {
-        String format = "dd/MM/yyyy HH:mm";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+//        String format = "dd/MM/yyyy HH:mm";
+        String format = "HH:mm EEEE', ' dd 'de' MMMM";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format,new Locale("es","CL"));
         Date fechaLlegada = null;
         Date fechaSalida = null;
 
