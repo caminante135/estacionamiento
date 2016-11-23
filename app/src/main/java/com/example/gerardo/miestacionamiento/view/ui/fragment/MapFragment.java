@@ -17,12 +17,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -31,12 +33,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codemybrainsout.placesearch.PlaceSearchDialog;
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
 import com.example.gerardo.miestacionamiento.controller.util.RunnableArgs;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
 import com.example.gerardo.miestacionamiento.model.Usuario;
+import com.example.gerardo.miestacionamiento.view.ui.InfoActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -68,9 +72,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     ImageButton btnBuscar;
     @Bind(R.id.edit_direccion_mapfragment)
     EditText editDireccion;
-    @Bind(R.id.btn_borrar_mapfragment)
-    ImageButton btnBorrar;
-
 
     GoogleMap mGoogleMap;
     SharedPreferences prefs;
@@ -78,9 +79,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private static Map<Marker, Estacionamiento> marcadores;
     LatLng coordenadasSave;
     CameraPosition cameraPosition;
+    SupportMapFragment supportMapFragment;
 
     private static final int LOCATION_REQUEST_CODE = 1;
-
 
 
     public MapFragment() {
@@ -106,11 +107,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             marcadores = new HashMap<>();
         }
 
-        SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
+        supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
         supportMapFragment.getMapAsync(this);
 
         editDireccion.addTextChangedListener(this);
-
+        setDialogSearchLocation();
         return root;
     }
 
@@ -135,6 +136,36 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         editor.putString(GlobalConstant.PREFS_LATITUD, String.valueOf(mGoogleMap.getCameraPosition().target.latitude));
         editor.putString(GlobalConstant.PREFS_LONGITUD, String.valueOf(mGoogleMap.getCameraPosition().target.longitude));
         editor.apply();
+    }
+
+    private void setDialogSearchLocation() {
+        editDireccion.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    PlaceSearchDialog dialog = new PlaceSearchDialog(getActivity(), new PlaceSearchDialog.LocationNameListener() {
+                        @Override
+                        public void locationName(String locationName) {
+                            LatLng coordenadas = GlobalFunction.getCoordinatesFromAddress(getActivity(),locationName);
+                            if (coordenadas != null){
+                                cameraPosition = CameraPosition.builder()
+                                        .target(coordenadas)
+                                        .zoom(15)
+                                        .build();
+                                mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+                                mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                                editDireccion.setText(locationName);
+                            } else {
+                                Toast.makeText(getActivity(), "Dirección no encontrada", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    dialog.show();
+                }
+
+                return true; //TRUE ESCONDE EL TECLADO, FALSE LO DEJA ABIERTO
+            }
+        });
     }
 
 
@@ -225,9 +256,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             realm.commitTransaction();
         }
 
-        DetalleFragment fragment = DetalleFragment.newInstance(marker.getPosition(), user, est);
+//        DetalleFragment fragment = DetalleFragment.newInstance(marker.getPosition(), user.getRut(), est.getIdEstacionamiento());
 
-        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.frame, fragment).commit();
+        Intent intent = new Intent(getActivity(), InfoActivity.class);
+        intent.putExtra(GlobalConstant.BUNDLE_RUT_USUARIO,user.getRut());
+        intent.putExtra(GlobalConstant.BUNDLE_ID_ESTACIO,est.getIdEstacionamiento());
+        intent.putExtra(GlobalConstant.PREFS_LATITUD,marker.getPosition().latitude);
+        intent.putExtra(GlobalConstant.PREFS_LONGITUD,marker.getPosition().longitude);
+        startActivity(intent);
+
+//        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.frame, fragment,"ftMap").commit();
     }
 
     @Override
@@ -407,6 +445,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        SupportMapFragment fragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
+        if (fragment!=null){
+            FragmentTransaction ft = getActivity().getSupportFragmentManager()
+                    .beginTransaction();
+            ft.remove(fragment);
+            ft.commit();
+        }
+
     }
 
     @Override
@@ -421,10 +467,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     @Override
     public void afterTextChanged(Editable editable) {
-        if (!editable.toString().equals("")){
-            if (editable.toString().length()==1){
-                btnBuscar.setVisibility(View.VISIBLE);
-                btnBorrar.setVisibility(View.VISIBLE);
+        if (!editable.toString().equals("")) {
+            if (editable.toString().length() == 1) {
+//                btnBuscar.setVisibility(View.VISIBLE);
+//                btnBorrar.setVisibility(View.VISIBLE);
             }
 //            Animation fadeIn = new AlphaAnimation(0,1);
 //            fadeIn.setInterpolator(new DecelerateInterpolator());
@@ -476,34 +522,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 //            btnBuscar.setAnimation(animation);
 //            btnBuscar.startAnimation(animation);
 
-        }else{
-            btnBuscar.setVisibility(View.GONE);
-            btnBorrar.setVisibility(View.GONE);
+        } else {
+//            btnBuscar.setVisibility(View.GONE);
+//            btnBorrar.setVisibility(View.GONE);
         }
     }
 
-    @OnClick(R.id.btn_buscar_mapfragment)
-    public void buscarDireccion(){
-        LatLng coordenadas = GlobalFunction.getCoordinatesFromAddress(getActivity(),editDireccion.getText().toString());
-        GlobalFunction.hideKeyboardFrom(getActivity(),editDireccion);
-        if (coordenadas != null){
-            cameraPosition = CameraPosition.builder()
-                    .target(coordenadas)
-                    .zoom(15)
-                    .build();
-            mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-            mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        }else{
-            Toast.makeText(getActivity(), "Dirección no encontrada", Toast.LENGTH_SHORT).show();
-        }
-    }
 
-    @OnClick(R.id.btn_borrar_mapfragment)
-    public void borrarTexto(){
-        if (editDireccion.getText().toString().length() > 0){
-            editDireccion.setText("");
-            editDireccion.clearFocus();
-        }
-    }
+
 
 }

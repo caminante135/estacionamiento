@@ -107,11 +107,11 @@ public class VehiculoFragment extends Fragment {
         vehiculo.setPatente(editPatente.getText().toString().trim());
         vehiculo.setIdMarca(String.valueOf(1));
         vehiculo.setTipoVehiculo((int) spnTipo.getSelectedItemId()+1);
-
+        vehiculo.setRutPropietario("170992210");
         try {
             JSONObject usuarioObject = new JSONObject(jsonUsuario);
             vehiculo.setRutUsuario(usuarioObject.getString("rutUsuario"));
-            vehiculo.setRutPropietario(usuarioObject.getString("rutUsuario"));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

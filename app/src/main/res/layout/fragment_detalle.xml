@@ -339,7 +339,7 @@
                 android:isIndicator="true"
                 android:numStars="5"
                 android:progressTint="@color/colorPrimary"
-                android:rating="4"
+                android:rating="0"
                 android:scaleX="0.7"
                 android:scaleY="0.7"
                 android:textSize="18dp" />
@@ -368,7 +368,7 @@
                     android:layout_marginTop="20dp"
                     android:background="@drawable/btn_bg"
                     android:text="Solicitar"
-                    android:textColor="@color/colorPrimaryText"
+                    android:textColor="@color/white"
                     android:textSize="16dp" />
 
                 <View

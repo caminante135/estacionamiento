@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +21,7 @@ import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
 import com.example.gerardo.miestacionamiento.model.Usuario;
+import com.example.gerardo.miestacionamiento.view.ui.InfoActivity;
 import com.example.gerardo.miestacionamiento.view.ui.MainActivity;
 import com.example.gerardo.miestacionamiento.view.ui.dialog.EstanciaDialog;
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
@@ -74,16 +77,16 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
     int idEstacio;
 
 
-    public static DetalleFragment newInstance(LatLng coordenadas, Usuario usuario, Estacionamiento est) {
+    public static DetalleFragment newInstance(LatLng coordenadas, String rutUsuario, Integer IdEst) {
         DetalleFragment fragment = new DetalleFragment();
         Bundle b = new Bundle();
         b.putDouble("latitud", coordenadas.latitude);
         b.putDouble("longitud", coordenadas.longitude);
-        if (usuario!= null){
-            b.putString(GlobalConstant.BUNDLE_RUT_USUARIO,usuario.getRut());
+        if (rutUsuario!= null){
+            b.putString(GlobalConstant.BUNDLE_RUT_USUARIO,rutUsuario);
         }
-        if (est != null){
-            b.putInt(GlobalConstant.BUNDLE_ID_ESTACIO,est.getIdEstacionamiento());
+        if (IdEst != null){
+            b.putInt(GlobalConstant.BUNDLE_ID_ESTACIO,IdEst);
         }
         fragment.setArguments(b);
         return fragment;
@@ -109,12 +112,12 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
 //        getStreetViewPanoramaAsync(this);
         setContentViews();
 
+
         SupportStreetViewPanoramaFragment streetViewPanoramaFragment =
                 (SupportStreetViewPanoramaFragment) getChildFragmentManager()
                         .findFragmentById(R.id.street_view);
         streetViewPanoramaFragment.getStreetViewPanoramaAsync(this);
 
-        setTouchEvent();
 
         return root;
     }
@@ -122,7 +125,10 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        MainActivity.txtToolbar.setText("Detalle Estacionamiento");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Información");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setTouchEvent();
 
     }
 
@@ -220,4 +226,21 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
             }
         });
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+//        try {
+//            Fragment fragment = (getFragmentManager()
+//                    .findFragmentById(R.id.street_view));
+//            FragmentTransaction ft = getActivity().getSupportFragmentManager()
+//                    .beginTransaction();
+//            ft.remove(fragment);
+//            ft.commit();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    }
+
 }

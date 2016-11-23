@@ -117,6 +117,9 @@ Mi Estacionamiento velará en todo momento por el respeto del ordenamiento jurí
     <string name="hintContraseña">Contraseña</string>
     <string name="hintEmail">Email</string>
     <string name="hintLargo">Largo del vehiculo</string>
-    <string name="hintEditTextMap"><i>Buscar dirección</i></string>
+    <string name="hintEditTextMap"><i>Buscar dirección, comuna o lugar</i></string>
+    <string name="enter_location_hint">Ingresa la dirección</string>
+    <string name="cancel">CANCELAR</string>
+    <string name="title_activity_info">InfoActivity</string>
 
 </resources>

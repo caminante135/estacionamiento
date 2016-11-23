@@ -1,7 +1,11 @@
 package com.example.gerardo.miestacionamiento.view.ui.dialog;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
@@ -15,9 +19,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
-import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
+import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
+import com.example.gerardo.miestacionamiento.model.Estacionamiento;
 import com.example.gerardo.miestacionamiento.model.Tarjeta;
+import com.example.gerardo.miestacionamiento.view.ui.MainActivity;
 
 import java.util.List;
 
@@ -40,11 +46,13 @@ public class PagoDialog extends DialogFragment {
     Button pagar;
 
     String rutUsuario;
+    @Bind(R.id.btn_dialog_test)
+    Button btnTest;
 
     public static PagoDialog newInstance(String rutUsuario) {
         PagoDialog dialog = new PagoDialog();
         Bundle b = new Bundle();
-        b.putString(GlobalConstant.BUNDLE_RUT_USUARIO,rutUsuario);
+        b.putString(GlobalConstant.BUNDLE_RUT_USUARIO, rutUsuario);
         dialog.setArguments(b);
         return dialog;
     }
@@ -53,7 +61,7 @@ public class PagoDialog extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        rutUsuario = args.getString(GlobalConstant.BUNDLE_RUT_USUARIO,"");
+        rutUsuario = args.getString(GlobalConstant.BUNDLE_RUT_USUARIO, "");
     }
 
     @Nullable
@@ -68,22 +76,31 @@ public class PagoDialog extends DialogFragment {
         return root;
     }
 
+    private String getDireccionByRut(String rut){
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        Estacionamiento est = realm.where(Estacionamiento.class).equalTo("rutUsuario",rut).findFirst();
+        realm.commitTransaction();
+
+        return est.getDireccionEstacionamiento();
+    }
+
     private void setSpinner() {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        List<Tarjeta> tarjetas = realm.where(Tarjeta.class).equalTo("rutUsuario",rutUsuario).findAll();
+        List<Tarjeta> tarjetas = realm.where(Tarjeta.class).equalTo("rutUsuario", rutUsuario).findAll();
         realm.commitTransaction();
         String[] medios = new String[tarjetas.size()];
         for (int i = 0; i < tarjetas.size(); i++) {
             String nombreTarjeta = "";
             int tipoTarjeta = tarjetas.get(i).getTipoTarjeta();
-            if (tipoTarjeta == GlobalConstant.TARJETA_TIPO_MC){
+            if (tipoTarjeta == GlobalConstant.TARJETA_TIPO_MC) {
                 nombreTarjeta = "MasterCard";
-            }else{
-                if (tipoTarjeta == GlobalConstant.TARJETA_TIPO_VISA){
+            } else {
+                if (tipoTarjeta == GlobalConstant.TARJETA_TIPO_VISA) {
                     nombreTarjeta = "VISA";
-                }else{
-                    if (tipoTarjeta == GlobalConstant.TARJETA_TIPO_AE){
+                } else {
+                    if (tipoTarjeta == GlobalConstant.TARJETA_TIPO_AE) {
                         nombreTarjeta = "American Express";
                     }
                 }
@@ -95,9 +112,8 @@ public class PagoDialog extends DialogFragment {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_text, medios);
         mSpnTarjetas.setAdapter(adapter);
-//        ArrayAdapter<CharSequence> langAdapter = new ArrayAdapter<CharSequence>(getActivity(), R.layout.spinner_text, years );
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);
-//        mSpnTarjetas.setAdapter(langAdapter);
+
     }
 
     @Override
@@ -115,13 +131,46 @@ public class PagoDialog extends DialogFragment {
     }
 
     @OnClick(R.id.btn_cerrar_dialog_paagar)
-    public void cerrar(){
+    public void cerrar() {
         dismissAllowingStateLoss();
     }
 
     @OnClick(R.id.btn_dialog_pagar)
-    public void pagar(){
-        Toast.makeText(getActivity(), "Ya pagaste :D!", Toast.LENGTH_SHORT).show();
+    public void pagar() {
+
+
+        new CountDownTimer(10000, 1000) {
+
+            @Override
+            public void onTick(long l) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                Toast.makeText(getActivity(), "ARRIENDO TERMINADO", Toast.LENGTH_SHORT).show();
+            }
+        }.start();
+    }
+
+    @OnClick(R.id.btn_dialog_test)
+    public void test(){
+        final ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setCancelable(false);
+        dialog.setTitle("Validando Pago");
+        dialog.setMessage("Espere un momento...");
+        dialog.show();
+        Handler mHandler = new Handler();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+            dialog.dismiss();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.putExtra("notificacion",true);
+                intent.putExtra("direccion",getDireccionByRut(rutUsuario));
+                startActivity(intent);
+            }
+        },3000);
     }
 
 }

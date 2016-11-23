@@ -1,18 +1,25 @@
 package com.example.gerardo.miestacionamiento.view.ui;
 
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -26,6 +33,7 @@ import android.widget.TextView;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
+import com.example.gerardo.miestacionamiento.view.ui.fragment.DetalleFragment;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.MapFragment;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.MiCuentaFragment;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.PreferenciasFragment;
@@ -69,6 +77,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
+
+    BroadcastReceiver mMessageReceiver;
+    static String ns = Context.NOTIFICATION_SERVICE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,12 +131,52 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         disableCollapse();
 
+        mMessageReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                long[] s = { 0, 100, 10, 500, 10, 100, 0, 500, 10, 100, 10, 500 };
+                vibrator.vibrate(s, -1);
+            }
+        };
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter("name"));
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null){
+            boolean isNot = extras.getBoolean("notificacion");
+            if (isNot){
+                String direccion = extras.getString("direccion");
+                crearNotificacion(direccion);
+            }
+        }
+
+    }
+
+    private void crearNotificacion(String direccion) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.logoappsintitulo);
+        NotificationManager manager = (NotificationManager) getSystemService(ns);
+        Notification noti = new Notification.Builder(this)
+                .setContentTitle("Tu periodo de arriendo comenzó")
+                .setContentText(String.format("Dirección: %s",direccion))
+                .setSmallIcon(R.drawable.logoappsintitulo)
+                .setLargeIcon(bitmap)
+                .build();
+        manager.notify(1,noti);
+
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         syncFrags();
+//        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame);
+//        if (fragment instanceof MapFragment){
+//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.frame, fragment);
+//            ft.commit();
+//        }
+
     }
 
     private void syncFrags() {
@@ -164,6 +215,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     public void displayView(int viewId) {
         String title = null;
@@ -218,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.frame, fragment);
-            ft.addToBackStack(null);
+//            ft.addToBackStack(null);
             ft.commit();
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
