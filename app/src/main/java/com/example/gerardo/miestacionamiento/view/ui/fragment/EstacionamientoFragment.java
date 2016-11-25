@@ -193,7 +193,7 @@ public class EstacionamientoFragment extends Fragment {
                     spnComuna.getSelectedItem().toString()));
             if (latLng != null) {
                 String jsonEst = setIntentInfo(latLng);
-                DialogWebPay fragment = DialogWebPay.newInstance(jsonUsuario, null, jsonEst);
+                DialogWebPay fragment = DialogWebPay.newInstance(jsonUsuario, null, jsonEst,rgTipo.getCheckedRadioButtonId());
                 fragment.show(getActivity().getSupportFragmentManager(), "webpayFragment");
             }else{
                 Toast.makeText(getActivity(), "La dirección no se pudo encontrar", Toast.LENGTH_SHORT).show();

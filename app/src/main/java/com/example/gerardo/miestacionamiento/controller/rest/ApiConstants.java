@@ -14,12 +14,14 @@ public class ApiConstants {
     public static final String PATH_ESTACIONAMIENTO = "/estacionamiento";
     public static final String PATH_MARCA_VEHICULO = "/marcaVehiculo";
     public static final String PATH_MODELO_VEHICULO = "/modelo";
+    public static final String PATH_ARRIENDO = "/arriendo";
 
     //Metodos
     public static final String PATH_LOGIN = "/loginFull";
     public static final String PATH_ALL_ESTACIONAMIENTOS = "/selectAllEstAndOwners";
     public static final String PATH_REGISTRAR_USUARIO = "/insertFull";
     public static final String PATH_SELECT_ALL = "/selectAll";
+    public static final String PATH_INSERT_TRANSACTION = "/insertAndTransaccion";
 
     //PARAMETROS
     public static final String PARAM_RUT = "rut";
@@ -31,5 +33,6 @@ public class ApiConstants {
     public static final String URL_REGISTRAR_USUARIO = PATH_MI_EST_WEB+PATH_USUARIO+PATH_REGISTRAR_USUARIO;
     public static final String URL_GET_MARCAS_VEHICULO = PATH_MI_EST_WEB+ PATH_MARCA_VEHICULO+PATH_SELECT_ALL;
     public static final String URL_GET_MODELO_VEHICULO = PATH_MI_EST_WEB+PATH_MODELO_VEHICULO+PATH_SELECT_ALL;
+    public static final String URL_INSERT_TRANSACTION = PATH_MI_EST_WEB+PATH_ARRIENDO+PATH_INSERT_TRANSACTION;
 
 }

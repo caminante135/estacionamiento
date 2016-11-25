@@ -35,4 +35,6 @@
 
     <color name="editTextWhiteTransparent">#ebffffff</color>
 
+    <color name="back_webpay">#efeff0</color>
+
 </resources>

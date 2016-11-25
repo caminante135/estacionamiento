@@ -1,5 +1,6 @@
 package com.example.gerardo.miestacionamiento.controller.rest;
 
+import com.example.gerardo.miestacionamiento.model.FullTransaccionArriendo;
 import com.example.gerardo.miestacionamiento.model.Marca;
 import com.example.gerardo.miestacionamiento.model.RegistroFullUsuario;
 import com.example.gerardo.miestacionamiento.model.ResponseAllEstacionamientos;
@@ -39,5 +40,9 @@ public interface IApiService {
 
     @POST(ApiConstants.URL_GET_MODELO_VEHICULO)
     Call<ResponseBody> getModeloVehiculo();
+
+    @POST(ApiConstants.URL_INSERT_TRANSACTION)
+     Call<?> insertTransaction(@Body FullTransaccionArriendo full);
+
 
 }

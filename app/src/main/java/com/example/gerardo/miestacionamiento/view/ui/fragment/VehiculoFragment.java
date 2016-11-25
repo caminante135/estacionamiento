@@ -97,7 +97,7 @@ public class VehiculoFragment extends Fragment {
 
     @OnClick(R.id.btN_vehiculo_siguiente)
     public void sendData() {
-        DialogWebPay fragment = DialogWebPay.newInstance(jsonUsuario, setIntentInfo(), null);
+        DialogWebPay fragment = DialogWebPay.newInstance(jsonUsuario, setIntentInfo(), null,null);
         fragment.show(getActivity().getSupportFragmentManager(), "webpayFragment");
     }
 

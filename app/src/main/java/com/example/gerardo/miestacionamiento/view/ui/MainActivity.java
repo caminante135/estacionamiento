@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -34,6 +35,7 @@ import android.widget.TextView;
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.DetalleFragment;
+import com.example.gerardo.miestacionamiento.view.ui.fragment.HistorialFragment;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.MapFragment;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.MiCuentaFragment;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.PreferenciasFragment;
@@ -146,14 +148,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (extras != null){
             boolean isNot = extras.getBoolean("notificacion");
             if (isNot){
-                String direccion = extras.getString("direccion");
-                crearNotificacion(direccion);
+                final String direccion = extras.getString("direccion");
+                crearNotificacionInicio(direccion);
+                crearNotificacionPagoExito(direccion);
+
+                new CountDownTimer(20000, 1000) {
+
+                    @Override
+                    public void onTick(long l) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        crearNotificacionTermino(direccion);
+                    }
+                }.start();
+
+
             }
         }
 
     }
 
-    private void crearNotificacion(String direccion) {
+    private void crearNotificacionInicio(String direccion) {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.logoappsintitulo);
         NotificationManager manager = (NotificationManager) getSystemService(ns);
         Notification noti = new Notification.Builder(this)
@@ -162,8 +180,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setSmallIcon(R.drawable.logoappsintitulo)
                 .setLargeIcon(bitmap)
                 .build();
+        manager.notify(2,noti);
+
+    }
+
+    private void crearNotificacionPagoExito(String direccion) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.logoappsintitulo);
+        NotificationManager manager = (NotificationManager) getSystemService(ns);
+        Notification noti = new Notification.Builder(this)
+                .setContentTitle("Pago realizado con éxito")
+                .setContentText(String.format("Dirección: %s",direccion))
+                .setSmallIcon(R.drawable.logoappsintitulo)
+                .setLargeIcon(bitmap)
+                .build();
         manager.notify(1,noti);
 
+    }
+
+    private void crearNotificacionTermino(String direccion){
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.logoappsintitulo);
+        NotificationManager manager = (NotificationManager) getSystemService(ns);
+        Notification noti = new Notification.Builder(this)
+                .setContentTitle("Tu periodo de arriendo Finalizó")
+                .setContentText(String.format("Dirección: %s",direccion))
+                .setSmallIcon(R.drawable.logoappsintitulo)
+                .setLargeIcon(bitmap)
+                .build();
+        manager.notify(3,noti);
     }
 
     @Override
@@ -235,6 +278,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 enableCollapse();
                 break;
             case R.id.nav_historial:
+                fragment = new HistorialFragment();
                 title = "Historial";
                 disableCollapse();
                 break;

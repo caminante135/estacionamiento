@@ -133,7 +133,7 @@ public class ResumenFragment extends Fragment {
     @OnClick(R.id.btn_resumen_aceptar)
     public void onClick() {
         if (mCheckTerminos.isChecked()) {
-            PagoDialog dialog = PagoDialog.newInstance(rutUsuario);
+            PagoDialog dialog = PagoDialog.newInstance(rutUsuario,cantHoras,fechaInicio,fechaTermino);
             dialog.show(getActivity().getSupportFragmentManager(), "fragment");
         } else {
             Toast.makeText(getActivity(), "Debes aceptar los Términos y Condiciones", Toast.LENGTH_SHORT).show();
@@ -148,16 +148,14 @@ public class ResumenFragment extends Fragment {
         realm.commitTransaction();
 
         if (est != null){
-            txtDireccionComuna.setText(getActivity().getResources().getString(R.string.resumenDireccionComuna,
-                    est.getDireccionEstacionamiento(),"San Joaquin"));
-            txtMontoHora.setText(getActivity().getResources().getString(R.string.resumenMontoHora,est.getCostoHora()));
+            txtDireccionComuna.setText(est.getDireccionEstacionamiento()+", "+GlobalFunction.getComunaNombrebyID(est.getIdComuna()));
+            txtMontoHora.setText("$"+est.getCostoHora());
             int costo = est.getCostoHora()*cantHoras;
             txtTotalCosto.setText(getActivity().getResources().getString(R.string.resumenTotalCosto,costo));
         }
         if (usuario!=null){
-            txtnombreApellido.setText(getActivity().getResources().getString(R.string.resumenDueño,
-                    usuario.getNombre(),usuario.getApellidoPaterno(),usuario.getApellidoMaterno()));
-            txtCorreo.setText(getActivity().getResources().getString(R.string.resumenCorreo,usuario.getCorreo()));
+            txtnombreApellido.setText(usuario.getNombre()+" "+usuario.getApellidoPaterno()+" "+usuario.getApellidoMaterno());
+            txtCorreo.setText(usuario.getCorreo());
 
         }
         txtFechaInicio.setText(getActivity().getResources().getString(R.string.resumenFechaInicio,fechaInicio));

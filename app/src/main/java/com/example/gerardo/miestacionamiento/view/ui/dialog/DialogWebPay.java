@@ -53,12 +53,13 @@ public class DialogWebPay extends DialogFragment {
     String jsonUsuario;
     String jsonVehiculo;
     String jsonEstacionamiento;
+    Integer tipoResidencia;
 
     public DialogWebPay() {
     }
 
     public static DialogWebPay newInstance(String jsonUsuario, @Nullable String jsonVehiculo,
-                                           @Nullable String jsonEstacionamiento){
+                                           @Nullable String jsonEstacionamiento,@Nullable Integer tipoResidencia){
         DialogWebPay dialogWebPay = new DialogWebPay();
         Bundle b = new Bundle();
         b.putString(GlobalConstant.BUNDLE_USUARIO, jsonUsuario);
@@ -68,7 +69,9 @@ public class DialogWebPay extends DialogFragment {
         if (jsonEstacionamiento != null){
             b.putString(GlobalConstant.BUNDLE_ESTACIO, jsonEstacionamiento);
         }
-
+        if (tipoResidencia != null){
+            b.putInt("tipoResidencia",tipoResidencia);
+        }
         dialogWebPay.setArguments(b);
 
         return dialogWebPay;
@@ -82,6 +85,7 @@ public class DialogWebPay extends DialogFragment {
         jsonUsuario = args.getString(GlobalConstant.BUNDLE_USUARIO,"");
         jsonVehiculo = args.getString(GlobalConstant.BUNDLE_VEHICULO,"");
         jsonEstacionamiento = args.getString(GlobalConstant.BUNDLE_ESTACIO,"");
+        tipoResidencia = args.getInt("tipoResidencia",1);
     }
 
 
@@ -136,6 +140,7 @@ public class DialogWebPay extends DialogFragment {
                 r.setVehiculo(vehiculo);
                 r.setEstacionamiento(estacionamiento);
                 r.setTarjeta(tarjeta);
+                r.setTipoResidencia(tipoResidencia);
 
                 Call<RegistroFullUsuario.ResponseRegistroFull> response = ApiAdapter.getApiService().registrarFullUsuario(r);
                 response.enqueue(new Callback<RegistroFullUsuario.ResponseRegistroFull>() {

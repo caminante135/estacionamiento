@@ -15,6 +15,8 @@ public class RegistroFullUsuario {
     Vehiculo vehiculo;
     @SerializedName("tarjeta")
     Tarjeta tarjeta;
+    @SerializedName("tipoResidencia")
+    Integer tipoResidencia;
 
 
     public RegistroFullUsuario() {
@@ -52,10 +54,18 @@ public class RegistroFullUsuario {
         this.tarjeta = tarjeta;
     }
 
-    public class ResponseRegistroFull{
-           @SerializedName("msg")
+    public Integer getTipoResidencia() {
+        return tipoResidencia;
+    }
+
+    public void setTipoResidencia(Integer tipoResidencia) {
+        this.tipoResidencia = tipoResidencia;
+    }
+
+    public class ResponseRegistroFull {
+        @SerializedName("msg")
         public String response;
-        @SerializedName("response")
+        @SerializedName("errorMsg")
         public String mensaje;
 
         public ResponseRegistroFull() {

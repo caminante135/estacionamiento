@@ -120,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             };
             GlobalFunction.loginConnect(LoginActivity.this, email, pass, runnableArgs);
+//            startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
         } else {
             Toast.makeText(LoginActivity.this, "Debe ingresar todos los campos solicitados", Toast.LENGTH_SHORT).show();

@@ -23,6 +23,7 @@ import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.util.RunnableArgs;
 import com.example.gerardo.miestacionamiento.model.Comuna;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
+import com.example.gerardo.miestacionamiento.model.FullTransaccionArriendo;
 import com.example.gerardo.miestacionamiento.model.ListaEstacionamientosRealm;
 import com.example.gerardo.miestacionamiento.model.Marca;
 import com.example.gerardo.miestacionamiento.model.Modelo;
@@ -224,6 +225,27 @@ public final class GlobalFunction {
         }
 
         return str;
+
+    }
+
+    public static String formatDateArriendo(String date){
+        String outputPattern = "yyyy-MM-dd'T'hh:mm:ss";
+        String inputPattern = "HH:mm EEEE', ' dd 'de' MMMM";
+
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, new Locale("es","CL"));
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern,Locale.US);
+
+        Date newDate = null;
+        String finalDate = "";
+
+        try {
+           newDate = inputFormat.parse(date);
+            finalDate = outputFormat.format(newDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return finalDate;
 
     }
 
@@ -485,6 +507,24 @@ public final class GlobalFunction {
 
     }
 
+    //LLAMADA AL SERVICIO DE INSERT TRANSACTION
+    public static void generarTransaccion(Context context, FullTransaccionArriendo transaccionArriendo, RunnableArgs block){
+        Call<?> retroCall = ApiAdapter.getApiService().insertTransaction(transaccionArriendo);
+
+//        retroCall.enqueue(new Callback<?>() {
+//            @Override
+//            public void onResponse(Call<?> call, Response<?> response) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<?> call, Throwable t) {
+//
+//            }
+//        });
+
+    }
+
     //LLAMADA AL SERVICIO GET ESTACIONAMIENTOS
     public static void getEstacionamientos(final Context context, final RunnableArgs block) {
         Call<List<ResponseAllEstacionamientos>> retroCall = ApiAdapter.getApiService().getEstacionamientos();
@@ -547,6 +587,9 @@ public final class GlobalFunction {
 
         //USUARIO
         editor.putString(GlobalConstant.PREFS_RUT, usuario.getRut());
+        editor.putInt(GlobalConstant.PREFS_TELEFONO,usuario.getTelefono());
+        editor.putString(GlobalConstant.PREFS_CORREO,usuario.getCorreo());
+        editor.putString(GlobalConstant.PREFS_CLAVE,usuario.getContraseña());
 
         //AUTO LOGIN
         editor.putBoolean(GlobalConstant.PREFS_AUTOLOGIN, true);
