@@ -3,6 +3,7 @@ package com.example.gerardo.miestacionamiento.view.ui;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,9 +32,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
+import com.example.gerardo.miestacionamiento.view.ui.dialog.ComentarioDialog;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.DetalleFragment;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.HistorialFragment;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.MapFragment;
@@ -169,6 +172,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
 
+        if (prefs.getBoolean("dejarComentario",false)){
+            ComentarioDialog dialog = new ComentarioDialog();
+            dialog.show(getSupportFragmentManager(),"comentDialog");
+        }
+
     }
 
     private void crearNotificacionInicio(String direccion) {
@@ -199,6 +207,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void crearNotificacionTermino(String direccion){
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.logoappsintitulo);
+        Intent intent = new Intent(this,MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
+        editor.putBoolean("dejarComentario",true);
+        editor.apply();
         NotificationManager manager = (NotificationManager) getSystemService(ns);
         Notification noti = new Notification.Builder(this)
                 .setContentTitle("Tu periodo de arriendo Finalizó")
@@ -206,7 +218,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setSmallIcon(R.drawable.logoappsintitulo)
                 .setLargeIcon(bitmap)
                 .build();
+        noti.contentIntent = pendingIntent;
         manager.notify(3,noti);
+
     }
 
     @Override

@@ -508,21 +508,26 @@ public final class GlobalFunction {
     }
 
     //LLAMADA AL SERVICIO DE INSERT TRANSACTION
-    public static void generarTransaccion(Context context, FullTransaccionArriendo transaccionArriendo, RunnableArgs block){
-        Call<?> retroCall = ApiAdapter.getApiService().insertTransaction(transaccionArriendo);
+    public static void generarTransaccion(Context context, FullTransaccionArriendo transaccionArriendo, final RunnableArgs block){
+        Call<FullTransaccionArriendo.responseTransaccionArriendo> retroCall = ApiAdapter.getApiService().insertTransaction(transaccionArriendo);
 
-//        retroCall.enqueue(new Callback<?>() {
-//            @Override
-//            public void onResponse(Call<?> call, Response<?> response) {
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<?> call, Throwable t) {
-//
-//            }
-//        });
+        retroCall.enqueue(new Callback<FullTransaccionArriendo.responseTransaccionArriendo>() {
+            @Override
+            public void onResponse(Call<FullTransaccionArriendo.responseTransaccionArriendo> call, Response<FullTransaccionArriendo.responseTransaccionArriendo> response) {
+                if (block != null) {
+                    block.setResponse(GlobalConstant.RESPONSE_LOGIN_CORRECT);
+                    block.run();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<FullTransaccionArriendo.responseTransaccionArriendo> call, Throwable t) {
+                if (block != null) {
+                    block.setResponse(GlobalConstant.RESPONSE_LOGIN_CORRECT);
+                    block.run();
+                }
+            }
+        });
     }
 
     //LLAMADA AL SERVICIO GET ESTACIONAMIENTOS

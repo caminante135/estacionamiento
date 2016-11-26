@@ -133,7 +133,7 @@ public class ResumenFragment extends Fragment {
     @OnClick(R.id.btn_resumen_aceptar)
     public void onClick() {
         if (mCheckTerminos.isChecked()) {
-            PagoDialog dialog = PagoDialog.newInstance(rutUsuario,cantHoras,fechaInicio,fechaTermino);
+            PagoDialog dialog = PagoDialog.newInstance(rutUsuario,cantHoras,fechaInicio,fechaTermino,idEstacio);
             dialog.show(getActivity().getSupportFragmentManager(), "fragment");
         } else {
             Toast.makeText(getActivity(), "Debes aceptar los Términos y Condiciones", Toast.LENGTH_SHORT).show();

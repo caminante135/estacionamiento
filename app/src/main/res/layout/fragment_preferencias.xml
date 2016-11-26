@@ -24,13 +24,13 @@
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/switch_prefs_sesion"
-            android:layout_width="60dp"
+            android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:thumbTextPadding="25dp"
             android:switchMinWidth="60dp"
             android:maxHeight="20dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginStart="40dp" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp" />
 
 
     </LinearLayout>
@@ -155,5 +155,16 @@
         android:paddingStart="8dp"
         android:text="Eliminar Cuenta"
         android:textColor="@color/colorSecondaryText" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorDivider" />
 
 </LinearLayout>

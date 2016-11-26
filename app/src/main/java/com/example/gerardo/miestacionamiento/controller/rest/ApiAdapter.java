@@ -1,6 +1,7 @@
 package com.example.gerardo.miestacionamiento.controller.rest;
 
 import com.example.gerardo.miestacionamiento.controller.util.ToStringConverterFactory;
+import com.google.gson.GsonBuilder;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -25,7 +26,8 @@ public class ApiAdapter {
             Retrofit adapter = new Retrofit.Builder()
                     .baseUrl(ApiConstants.URL_BASE)
                     .client(client)
-                    .addConverterFactory(GsonConverterFactory.create())
+//                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().serializeNulls().create()))
                     .build();
 
             API_SERVICE = adapter.create(IApiService.class);

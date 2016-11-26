@@ -75,7 +75,7 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
 
     String rutUsuario;
     int idEstacio;
-
+    int estadoEstacionamiento;
 
     public static DetalleFragment newInstance(LatLng coordenadas, String rutUsuario, Integer IdEst) {
         DetalleFragment fragment = new DetalleFragment();
@@ -137,9 +137,13 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
 //        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
 //                .replace(R.id.frame,EstanciaFragment.newInstance(rutUsuario,idEstacio))
 //                .commitAllowingStateLoss();
+        if (estadoEstacionamiento == 1){
+            EstanciaDialog dialog = EstanciaDialog.newInstance(rutUsuario,idEstacio);
+            dialog.show(getActivity().getSupportFragmentManager(),"ftEstancia");
+        }else{
+            Toast.makeText(getActivity(), "Estacionamiento no disponible", Toast.LENGTH_SHORT).show();
+        }
 
-        EstanciaDialog dialog = EstanciaDialog.newInstance(rutUsuario,idEstacio);
-        dialog.show(getActivity().getSupportFragmentManager(),"ftEstancia");
     }
 
     private void setContentViews(){
@@ -150,8 +154,8 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
         realm.commitTransaction();
 
 
-
         if (est!= null){
+            estadoEstacionamiento = est.getIdEstado();
             mComuna.setText(GlobalFunction.getComunaNombrebyID(est.getIdComuna()));
             mDireccion.setText(est.getDireccionEstacionamiento());
             mTamaño.setText("Normal");

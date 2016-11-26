@@ -32,4 +32,9 @@ public class FullTransaccionArriendo {
     public void setTransaccion(Transaccion transaccion) {
         this.transaccion = transaccion;
     }
+
+    public class responseTransaccionArriendo{
+
+    }
+
 }

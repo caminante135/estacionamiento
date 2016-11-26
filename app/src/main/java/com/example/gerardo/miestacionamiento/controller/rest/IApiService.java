@@ -42,7 +42,7 @@ public interface IApiService {
     Call<ResponseBody> getModeloVehiculo();
 
     @POST(ApiConstants.URL_INSERT_TRANSACTION)
-     Call<?> insertTransaction(@Body FullTransaccionArriendo full);
+     Call<FullTransaccionArriendo.responseTransaccionArriendo> insertTransaction(@Body FullTransaccionArriendo full);
 
 
 }

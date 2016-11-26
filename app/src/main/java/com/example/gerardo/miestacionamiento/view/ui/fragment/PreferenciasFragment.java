@@ -1,9 +1,11 @@
 package com.example.gerardo.miestacionamiento.view.ui.fragment;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
+import com.example.gerardo.miestacionamiento.view.ui.LoginActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,10 +49,8 @@ public class PreferenciasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_preferencias, container, false);
-
-
-
         ButterKnife.bind(this, root);
+        handleSwitchEvent();
         return root;
     }
 
@@ -58,8 +60,7 @@ public class PreferenciasFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.switch_prefs_sesion)
-    public void onClick() {
+    private void handleSwitchEvent(){
         switchSesion.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -103,6 +104,22 @@ public class PreferenciasFragment extends Fragment {
 
     @OnClick(R.id.txt_prefs_delete)
     public void deleteAccount(){
-        Toast.makeText(getActivity(), "Eliminar Cuenta", Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = GlobalFunction.crearDialogYesNot(getActivity(), "Eliminar", "¿Desea eliminar su cuenta de Estacionate!?");
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(getActivity(), "Cuenta eliminada", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
 }

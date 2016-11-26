@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
+import com.example.gerardo.miestacionamiento.controller.util.RunnableArgs;
 import com.example.gerardo.miestacionamiento.model.Arriendo;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
 import com.example.gerardo.miestacionamiento.model.FullTransaccionArriendo;
@@ -31,6 +32,8 @@ import com.example.gerardo.miestacionamiento.model.Tarjeta;
 import com.example.gerardo.miestacionamiento.model.Transaccion;
 import com.example.gerardo.miestacionamiento.view.ui.MainActivity;
 import com.example.gerardo.miestacionamiento.view.ui.WebPayActivity;
+
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -60,18 +63,20 @@ public class PagoDialog extends DialogFragment {
     int cantHoras;
     String fechaInicio;
     String fechaTermino;
+    int idEstacionamiento;
 
     String rutArrendador;
 
     SharedPreferences prefs;
 
-    public static PagoDialog newInstance(String rutUsuario, int cantHoras, String fechaInicio, String fechaTermino) {
+    public static PagoDialog newInstance(String rutUsuario, int cantHoras, String fechaInicio, String fechaTermino, Integer idEst) {
         PagoDialog dialog = new PagoDialog();
         Bundle b = new Bundle();
         b.putString(GlobalConstant.BUNDLE_RUT_USUARIO, rutUsuario);
         b.putInt("cantHoras", cantHoras);
-        b.putString("fechaIni",fechaInicio);
-        b.putString("fechaTer",fechaTermino);
+        b.putString("fechaIni", fechaInicio);
+        b.putString("fechaTer", fechaTermino);
+        b.putInt("idEst",idEst);
         dialog.setArguments(b);
         return dialog;
     }
@@ -81,9 +86,10 @@ public class PagoDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         rutUsuario = args.getString(GlobalConstant.BUNDLE_RUT_USUARIO, "");
-        cantHoras = args.getInt("cantHoras",0);
-        fechaInicio = args.getString("fechaIni","");
-        fechaTermino = args.getString("fechaTer","");
+        cantHoras = args.getInt("cantHoras", 0);
+        fechaInicio = args.getString("fechaIni", "");
+        fechaTermino = args.getString("fechaTer", "");
+        idEstacionamiento = args.getInt("idEst",0);
     }
 
     @Nullable
@@ -93,7 +99,7 @@ public class PagoDialog extends DialogFragment {
         ButterKnife.bind(this, root);
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         prefs = getActivity().getSharedPreferences(GlobalConstant.PREFS_NAME, Context.MODE_PRIVATE);
-        rutArrendador = prefs.getString(GlobalConstant.PREFS_RUT,"");
+        rutArrendador = prefs.getString(GlobalConstant.PREFS_RUT, "");
         setSpinner();
 
         return root;
@@ -102,25 +108,17 @@ public class PagoDialog extends DialogFragment {
     private String getDireccionByRut(String rut) {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        Estacionamiento est = realm.where(Estacionamiento.class).equalTo("rutUsuario", rut).findFirst();
+        Estacionamiento est = realm.where(Estacionamiento.class).equalTo("idEstacionamiento", idEstacionamiento).findFirst();
         realm.commitTransaction();
 
         return est.getDireccionEstacionamiento();
     }
 
-    private Integer getIdEstacionamiento(String rut) {
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        Estacionamiento est = realm.where(Estacionamiento.class).equalTo("rutUsuario", rut).findFirst();
-        realm.commitTransaction();
-
-        return est.getIdEstacionamiento();
-    }
 
     private Integer getCostoHora(String rut) {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        Estacionamiento est = realm.where(Estacionamiento.class).equalTo("rutUsuario", rut).findFirst();
+        Estacionamiento est = realm.where(Estacionamiento.class).equalTo("idEstacionamiento", idEstacionamiento).findFirst();
         realm.commitTransaction();
 
         return est.getCostoHora();
@@ -202,51 +200,81 @@ public class PagoDialog extends DialogFragment {
     @OnClick(R.id.btn_dialog_test)
     public void test() {
 
-
         final ProgressDialog dialog = new ProgressDialog(getActivity());
         dialog.setCancelable(false);
         dialog.setTitle("Validando Pago");
         dialog.setMessage("Espere un momento...");
         dialog.show();
-        Handler mHandler = new Handler();
-        mHandler.postDelayed(new Runnable() {
+
+        final RunnableArgs runnableArgs = new RunnableArgs() {
             @Override
             public void run() {
                 dialog.dismiss();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.putExtra("notificacion", true);
-                intent.putExtra("direccion", getDireccionByRut(rutUsuario));
-                startActivity(intent);
+                if (this.getResponse() == GlobalConstant.RESPONSE_LOGIN_CORRECT) {
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra("notificacion", true);
+                    intent.putExtra("direccion", getDireccionByRut(rutUsuario));
+                    startActivity(intent);
+                } else {
+                    if (this.getResponse() == GlobalConstant.RESPONSE_LOGIN_INCORRECT) {
+                        Toast.makeText(getActivity(), "El pago no se pudo realizar", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (this.getResponse() == GlobalConstant.RESPONSE_CONNECTION_ERROR) {
+
+                            Toast.makeText(getActivity(), "Problemas al conectar, reintentelo en unos minutos", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
             }
-        }, 3000);
+        };
+        GlobalFunction.generarTransaccion(getActivity(), generarClaseAEnviar(), runnableArgs);
+//        Handler mHandler = new Handler();
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                dialog.dismiss();
+//                Intent intent = new Intent(getActivity(), MainActivity.class);
+//                intent.putExtra("notificacion", true);
+//                intent.putExtra("direccion", getDireccionByRut(rutUsuario));
+//                startActivity(intent);
+//            }
+//        }, 3000);
     }
 
-    private void generarClaseAEnviar(){
+    private FullTransaccionArriendo generarClaseAEnviar() {
         Arriendo arriendo = new Arriendo();
+        arriendo.setIdArriendo(JSONObject.NULL);
         arriendo.setHorasArrendadas(cantHoras);
         arriendo.setIdVehiculo(81);
-        arriendo.setIdEstacionamiento(getIdEstacionamiento(rutUsuario));
+        arriendo.setIdEstacionamiento(idEstacionamiento);
         arriendo.setIdTipoArriendo(1);
-        arriendo.setIdEstado(null);
+        arriendo.setIdEstado(2);
         arriendo.setCostoHora(getCostoHora(rutUsuario));
         arriendo.setFechaInicio(GlobalFunction.formatDateArriendo(fechaInicio));
         arriendo.setFechaTermino(GlobalFunction.formatDateArriendo(fechaTermino));
 
         Transaccion transaccion = new Transaccion();
+        transaccion.setIdTransaccion(null);
         transaccion.setFechaTransaccion(currentDate());
-        Log.d("FECHA",currentDate());
         transaccion.setIdEstado(1);
         transaccion.setRutUsuarioUsuario(rutArrendador);
         transaccion.setRutUsuarioPRopietario(rutUsuario);
+        //VER QUE ONDA
+        transaccion.setIdEstado(1);
+        transaccion.setIdArriendo(null);
 
+        FullTransaccionArriendo full = new FullTransaccionArriendo();
+        full.setArriendo(arriendo);
+        full.setTransaccion(transaccion);
 
+        return full;
 
     }
 
-    private String currentDate(){
+    private String currentDate() {
         Date date = new Date();
         String fecha = null;
-        SimpleDateFormat curFormater = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-MM-dd");
         fecha = curFormater.format(date);
 
         return fecha;

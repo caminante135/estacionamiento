@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 public class Arriendo {
 
     @SerializedName("idArriendo")
-    private Integer idArriendo;
+    private Object idArriendo;
     @SerializedName("horasArrendadas")
     private Integer horasArrendadas;
     @SerializedName("idVehiculo")
@@ -30,10 +30,10 @@ public class Arriendo {
     }
 
     public Integer getIdArriendo() {
-        return idArriendo;
+        return (Integer) idArriendo;
     }
 
-    public void setIdArriendo(Integer idArriendo) {
+    public void setIdArriendo(Object idArriendo) {
         this.idArriendo = idArriendo;
     }
 
