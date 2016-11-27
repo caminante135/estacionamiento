@@ -6,6 +6,7 @@ import com.example.gerardo.miestacionamiento.model.Marca;
 import com.example.gerardo.miestacionamiento.model.RegistroFullUsuario;
 import com.example.gerardo.miestacionamiento.model.ResponseAllEstacionamientos;
 import com.example.gerardo.miestacionamiento.model.ResponseLogin;
+import com.example.gerardo.miestacionamiento.model.Transaccion;
 import com.example.gerardo.miestacionamiento.model.Usuario;
 
 import java.util.List;
@@ -53,5 +54,8 @@ public interface IApiService {
 
     @POST(ApiConstants.URL_SELECT_ALL_EVAL)
     Call<ResponseBody> selectallEval();
+
+    @POST(ApiConstants.URL_SELECT_TRANSACCION_ARRIENDO)
+    Call<Transaccion.TransaccionArriendo> selectTransaccionArriendoByRut (@Body String rutUsuarioPropietario);
 
 }

@@ -3,7 +3,7 @@ package com.example.gerardo.miestacionamiento.controller.util;
 /**
  * Created by Gerardo on 02/10/2016.
  */
-public class GlobalConstant {
+public final class GlobalConstant {
 
     /**
      * PREFERENCIAS
@@ -57,6 +57,7 @@ public class GlobalConstant {
     public static final int RESPONSE_LOGIN_CORRECT = 1;
     public static final int RESPONSE_LOGIN_INCORRECT = 0;
 
+
     /**
      * VALORES / ESTADOS
      */
@@ -81,6 +82,10 @@ public class GlobalConstant {
     public static final int ESTACIONAMIENTO_NO_DISPONIBLE = 0;
     public static final int ESTACIONAMIENTO_DISPONIBLE = 1;
 
+    //ESTADOS ARRIENDO
+    public static final int ESTADO_ARRIENDO_PAGADO = 1;
+    public static final int ESTADO_ARRIENDO_EN_ARRIENDO = 2;
+    public static final int ESTADO_ARRIENDO_FINALIZADO = 3;
 
     public static final String BUNDLE_FECHA_INICIO = "fechaInicio";
     public static final String BUNDLE_FECHA_TERMINO = "fechaTermino";

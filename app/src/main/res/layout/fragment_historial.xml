@@ -2,11 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.gerardo.miestacionamiento.view.ui.fragment.HistorialFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/historial_recyclerview"
         android:layout_width="match_parent"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         android:layout_height="match_parent"/>
 
     <TextView
@@ -14,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:visibility="gone"
         android:text="No existen transacciones asociadas a tu cuenta" />
 
 </RelativeLayout>

@@ -2,6 +2,8 @@ package com.example.gerardo.miestacionamiento.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by Gerardo on 25/11/2016.
  */
@@ -20,6 +22,8 @@ public class Transaccion {
     String rutUsuarioPRopietario;
     @SerializedName("idArriendo")
     Integer idArriendo;
+    @SerializedName("arriendo")
+    Arriendo arriendo;
 
     public Transaccion() {
     }
@@ -71,4 +75,32 @@ public class Transaccion {
     public void setIdArriendo(Integer idArriendo) {
         this.idArriendo = idArriendo;
     }
+
+    public Arriendo getArriendo() {
+        return arriendo;
+    }
+
+    public void setArriendo(Arriendo arriendo) {
+        this.arriendo = arriendo;
+    }
+
+    public class TransaccionArriendo{
+        @SerializedName("msg")
+        String msg;
+        @SerializedName("result")
+        List<Transaccion> transaccions;
+
+        public TransaccionArriendo() {
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+
+        public List<Transaccion> getTransaccions() {
+            return transaccions;
+        }
+    }
+
+
 }

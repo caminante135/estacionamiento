@@ -78,7 +78,7 @@
             android:layout_toEndOf="@+id/historial_rv_fechaFin"
             android:layout_toRightOf="@+id/historial_rv_fechaFin"
             android:scaleType="fitCenter"
-            android:src="@drawable/clock_logo" />
+            android:src="@drawable/ic_price" />
 
         <TextView
             android:id="@+id/historial_rv_txtEstado"

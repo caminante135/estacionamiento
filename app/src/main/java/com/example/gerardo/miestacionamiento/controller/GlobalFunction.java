@@ -676,6 +676,7 @@ public final class GlobalFunction {
                     block.setResponseBoolean(true);
                     block.run();
                 }
+
             }
 
             @Override
@@ -728,6 +729,14 @@ public final class GlobalFunction {
         Comuna comuna = realm.where(Comuna.class).equalTo("idComuna", id).findFirst();
         realm.commitTransaction();
         return comuna.getNombreComuna();
+    }
+
+    public static String getdireccionById(int id){
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        Estacionamiento est = realm.where(Estacionamiento.class).equalTo("idEstacionamiento",id).findFirst();
+        realm.commitTransaction();
+        return est.getDireccionEstacionamiento();
     }
 
     //FORMATEA EL RUT QUITANDOLE LOS ULTIMOS 4 CARACTERES
