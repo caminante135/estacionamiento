@@ -11,6 +11,7 @@ public class RunnableArgs implements Runnable {
 
     private int response;
     private File file;
+    private Boolean responseBoolean;
 
     private List<Objects> arguments;
 
@@ -28,6 +29,14 @@ public class RunnableArgs implements Runnable {
 
     public File getFile() {
         return file;
+    }
+
+    public Boolean getResponseBoolean() {
+        return responseBoolean;
+    }
+
+    public void setResponseBoolean(Boolean responseBoolean) {
+        this.responseBoolean = responseBoolean;
     }
 
     public void run() {

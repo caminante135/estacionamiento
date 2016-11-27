@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
 import com.example.gerardo.miestacionamiento.controller.util.RunnableArgs;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
+import com.example.gerardo.miestacionamiento.model.Evaluacion;
 import com.example.gerardo.miestacionamiento.model.Usuario;
 import com.example.gerardo.miestacionamiento.view.ui.InfoActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -298,11 +300,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         TextView txtEstado = (TextView) view.findViewById(R.id.info_window_estado);
         TextView txtValorHora = (TextView) view.findViewById(R.id.info_window_valor_hora);
         TextView txtComentarios = (TextView) view.findViewById(R.id.info_window_comentarios);
+        RatingBar ratingBar = (RatingBar) view.findViewById(R.id.info_window_rating);
 
         Estacionamiento est = marcadores.get(marker);
-
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        RealmResults<Evaluacion> evaluacionList = realm.where(Evaluacion.class).equalTo("idEstacionamiento",est.getIdEstacionamiento()).findAll();
+        realm.commitTransaction();
+        Integer[] notas = new Integer[evaluacionList.size()];
+        for (int i = 0; i < evaluacionList.size(); i++) {
+            notas[i] = evaluacionList.get(i).getCalificacion();
+        }
         try {
-            txtComuna.setText("San Joaquín");
+            txtComuna.setText(GlobalFunction.getComunaNombrebyID(est.getIdComuna()));
             txtDireccion.setText(est.getDireccionEstacionamiento());
             if (est.getIdEstado() == GlobalConstant.ESTACIONAMIENTO_DISPONIBLE) {
                 txtEstado.setText("Disponible");
@@ -313,6 +323,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             }
             txtTamaño.setText(getActivity().getResources().getString(R.string.tamañoEst, "Normal"));
             txtValorHora.setText(getActivity().getResources().getString(R.string.valorHora, est.getCostoHora()));
+            txtComentarios.setText("Comentarios ("+evaluacionList.size()+")");
+            ratingBar.setRating(GlobalFunction.getPromedio(notas));
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

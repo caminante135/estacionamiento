@@ -71,10 +71,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         thread.start();
-        //CARGO LAS COMUNAS
+        //CARGO LAS COMUNAS, Marcas, Modelos y Evaluaciones
         GlobalFunction.cargarComunas(this);
         GlobalFunction.cargarMarcasVehiculo(this);
         GlobalFunction.cargarModelosVehiculo(this);
+        GlobalFunction.cargarEvaluaciones();
     }
 
     @OnClick(R.id.btn_login)

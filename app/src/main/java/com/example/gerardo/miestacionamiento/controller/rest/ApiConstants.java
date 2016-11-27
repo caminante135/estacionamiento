@@ -15,6 +15,7 @@ public class ApiConstants {
     public static final String PATH_MARCA_VEHICULO = "/marcaVehiculo";
     public static final String PATH_MODELO_VEHICULO = "/modelo";
     public static final String PATH_ARRIENDO = "/arriendo";
+    public static final String PATH_EVALUACION = "/evaluacion";
 
     //Metodos
     public static final String PATH_LOGIN = "/loginFull";
@@ -22,6 +23,8 @@ public class ApiConstants {
     public static final String PATH_REGISTRAR_USUARIO = "/insertFull";
     public static final String PATH_SELECT_ALL = "/selectAll";
     public static final String PATH_INSERT_TRANSACTION = "/insertAndTransaccion";
+    public static final String PATH_SELECT_EVAL = "/selectEvaluacionesByUsuAndEst";
+    public static final String PATH_INSERT = "/insert";
 
     //PARAMETROS
     public static final String PARAM_RUT = "rut";
@@ -34,5 +37,7 @@ public class ApiConstants {
     public static final String URL_GET_MARCAS_VEHICULO = PATH_MI_EST_WEB+ PATH_MARCA_VEHICULO+PATH_SELECT_ALL;
     public static final String URL_GET_MODELO_VEHICULO = PATH_MI_EST_WEB+PATH_MODELO_VEHICULO+PATH_SELECT_ALL;
     public static final String URL_INSERT_TRANSACTION = PATH_MI_EST_WEB+PATH_ARRIENDO+PATH_INSERT_TRANSACTION;
-
+    public static final String URL_SELECT_EVAL_BY_ID = PATH_MI_EST_WEB+PATH_EVALUACION+PATH_SELECT_EVAL;
+    public static final String URL_SELECT_ALL_EVAL = PATH_MI_EST_WEB+PATH_EVALUACION+PATH_SELECT_ALL;
+    public static final String URL_INSERT_EVALUACION = PATH_MI_EST_WEB+PATH_EVALUACION+PATH_INSERT;
 }

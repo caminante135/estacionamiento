@@ -1,5 +1,6 @@
 package com.example.gerardo.miestacionamiento.controller.rest;
 
+import com.example.gerardo.miestacionamiento.model.Evaluacion;
 import com.example.gerardo.miestacionamiento.model.FullTransaccionArriendo;
 import com.example.gerardo.miestacionamiento.model.Marca;
 import com.example.gerardo.miestacionamiento.model.RegistroFullUsuario;
@@ -44,5 +45,13 @@ public interface IApiService {
     @POST(ApiConstants.URL_INSERT_TRANSACTION)
      Call<FullTransaccionArriendo.responseTransaccionArriendo> insertTransaction(@Body FullTransaccionArriendo full);
 
+    @POST(ApiConstants.URL_INSERT_EVALUACION)
+    Call<ResponseBody> insertEvaluacion(@Body Evaluacion evaluacion);
+
+    @POST(ApiConstants.URL_SELECT_EVAL_BY_ID)
+    Call<ResponseBody> selectEvalById (@Body Evaluacion rutEid);
+
+    @POST(ApiConstants.URL_SELECT_ALL_EVAL)
+    Call<ResponseBody> selectallEval();
 
 }

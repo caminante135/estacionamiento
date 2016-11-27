@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="6dp">
+    android:background="@android:color/transparent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,10 +26,9 @@
             android:id="@+id/comentario_mensaje"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:lines="3"
-            android:text="Hola, soy Gerardo Mascayano, estoy probandoel apartado de comentarios y ver como se qla wea cosa asi que veamos nomas po chororo"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:text="Hola, soyrtado de comeo se qla wea cosa asi que veamos nomas po chororo"
             android:textColor="@color/colorSecondaryText" />
 
         <RelativeLayout
@@ -50,8 +49,16 @@
 
         </RelativeLayout>
 
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorDivider" />
     </LinearLayout>
 
 
-</android.support.v7.widget.CardView>
+</FrameLayout>

@@ -214,6 +214,8 @@ public class PagoDialog extends DialogFragment {
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra("notificacion", true);
                     intent.putExtra("direccion", getDireccionByRut(rutUsuario));
+                    intent.putExtra("idEst",idEstacionamiento);
+                    intent.putExtra("rutUser",rutUsuario);
                     startActivity(intent);
                 } else {
                     if (this.getResponse() == GlobalConstant.RESPONSE_LOGIN_INCORRECT) {

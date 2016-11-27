@@ -1,11 +1,15 @@
 package com.example.gerardo.miestacionamiento.view.ui.fragment;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,9 +23,13 @@ import android.widget.Toast;
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
+import com.example.gerardo.miestacionamiento.controller.util.RunnableArgs;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
+import com.example.gerardo.miestacionamiento.model.Evaluacion;
 import com.example.gerardo.miestacionamiento.model.Usuario;
+import com.example.gerardo.miestacionamiento.view.adapter.EvaluacionAdapter;
 import com.example.gerardo.miestacionamiento.view.ui.InfoActivity;
+import com.example.gerardo.miestacionamiento.view.ui.LoginActivity;
 import com.example.gerardo.miestacionamiento.view.ui.MainActivity;
 import com.example.gerardo.miestacionamiento.view.ui.dialog.EstanciaDialog;
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
@@ -34,6 +42,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by Gerardo on 10/10/2016.
@@ -72,6 +81,10 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
     ScrollView mainScrollView;
     @Bind(R.id.transparent_image)
     ImageView transparentImageView;
+    @Bind(R.id.fragment_detalle_rv)
+    RecyclerView recyclerComentarios;
+    @Bind(R.id.fragment_Detalle_nocoment)
+    TextView txtNoComent;
 
     String rutUsuario;
     int idEstacio;
@@ -82,11 +95,11 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
         Bundle b = new Bundle();
         b.putDouble("latitud", coordenadas.latitude);
         b.putDouble("longitud", coordenadas.longitude);
-        if (rutUsuario!= null){
-            b.putString(GlobalConstant.BUNDLE_RUT_USUARIO,rutUsuario);
+        if (rutUsuario != null) {
+            b.putString(GlobalConstant.BUNDLE_RUT_USUARIO, rutUsuario);
         }
-        if (IdEst != null){
-            b.putInt(GlobalConstant.BUNDLE_ID_ESTACIO,IdEst);
+        if (IdEst != null) {
+            b.putInt(GlobalConstant.BUNDLE_ID_ESTACIO, IdEst);
         }
         fragment.setArguments(b);
         return fragment;
@@ -100,15 +113,15 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
         Double la = args.getDouble("latitud");
         Double lo = args.getDouble("longitud");
         coordenadas = new LatLng(la, lo);
-        rutUsuario = args.getString(GlobalConstant.BUNDLE_RUT_USUARIO,"");
-        idEstacio = args.getInt(GlobalConstant.BUNDLE_ID_ESTACIO,0);
+        rutUsuario = args.getString(GlobalConstant.BUNDLE_RUT_USUARIO, "");
+        idEstacio = args.getInt(GlobalConstant.BUNDLE_ID_ESTACIO, 0);
     }
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
 //        View fragmentView = super.onCreateView(layoutInflater, viewGroup, bundle);
         View root = layoutInflater.inflate(R.layout.fragment_detalle, viewGroup, false);
-        ButterKnife.bind(this,root);
+        ButterKnife.bind(this, root);
 //        getStreetViewPanoramaAsync(this);
         setContentViews();
 
@@ -118,7 +131,7 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
                         .findFragmentById(R.id.street_view);
         streetViewPanoramaFragment.getStreetViewPanoramaAsync(this);
 
-
+        setRecyclerItems();
         return root;
     }
 
@@ -133,53 +146,53 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
     }
 
     @OnClick(R.id.btn_detalle_solicitar)
-    public void solicitar(){
+    public void solicitar() {
 //        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
 //                .replace(R.id.frame,EstanciaFragment.newInstance(rutUsuario,idEstacio))
 //                .commitAllowingStateLoss();
-        if (estadoEstacionamiento == 1){
-            EstanciaDialog dialog = EstanciaDialog.newInstance(rutUsuario,idEstacio);
-            dialog.show(getActivity().getSupportFragmentManager(),"ftEstancia");
-        }else{
+        if (estadoEstacionamiento == 1) {
+            EstanciaDialog dialog = EstanciaDialog.newInstance(rutUsuario, idEstacio);
+            dialog.show(getActivity().getSupportFragmentManager(), "ftEstancia");
+        } else {
             Toast.makeText(getActivity(), "Estacionamiento no disponible", Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    private void setContentViews(){
+    private void setContentViews() {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        Usuario usuario = realm.where(Usuario.class).equalTo("rutUsuario",rutUsuario).findFirst();
-        Estacionamiento est = realm.where(Estacionamiento.class).equalTo("idEstacionamiento",idEstacio).findFirst();
+        Usuario usuario = realm.where(Usuario.class).equalTo("rutUsuario", rutUsuario).findFirst();
+        Estacionamiento est = realm.where(Estacionamiento.class).equalTo("idEstacionamiento", idEstacio).findFirst();
         realm.commitTransaction();
 
 
-        if (est!= null){
+        if (est != null) {
             estadoEstacionamiento = est.getIdEstado();
             mComuna.setText(GlobalFunction.getComunaNombrebyID(est.getIdComuna()));
             mDireccion.setText(est.getDireccionEstacionamiento());
             mTamaño.setText("Normal");
-            if (est.getNumeroEst()!=0 && est.getNumeroEst()!=null){
+            if (est.getNumeroEst() != 0 && est.getNumeroEst() != null) {
                 mNumero.setText(String.valueOf(est.getNumeroEst()));
-            }else{
+            } else {
                 mNumero.setText("N/A");
             }
-            if (est.getPisoUbicacion()!=0 && est.getPisoUbicacion()!=null){
+            if (est.getPisoUbicacion() != 0 && est.getPisoUbicacion() != null) {
                 mPiso.setText(String.valueOf(est.getPisoUbicacion()));
-            }else{
+            } else {
                 mPiso.setText("N/A");
             }
-            if (est.getCamaraVigilancia() == 1){
+            if (est.getCamaraVigilancia() == 1) {
                 mCamaraVigilancia.setText("Sí");
-            }else{
+            } else {
                 mCamaraVigilancia.setText("No");
             }
             mValorHora.setText(String.valueOf(est.getCostoHora()));
         }
-        if (usuario != null){
+        if (usuario != null) {
             mNombre.setText(usuario.getNombre());
             mApellido.setText(getActivity().getResources().getString(R.string.resumenApellido,
-                    usuario.getApellidoPaterno(),usuario.getApellidoMaterno()));
+                    usuario.getApellidoPaterno(), usuario.getApellidoMaterno()));
             mCorreo.setText(usuario.getCorreo());
         }
 
@@ -203,7 +216,7 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
 
     }
 
-    private void setTouchEvent(){
+    private void setTouchEvent() {
         transparentImageView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -245,6 +258,25 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+    }
+
+
+    private void setRecyclerItems(){
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        RealmResults<Evaluacion> evaluacionList = realm.where(Evaluacion.class).equalTo("idEstacionamiento",idEstacio).findAll();
+        realm.commitTransaction();
+        Integer[] notas = new Integer[evaluacionList.size()];
+        for (int i = 0; i < evaluacionList.size(); i++) {
+            notas[i] = evaluacionList.get(i).getCalificacion();
+        }
+        mRatingBar.setRating(GlobalFunction.getPromedio(notas));
+        if (evaluacionList.size()==0){
+            txtNoComent.setVisibility(View.VISIBLE);
+            recyclerComentarios.setVisibility(View.GONE);
+        }
+        EvaluacionAdapter adapter = new EvaluacionAdapter(getContext(),evaluacionList);
+        recyclerComentarios.setAdapter(adapter);
     }
 
 }

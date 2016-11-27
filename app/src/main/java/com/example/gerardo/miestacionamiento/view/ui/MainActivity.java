@@ -108,8 +108,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView iv = (ImageView) navView.getHeaderView(0).findViewById(R.id.navHeader_image);
 
 
-        iv.setImageBitmap(setImageBlurEffect(R.drawable.logo_last));
-        imageHeader.setImageBitmap(setImageBlurEffect(R.drawable.logo_last));
+        iv.setImageBitmap(setImageBlurEffect(R.drawable.logoappsintitulo));
+        imageHeader.setImageBitmap(setImageBlurEffect(R.drawable.logoappsintitulo));
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        List<Vehiculo> vehiculos = realm.where(Vehiculo.class).equalTo("rutUsuario",rut).findAll();
         realm.commitTransaction();
 
-        setDatosDrawerAndHeader(nombre, apellido, prefs.getInt(GlobalConstant.PREFS_IDROL,4), cantV, estacionamientos.size());
+        setDatosDrawerAndHeader(nombre, apellido, prefs.getInt(GlobalConstant.PREFS_IDROL,1), cantV, estacionamientos.size());
 
         disableCollapse();
 
@@ -152,6 +152,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             boolean isNot = extras.getBoolean("notificacion");
             if (isNot){
                 final String direccion = extras.getString("direccion");
+                final Integer idEst = extras.getInt("idEst");
+                final String rutUser = extras.getString("rutUser");
                 crearNotificacionInicio(direccion);
                 crearNotificacionPagoExito(direccion);
 
@@ -164,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     @Override
                     public void onFinish() {
-                        crearNotificacionTermino(direccion);
+                        crearNotificacionTermino(direccion,idEst,rutUser);
                     }
                 }.start();
 
@@ -173,7 +175,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         if (prefs.getBoolean("dejarComentario",false)){
-            ComentarioDialog dialog = new ComentarioDialog();
+
+            ComentarioDialog dialog = ComentarioDialog.newInstance(prefs.getString("notificacionRutUsuario",""),prefs.getInt("notificacionIdEst",0));
             dialog.show(getSupportFragmentManager(),"comentDialog");
         }
 
@@ -205,11 +208,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void crearNotificacionTermino(String direccion){
+    private void crearNotificacionTermino(String direccion, Integer idEst, String rutUsuario){
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.logoappsintitulo);
         Intent intent = new Intent(this,MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
         editor.putBoolean("dejarComentario",true);
+        editor.putString("notificacionRutUsuario",rutUsuario);
+        editor.putInt("notificacionIdEst",idEst);
         editor.apply();
         NotificationManager manager = (NotificationManager) getSystemService(ns);
         Notification noti = new Notification.Builder(this)

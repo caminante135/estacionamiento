@@ -2,12 +2,16 @@ package com.example.gerardo.miestacionamiento.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by Gerardo on 25/11/2016.
  */
-public class Evaluacion {
+public class Evaluacion extends RealmObject{
 
     @SerializedName("idEvaluacion")
+    @PrimaryKey
     Integer idEvaluacion;
     @SerializedName("comentario")
     String comentario;

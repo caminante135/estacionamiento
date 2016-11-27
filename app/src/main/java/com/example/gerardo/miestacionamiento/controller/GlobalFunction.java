@@ -17,14 +17,13 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.util.RunnableArgs;
 import com.example.gerardo.miestacionamiento.model.Comuna;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
+import com.example.gerardo.miestacionamiento.model.Evaluacion;
 import com.example.gerardo.miestacionamiento.model.FullTransaccionArriendo;
-import com.example.gerardo.miestacionamiento.model.ListaEstacionamientosRealm;
 import com.example.gerardo.miestacionamiento.model.Marca;
 import com.example.gerardo.miestacionamiento.model.Modelo;
 import com.example.gerardo.miestacionamiento.model.ResponseAllEstacionamientos;
@@ -35,7 +34,6 @@ import com.example.gerardo.miestacionamiento.controller.rest.ApiAdapter;
 import com.example.gerardo.miestacionamiento.model.Vehiculo;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
@@ -45,17 +43,14 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import io.realm.Realm;
-import io.realm.RealmList;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -207,7 +202,7 @@ public final class GlobalFunction {
         String outputPattern = "HH:mm EEEE', ' dd 'de' MMMM";
         String inputPattern = "EEE MMM dd hh:mm:ss z yyyy";
         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.US);
-        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, new Locale("es","CL"));
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, new Locale("es", "CL"));
 
 //        inputFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
@@ -228,18 +223,18 @@ public final class GlobalFunction {
 
     }
 
-    public static String formatDateArriendo(String date){
+    public static String formatDateArriendo(String date) {
         String outputPattern = "yyyy-MM-dd'T'hh:mm:ss";
         String inputPattern = "HH:mm EEEE', ' dd 'de' MMMM";
 
-        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, new Locale("es","CL"));
-        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern,Locale.US);
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, new Locale("es", "CL"));
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, Locale.US);
 
         Date newDate = null;
         String finalDate = "";
 
         try {
-           newDate = inputFormat.parse(date);
+            newDate = inputFormat.parse(date);
             finalDate = outputFormat.format(newDate);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -253,7 +248,7 @@ public final class GlobalFunction {
     public static int hourBetweenDates(String date1, String date2) {
 //        String format = "dd/MM/yyyy HH:mm";
         String format = "HH:mm EEEE', ' dd 'de' MMMM";
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format,new Locale("es","CL"));
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, new Locale("es", "CL"));
         Date fechaLlegada = null;
         Date fechaSalida = null;
 
@@ -508,7 +503,7 @@ public final class GlobalFunction {
     }
 
     //LLAMADA AL SERVICIO DE INSERT TRANSACTION
-    public static void generarTransaccion(Context context, FullTransaccionArriendo transaccionArriendo, final RunnableArgs block){
+    public static void generarTransaccion(Context context, FullTransaccionArriendo transaccionArriendo, final RunnableArgs block) {
         Call<FullTransaccionArriendo.responseTransaccionArriendo> retroCall = ApiAdapter.getApiService().insertTransaction(transaccionArriendo);
 
         retroCall.enqueue(new Callback<FullTransaccionArriendo.responseTransaccionArriendo>() {
@@ -526,6 +521,67 @@ public final class GlobalFunction {
                     block.setResponse(GlobalConstant.RESPONSE_LOGIN_CORRECT);
                     block.run();
                 }
+            }
+        });
+    }
+
+//    //OBTENER EVALUACIONES ACORDE AL ESTACIONAMIENTO
+//    public static void ca(Evaluacion rutEvalIdEst, final RunnableArgs block) {
+//        Call<ResponseBody> retroCall = ApiAdapter.getApiService().selectEvalById(rutEvalIdEst);
+//
+//        retroCall.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                block.setResponseBoolean(false);
+//                block.run();
+//            }
+//        });
+//    }
+
+    public static void cargarEvaluaciones() {
+        Call<ResponseBody> retroCall = ApiAdapter.getApiService().selectallEval();
+        retroCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, final Response<ResponseBody> response) {
+                Realm realm = Realm.getDefaultInstance();
+                realm.executeTransactionAsync(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        try {
+                            JSONObject res = new JSONObject(response.body().string());
+                            if (res.getString("msg").toLowerCase().equals("true")) {
+                                JSONArray evaluaciones = res.getJSONArray("result");
+                                realm.createOrUpdateAllFromJson(Evaluacion.class, evaluaciones);
+                            }
+                        } catch (JSONException e) {
+
+                            e.printStackTrace();
+                        } catch (IOException e) {
+
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Realm.Transaction.OnSuccess() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d("EVALUACIONES", "CARGARON BIEN LAS EVALUACIONS");
+                    }
+                }, new Realm.Transaction.OnError() {
+                    @Override
+                    public void onError(Throwable error) {
+                        Log.d("EVALUACIONES", "CARGARON MAL LAS EVALUACIONS");
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
             }
         });
     }
@@ -592,9 +648,9 @@ public final class GlobalFunction {
 
         //USUARIO
         editor.putString(GlobalConstant.PREFS_RUT, usuario.getRut());
-        editor.putInt(GlobalConstant.PREFS_TELEFONO,usuario.getTelefono());
-        editor.putString(GlobalConstant.PREFS_CORREO,usuario.getCorreo());
-        editor.putString(GlobalConstant.PREFS_CLAVE,usuario.getContraseña());
+        editor.putInt(GlobalConstant.PREFS_TELEFONO, usuario.getTelefono());
+        editor.putString(GlobalConstant.PREFS_CORREO, usuario.getCorreo());
+        editor.putString(GlobalConstant.PREFS_CLAVE, usuario.getContraseña());
 
         //AUTO LOGIN
         editor.putBoolean(GlobalConstant.PREFS_AUTOLOGIN, true);
@@ -607,6 +663,29 @@ public final class GlobalFunction {
             editor.putString(GlobalConstant.PREFS_JSON_VEHICULOS, jsonVeh);
         }
         editor.apply();
+    }
+
+    //INSERT EL COMENTARIO
+    public static void insertcomentario(Evaluacion evaluacion, final RunnableArgs block){
+        Call<ResponseBody> retroCall = ApiAdapter.getApiService().insertEvaluacion(evaluacion);
+
+        retroCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (block != null) {
+                    block.setResponseBoolean(true);
+                    block.run();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                if (block != null) {
+                    block.setResponseBoolean(false);
+                    block.run();
+                }
+            }
+        });
     }
 
     private static void convertToJsonGetEstacionamientos(Context context, List<ResponseAllEstacionamientos> datos) {
@@ -649,6 +728,32 @@ public final class GlobalFunction {
         Comuna comuna = realm.where(Comuna.class).equalTo("idComuna", id).findFirst();
         realm.commitTransaction();
         return comuna.getNombreComuna();
+    }
+
+    //FORMATEA EL RUT QUITANDOLE LOS ULTIMOS 4 CARACTERES
+    public static String formatRutEvaluacion(String rut) {
+        int length = rut.length();
+        if (length >= 4) {
+            return rut.substring(0, length - 4) + "****";
+        } else {
+            return rut;
+        }
+
+    }
+
+    //OBTIENE EL PROMEDIO DE UN LISTADO DE NUMEROS
+    public static Float getPromedio(Integer[] notas) {
+        if (notas != null) {
+            if (notas.length != 0) {
+                float aux = 0;
+                for (int i = 0; i < notas.length; i++) {
+                    aux = aux + notas[i];
+                }
+                aux = aux / notas.length;
+                return aux;
+            }
+        }
+        return 0f;
     }
 
 }
