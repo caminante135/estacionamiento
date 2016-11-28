@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
@@ -97,8 +98,15 @@ public class VehiculoFragment extends Fragment {
 
     @OnClick(R.id.btN_vehiculo_siguiente)
     public void sendData() {
-        DialogWebPay fragment = DialogWebPay.newInstance(jsonUsuario, setIntentInfo(), null,null);
-        fragment.show(getActivity().getSupportFragmentManager(), "webpayFragment");
+        if (editPatente.getText().toString().length()==0 ||editMarca.getText().toString().length()==0 ||
+                editModelo.getText().toString().length()==0 ||editColor.getText().toString().length()==0){
+            Toast.makeText(getActivity(), "Debes completar todos los campos antes de enviar", Toast.LENGTH_SHORT).show();
+
+        }else{
+            DialogWebPay fragment = DialogWebPay.newInstance(jsonUsuario, setIntentInfo(), null,null);
+            fragment.show(getActivity().getSupportFragmentManager(), "webpayFragment");
+        }
+
     }
 
 

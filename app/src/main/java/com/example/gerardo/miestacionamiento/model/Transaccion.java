@@ -24,6 +24,8 @@ public class Transaccion {
     Integer idArriendo;
     @SerializedName("arriendo")
     Arriendo arriendo;
+    @SerializedName("arriendoTO")
+    Arriendo arriendoTo;
 
     public Transaccion() {
     }
@@ -84,6 +86,10 @@ public class Transaccion {
         this.arriendo = arriendo;
     }
 
+    public Arriendo getArriendoTo() {
+        return arriendoTo;
+    }
+
     public class TransaccionArriendo{
         @SerializedName("msg")
         String msg;
@@ -100,6 +106,7 @@ public class Transaccion {
         public List<Transaccion> getTransaccions() {
             return transaccions;
         }
+
     }
 
 

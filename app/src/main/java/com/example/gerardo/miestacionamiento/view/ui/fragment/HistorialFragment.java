@@ -67,7 +67,9 @@ public class HistorialFragment extends Fragment {
 
     private void getTransacciones(){
         if (!rutUsuario.equals("")){
-            Call<Transaccion.TransaccionArriendo> retroCall = ApiAdapter.getApiService().selectTransaccionArriendoByRut(rutUsuario);
+            Transaccion t = new Transaccion();
+            t.setRutUsuarioUsuario(rutUsuario);
+            Call<Transaccion.TransaccionArriendo> retroCall = ApiAdapter.getApiService().selectTransaccionArriendoByRut(t);
             retroCall.enqueue(new Callback<Transaccion.TransaccionArriendo>() {
                 @Override
                 public void onResponse(Call<Transaccion.TransaccionArriendo> call, Response<Transaccion.TransaccionArriendo> response) {

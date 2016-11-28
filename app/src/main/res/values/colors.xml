@@ -36,5 +36,7 @@
     <color name="editTextWhiteTransparent">#ebffffff</color>
 
     <color name="back_webpay">#efeff0</color>
+    <color name="backClockLogo">#8cc647</color>
+    <color name="backAvailableLogo">#0f883b</color>
 
 </resources>

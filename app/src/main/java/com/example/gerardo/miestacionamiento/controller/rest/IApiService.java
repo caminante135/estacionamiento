@@ -56,6 +56,6 @@ public interface IApiService {
     Call<ResponseBody> selectallEval();
 
     @POST(ApiConstants.URL_SELECT_TRANSACCION_ARRIENDO)
-    Call<Transaccion.TransaccionArriendo> selectTransaccionArriendoByRut (@Body String rutUsuarioPropietario);
+    Call<Transaccion.TransaccionArriendo> selectTransaccionArriendoByRut (@Body Transaccion rutUsuarioPropietario);
 
 }

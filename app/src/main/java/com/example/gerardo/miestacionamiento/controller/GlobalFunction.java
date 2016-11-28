@@ -649,7 +649,7 @@ public final class GlobalFunction {
         //USUARIO
         editor.putString(GlobalConstant.PREFS_RUT, usuario.getRut());
         editor.putInt(GlobalConstant.PREFS_TELEFONO, usuario.getTelefono());
-        editor.putString(GlobalConstant.PREFS_CORREO, usuario.getCorreo());
+        editor.putString(GlobalConstant.PREFS_CORREO, usuario.getCorreo().toLowerCase());
         editor.putString(GlobalConstant.PREFS_CLAVE, usuario.getContraseña());
 
         //AUTO LOGIN
@@ -672,10 +672,26 @@ public final class GlobalFunction {
         retroCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (block != null) {
-                    block.setResponseBoolean(true);
-                    block.run();
+                try {
+                    JSONObject json = new JSONObject(response.body().string());
+                    if (json.getBoolean("response")){
+                        if (block != null) {
+                            block.setResponseBoolean(true);
+                            block.run();
+                        }
+                    }else{
+                        if (block != null) {
+                            block.setResponseBoolean(false);
+                            block.run();
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+
 
             }
 

@@ -4,7 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -23,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
+import com.example.gerardo.miestacionamiento.controller.KhipuHelper;
 import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.util.RunnableArgs;
 import com.example.gerardo.miestacionamiento.model.Arriendo;
@@ -33,6 +37,7 @@ import com.example.gerardo.miestacionamiento.model.Transaccion;
 import com.example.gerardo.miestacionamiento.view.ui.MainActivity;
 import com.example.gerardo.miestacionamiento.view.ui.WebPayActivity;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -66,7 +71,7 @@ public class PagoDialog extends DialogFragment {
     int idEstacionamiento;
 
     String rutArrendador;
-
+    private static final String KHIPU_URI = "KHIPU-URI";
     SharedPreferences prefs;
 
     public static PagoDialog newInstance(String rutUsuario, int cantHoras, String fechaInicio, String fechaTermino, Integer idEst) {
@@ -192,10 +197,37 @@ public class PagoDialog extends DialogFragment {
 //                startActivity(intent);
 //            }
 //        }, 3000);
-        generarClaseAEnviar();
-        Intent intent = new Intent(getActivity(), WebPayActivity.class);
-        startActivity(intent);
+//        generarClaseAEnviar();
+//        Intent intent = new Intent(getActivity(), WebPayActivity.class);
+//        startActivity(intent);
+
+        final RunnableArgs runnableArgs = new RunnableArgs() {
+            @Override
+            public void run() {
+                if (this.getResponse() == GlobalConstant.RESPONSE_LOGIN_CORRECT) {
+                    SharedPreferences.Editor editor = getActivity().getSharedPreferences(KHIPU_URI, Context.MODE_PRIVATE).edit();
+                    editor.putBoolean("yaPago",true);
+                    editor.putString("direccionKhipu",getDireccionByRut(rutUsuario));
+                    editor.putInt("idEstKhipu",idEstacionamiento);
+                    editor.putString("rutUserKhipu",rutUsuario);
+                    editor.commit();
+                    doPay();
+                } else {
+                    if (this.getResponse() == GlobalConstant.RESPONSE_LOGIN_INCORRECT) {
+                        Toast.makeText(getActivity(), "El pago no se pudo realizar", Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (this.getResponse() == GlobalConstant.RESPONSE_CONNECTION_ERROR) {
+
+                            Toast.makeText(getActivity(), "Problemas al conectar, reintentelo en unos minutos", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            }
+        };
+        GlobalFunction.generarTransaccion(getActivity(), generarClaseAEnviar(), runnableArgs);
     }
+
+
 
     @OnClick(R.id.btn_dialog_test)
     public void test() {
@@ -250,7 +282,7 @@ public class PagoDialog extends DialogFragment {
         arriendo.setIdVehiculo(81);
         arriendo.setIdEstacionamiento(idEstacionamiento);
         arriendo.setIdTipoArriendo(1);
-        arriendo.setIdEstado(2);
+        arriendo.setIdEstado(1);
         arriendo.setCostoHora(getCostoHora(rutUsuario));
         arriendo.setFechaInicio(GlobalFunction.formatDateArriendo(fechaInicio));
         arriendo.setFechaTermino(GlobalFunction.formatDateArriendo(fechaTermino));
@@ -282,6 +314,44 @@ public class PagoDialog extends DialogFragment {
         return fecha;
 
     }
+
+    public void doPay() {
+        final String subejctV = "Arriendo";
+        Integer monto = (getCostoHora(rutUsuario)*cantHoras);
+        final String amountV = String.valueOf(monto);
+//        final String payerV = rutArrendador;
+        final String payerV = "gerardo.mascayano@gmail.com";
+        new AsyncTask<Void, Void, JSONObject>() {
+            @Override
+            protected JSONObject doInBackground(Void... params) {
+                return KhipuHelper.createPayment(subejctV, amountV, payerV);
+            }
+
+            @Override
+            protected void onPostExecute(JSONObject jsonObject) {
+                try {
+                    Intent khipuIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(jsonObject.get("app_url").toString()));
+                    if (getActivity().getPackageManager().queryIntentActivities(khipuIntent, PackageManager.MATCH_DEFAULT_ONLY).size() > 0) {
+                        startActivity(khipuIntent);
+                    } else {
+
+                        //SE GUARDA LA URI QUE SE ESTABA INTENTANDO EJECUTAR PARA CONTINUAR LUEGO QUE KHIPU SE INSTALE
+                        SharedPreferences.Editor editor = getActivity().getSharedPreferences(KHIPU_URI, Context.MODE_PRIVATE).edit();
+                        editor.putString(KHIPU_URI, jsonObject.get("app_url").toString());
+                        editor.commit();
+
+
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.khipu.android")));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.execute();
+    }
+
+
 
 
 }

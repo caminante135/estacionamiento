@@ -17,8 +17,8 @@ public class Arriendo {
     private Integer idEstacionamiento;
     @SerializedName("idTipoArriendo")
     private Integer idTipoArriendo;
-    @SerializedName("idEstado")
-    private Integer idEstado;
+    @SerializedName("idEstadoArriendo")
+    private Integer idEstadoArriendo;
     @SerializedName("costoHora")
     private Integer costoHora;
     @SerializedName("fechaInicio")
@@ -70,11 +70,11 @@ public class Arriendo {
     }
 
     public Integer getIdEstado() {
-        return idEstado;
+        return idEstadoArriendo;
     }
 
     public void setIdEstado(Integer idEstado) {
-        this.idEstado = idEstado;
+        this.idEstadoArriendo = idEstado;
     }
 
     public Integer getCostoHora() {

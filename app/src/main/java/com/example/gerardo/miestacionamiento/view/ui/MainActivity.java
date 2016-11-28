@@ -412,10 +412,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String tipoUsuario="";
         switch (tipo){
             case GlobalConstant.TIPO_DUEÑO:
-                tipoUsuario = "Dueño";
+                tipoUsuario = "Propietario";
                 break;
             case GlobalConstant.TIPO_CLIENTE:
-                tipoUsuario = "Cliente";
+                tipoUsuario = "Arrendatario";
                 break;
             case GlobalConstant.TIPO_ADMINISTRADOR:
                 tipoUsuario = "Administrador";

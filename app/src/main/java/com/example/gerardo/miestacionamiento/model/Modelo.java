@@ -13,6 +13,7 @@ public class Modelo extends RealmObject {
 
     String nombre;
     Integer año;
+    Integer idMarca;
 
     public Modelo() {
     }
@@ -39,5 +40,13 @@ public class Modelo extends RealmObject {
 
     public void setAño(Integer año) {
         this.año = año;
+    }
+
+    public Integer getIdMarca() {
+        return idMarca;
+    }
+
+    public void setIdMarca(Integer idMarca) {
+        this.idMarca = idMarca;
     }
 }

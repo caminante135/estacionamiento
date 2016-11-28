@@ -12,7 +12,7 @@ public class Marca extends RealmObject {
     Integer idMarca;
 
     String nombre;
-    Integer idModelo;
+
 
     public Marca() {
     }
@@ -33,11 +33,4 @@ public class Marca extends RealmObject {
         this.nombre = nombre;
     }
 
-    public Integer getIdModelo() {
-        return idModelo;
-    }
-
-    public void setIdModelo(Integer idModelo) {
-        this.idModelo = idModelo;
-    }
 }
