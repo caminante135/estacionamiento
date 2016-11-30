@@ -103,7 +103,7 @@ public class EstanciaDialog extends DialogFragment {
     public void onClick() {
         if (cantH > 0) {
 
-            getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
+            getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container_info, ResumenFragment.newInstance(
                             rutUsuario, idEstacio, cantH, fechaHoraLlegada, fechaHoraSalida))
                     .commitAllowingStateLoss();

@@ -27,6 +27,8 @@ public class ApiConstants {
     public static final String PATH_SELECT_EVAL = "/selectEvaluacionesByUsuAndEst";
     public static final String PATH_INSERT = "/insert";
     public static final String PATH_SELECT_TRANSACCION_ANIDADA = "/selectTransaccionAnidada";
+    public static final String PATH_CAMBIAR_ESTADO = "/cambioEstado";
+    public static final String PATH_OLVIDAR_CLAVE = "/recuperarClave";
 
     //PARAMETROS
     public static final String PARAM_RUT = "rut";
@@ -43,4 +45,6 @@ public class ApiConstants {
     public static final String URL_SELECT_ALL_EVAL = PATH_MI_EST_WEB+PATH_EVALUACION+PATH_SELECT_ALL;
     public static final String URL_INSERT_EVALUACION = PATH_MI_EST_WEB+PATH_EVALUACION+PATH_INSERT;
     public static final String URL_SELECT_TRANSACCION_ARRIENDO = PATH_MI_EST_WEB+PATH_TRANSACCION+PATH_SELECT_TRANSACCION_ANIDADA;
+    public static final String URL_CAMBIAR_ESTADO_ESTACIONAMIENTO = PATH_MI_EST_WEB+PATH_ESTACIONAMIENTO+PATH_CAMBIAR_ESTADO;
+    public static final String URL_RECUPERAR_CONTRASEÑA = PATH_MI_EST_WEB+PATH_USUARIO+PATH_OLVIDAR_CLAVE;
 }

@@ -22,11 +22,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +37,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
+import com.example.gerardo.miestacionamiento.controller.rest.ApiAdapter;
+import com.example.gerardo.miestacionamiento.controller.util.RunnableArgs;
 import com.example.gerardo.miestacionamiento.model.Estacionamiento;
 import com.example.gerardo.miestacionamiento.view.ui.dialog.ComentarioDialog;
 import com.example.gerardo.miestacionamiento.view.ui.fragment.DetalleFragment;
@@ -57,13 +61,17 @@ import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    GoogleMap mGoogleMap;
+
     @Bind(R.id.nav_view)
     NavigationView navView;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-
-
+    @Bind(R.id.image_circle_header)
+    CircleImageView imageCircleHeader;
+    @Bind(R.id.txt_header_nombre)
+    TextView txtHeaderNombre;
+    @Bind(R.id.txt_header_tipo)
+    TextView txtHeaderTipo;
     @Bind(R.id.image_header)
     ImageView imageHeader;
     @Bind(R.id.collapsing_toolbar_layout)
@@ -71,12 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     Menu menu;
     Fragment fragment = null;
-    @Bind(R.id.image_circle_header)
-    CircleImageView imageCircleHeader;
-    @Bind(R.id.txt_header_nombre)
-    TextView txtHeaderNombre;
-    @Bind(R.id.txt_header_tipo)
-    TextView txtHeaderTipo;
+    private boolean viewIsAtHome;
 
     public static TextView txtToolbar;
 
@@ -209,6 +212,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void crearNotificacionTermino(String direccion, Integer idEst, String rutUsuario){
+        Estacionamiento est = new Estacionamiento();
+        est.setIdEstacionamiento(idEst);
+        est.setIdEstado(1);
+        final RunnableArgs runnableArgs = new RunnableArgs() {
+            @Override
+            public void run() {
+                if (this.getResponse() == GlobalConstant.RESPONSE_LOGIN_CORRECT) {
+
+                    Log.d("CAMBIAR_ESTADO","CAMBIO DEL ESTACIONAMIENTO CORRECTAMENTE");
+                } else {
+                    Log.d("CAMBIAR_ESTADO","CAMBIO DEL ESTACIONAMIENTO NO SE PUDO REALIZAR");
+                }
+            }
+        };
+        GlobalFunction.cambiarEstadoEstacionamiento(est,runnableArgs);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.logoappsintitulo);
         Intent intent = new Intent(this,MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
@@ -230,13 +248,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+//        super.onBackPressed();
         syncFrags();
-//        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame);
-//        if (fragment instanceof MapFragment){
-//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//            ft.replace(R.id.frame, fragment);
-//            ft.commit();
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else{
+            if (!viewIsAtHome){
+                displayView(R.id.nav_home);
+            }else{
+                creardialogLogout();
+            }
+        }
+//        if (!viewIsAtHome) { //if the current view is not the News fragment
+//            displayView(R.id.nav_home); //display the News fragment
+//        } else {
+//            moveTaskToBack(true);  //If view is in News fragment, exit application
 //        }
 
     }
@@ -255,7 +281,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.menu = menu;
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-//        hideOption(R.id.action_estacionamiento);
+        if (prefs.getInt(GlobalConstant.PREFS_IDROL,1)==GlobalConstant.TIPO_CLIENTE){
+            hideOption(R.id.action_estacionamiento);
+        }
         return true;
     }
 
@@ -285,47 +313,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (viewId) {
             case R.id.nav_home:
+                title = "Inicio";
                 if (!(fragment instanceof MapFragment)) {
                     fragment = new MapFragment().newInstance();
                     title = "Inicio";
                     disableCollapse();
+                    viewIsAtHome = true;
                 }
                 break;
             case R.id.nav_profile:
                 fragment = new MiCuentaFragment();
                 title = "Mi Cuenta";
                 enableCollapse();
+                viewIsAtHome = false;
                 break;
             case R.id.nav_historial:
                 fragment = new HistorialFragment();
                 title = "Historial";
                 disableCollapse();
+                viewIsAtHome = false;
                 break;
             case R.id.nav_prefs:
                 fragment = new PreferenciasFragment();
                 title = "Preferencias";
                 disableCollapse();
+                viewIsAtHome = false;
                 break;
             case R.id.nav_logout:
-                AlertDialog.Builder builder = GlobalFunction.crearDialogYesNot(this, "Salir", "¿Desea salir de Mi Estacionamiento?");
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-                builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        deletePrefs();
-                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
+                creardialogLogout();
                 break;
             default:
                 fragment = null;
@@ -431,6 +446,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         txtNombreHeader.setText(String.format("%s %s", nombre, apellido));
         txtTipoHeader.setText(tipoUsuario);
+    }
+
+    private void creardialogLogout(){
+        AlertDialog.Builder builder = GlobalFunction.crearDialogYesNot(this, "Salir", "¿Desea salir de Mi Estacionamiento?");
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                deletePrefs();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }

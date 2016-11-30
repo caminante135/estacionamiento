@@ -104,7 +104,10 @@
     <string name="action_vehiculo">+ Vehículo</string>
     <string name="action_estacionamiento">+ Estacionamiento</string>
     <string name="action_tarjeta">+ Tarjeta</string>
-
+    <string name="sobreNosotros">Hola, somos un grupo de 6 estudiantes que han realizado esta aplicacion Estacionate! con el fin de dar solucion a la problematica presentada en el proyecto
+    Mi Estacionamiento, todo esto en el contexto del ramo para Duoc UC, Portafolio de Titulo. El desarrollador de este aplicativo fue Gerardo Mascayano junto con la colaboración de Bastian Caro, Fabian Olave, Javier Hernandez, Mauricio Salazar y Felipe Donoso.
+    Puedes contactarnos a estacionate@gmail.com
+    Saludos</string>
     <string name="terminosCondiciones">El Cliente se obliga a usar los Servicios de forma diligente, correcta y lícita y, en particular, a título meramente enunciativo y no limitativo, se compromete a abstenerse de:
 
 utilizar los Servicios de forma, con fines o efectos contrarios a la ley, a la moral y a las buenas costumbres generalmente aceptadas o al orden público;

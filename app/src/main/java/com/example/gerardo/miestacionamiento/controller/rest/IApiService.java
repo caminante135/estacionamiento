@@ -1,5 +1,6 @@
 package com.example.gerardo.miestacionamiento.controller.rest;
 
+import com.example.gerardo.miestacionamiento.model.Estacionamiento;
 import com.example.gerardo.miestacionamiento.model.Evaluacion;
 import com.example.gerardo.miestacionamiento.model.FullTransaccionArriendo;
 import com.example.gerardo.miestacionamiento.model.Marca;
@@ -57,5 +58,11 @@ public interface IApiService {
 
     @POST(ApiConstants.URL_SELECT_TRANSACCION_ARRIENDO)
     Call<Transaccion.TransaccionArriendo> selectTransaccionArriendoByRut (@Body Transaccion rutUsuarioPropietario);
+
+    @POST(ApiConstants.URL_CAMBIAR_ESTADO_ESTACIONAMIENTO)
+    Call<ResponseBody> cambiarEstadoEstacionamiento (@Body Estacionamiento estacionamiento);
+
+    @POST(ApiConstants.URL_RECUPERAR_CONTRASEÑA)
+    Call<ResponseBody> recuperarContraseña (@Body Usuario correo);
 
 }

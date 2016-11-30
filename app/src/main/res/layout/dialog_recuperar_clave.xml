@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:text="Olvidaste tu Contraseña"
+        android:textSize="20dp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:text="Una vez ingresado tu correo se te hara envío de la nueva contraseña"
+        android:textSize="15dp"
+        android:textColor="@color/secondary_text"
+        android:textStyle="italic" />
+
+
+    <EditText
+        android:id="@+id/dialog_recuperar_correo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:drawablePadding="6dp"
+        android:drawableLeft="@drawable/ic_email_green"
+        android:drawableStart="@drawable/ic_email_green"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:hint="Ingrese su correo" />
+
+    <Button
+        android:id="@+id/dialog_recuperar_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/btn_bg"
+        android:text="Reestablecer contraseña"
+        android:textSize="15dp"
+        android:textColor="@color/white" />
+
+</LinearLayout>

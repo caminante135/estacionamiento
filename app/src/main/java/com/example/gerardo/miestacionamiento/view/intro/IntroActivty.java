@@ -27,15 +27,15 @@ public class IntroActivty extends AppIntro {
 
         //PRIMER SLIDE
         addSlide(AppIntroFragment.newInstance("¿Buscas un Estacionamiento?",
-                "Con Estacionate! podrás facilmente buscar y arrendar el estacionamientos que necesitas",
-                R.drawable.logoapptitulo,
+                "Con Estacionate! podrás fácilmente buscar y arrendar el estacionamientos que necesitas",
+                R.drawable.logoappsintitulo,
                 ContextCompat.getColor(this,R.color.quintoSlideIntro),
                 ContextCompat.getColor(this,R.color.introTitleColor),
                 ContextCompat.getColor(this,R.color.white)));
 
         //SEGUNDO SLIDE
         addSlide(AppIntroFragment.newInstance("Busca un Estacionamiento",
-                "En el mapa encontrarás todos los estacionamientos que esten registrados en la aplicación y mediante el icono sabrás si está o no disponible",
+                "En el mapa encontrarás todos los estacionamientos que estén registrados en la aplicación y mediante el icono sabrás si está o no disponible",
                 R.drawable.imagen_buscar,
                 ContextCompat.getColor(this,R.color.secondSlideIntro),
                 ContextCompat.getColor(this,R.color.introTitleColor),
@@ -43,7 +43,7 @@ public class IntroActivty extends AppIntro {
 
         //TERCER SLIDE
         addSlide(AppIntroFragment.newInstance("Ojo en los detalles",
-                "Debes fijarte en los detalles del estacionamientos como el precio por hora, la disponibilidad y la ubicacion de este",
+                "Debes fijarte en los detalles del estacionamiento como el precio por hora, la disponibilidad y la ubicación de este",
                 R.drawable.imagen_etalles,
                 ContextCompat.getColor(this,R.color.tercerSlideIntro),
                 ContextCompat.getColor(this,R.color.introTitleColor),
@@ -51,23 +51,23 @@ public class IntroActivty extends AppIntro {
 
         //CUARTO SLIDE
         addSlide(AppIntroFragment.newInstance("Tiempo de Estancia",
-                "Determina el tiempo en que haras uso del estacionamiento, puedes programarlo incluso con ¡dias de anticipación!",
+                "Determina el tiempo en que harás uso del estacionamiento, puedes programarlo incluso con ¡dias de anticipación!",
                 R.drawable.imagen_tiempo,
                 ContextCompat.getColor(this,R.color.cuartoSlideIntro),
                 ContextCompat.getColor(this,R.color.introTitleColor),
                 ContextCompat.getColor(this,R.color.white)));
 
         //QUINTO SLIDE
-        addSlide(AppIntroFragment.newInstance("Paga de la manera mas fácil",
-                "Paga acorde a la cantidad de horas que hayas seleccionado y de la manera mas fácil solo indicando la tarjeta de crédito que deseas utilizar",
+        addSlide(AppIntroFragment.newInstance("Paga de la manera más fácil",
+                "Paga acorde a la cantidad de horas que hayas seleccionado y de la manera más fácil solo indicando la tarjeta de crédito que deseas utilizar",
                 R.drawable.imagen_pagar,
                 ContextCompat.getColor(this,R.color.quintoSlideIntro),
                 ContextCompat.getColor(this,R.color.introTitleColor),
                 ContextCompat.getColor(this,R.color.white)));
 
         //CUARTO SLIDE
-        addSlide(AppIntroFragment.newInstance("Ve y estacionate!",
-                "Ahora solo debes ir hacia el estacionamente y ocuparlo hasta la hora que hayas fijado, ¡Disfrutalo!",
+        addSlide(AppIntroFragment.newInstance("Ve y estaciónate!",
+                "Ahora solo debes ir hacia el estacionamente y ocuparlo hasta la hora que hayas fijado, ¡Disfrútalo!",
                 R.drawable.imagen_estacionamientos,
                 ContextCompat.getColor(this,R.color.sextoSlideIntro),
                 ContextCompat.getColor(this,R.color.introTitleColor),

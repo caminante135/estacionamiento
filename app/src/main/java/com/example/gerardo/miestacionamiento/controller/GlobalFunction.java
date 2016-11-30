@@ -228,7 +228,7 @@ public final class GlobalFunction {
         String inputPattern = "HH:mm EEEE', ' dd 'de' MMMM";
 
         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, new Locale("es", "CL"));
-        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, Locale.US);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, new Locale("es", "CL"));
 
         Date newDate = null;
         String finalDate = "";
@@ -240,7 +240,7 @@ public final class GlobalFunction {
             e.printStackTrace();
         }
 
-        return finalDate;
+        return finalDate.replace("1970","2016");
 
     }
 
@@ -523,6 +523,73 @@ public final class GlobalFunction {
                 }
             }
         });
+    }
+
+    //CAMBIAR EL ESTADO DEL ESTACIONAMIENTO
+    public static void cambiarEstadoEstacionamiento(Estacionamiento estacionamiento, final RunnableArgs block){
+        Call<ResponseBody> retroCall = ApiAdapter.getApiService().cambiarEstadoEstacionamiento(estacionamiento);
+
+        retroCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    if (jsonObject.getBoolean("response")){
+                        block.setResponseBoolean(true);
+                    }else{
+                        block.setResponseBoolean(false);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    block.setResponseBoolean(false);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    block.setResponseBoolean(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                block.setResponseBoolean(false);
+            }
+        });
+    }
+
+    public static void recuperarContraseña(String correo, final RunnableArgs block){
+        Usuario user = new Usuario();
+        user.setCorreo(correo);
+
+        Call<ResponseBody> retroCall = ApiAdapter.getApiService().recuperarContraseña(user);
+        retroCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    if (jsonObject.getBoolean("response")){
+                        block.setResponseBoolean(true);
+                        block.run();
+                    }else{
+                        block.setResponseBoolean(false);
+                        block.run();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    block.setResponseBoolean(false);
+                    block.run();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    block.setResponseBoolean(false);
+                    block.run();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                block.setResponseBoolean(false);
+                block.run();
+            }
+        });
+
     }
 
 //    //OBTENER EVALUACIONES ACORDE AL ESTACIONAMIENTO

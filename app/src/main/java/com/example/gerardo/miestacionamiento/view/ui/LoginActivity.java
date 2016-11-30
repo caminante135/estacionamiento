@@ -13,10 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
-import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
+import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.controller.util.RunnableArgs;
 import com.example.gerardo.miestacionamiento.view.intro.IntroActivty;
+import com.example.gerardo.miestacionamiento.view.ui.dialog.RecuperarClaveDialog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     @Bind(R.id.txt_Registrar)
     TextView txtRegistrar;
+    @Bind(R.id.txt_olvidar_clave)
+    TextView txtOlvidarClave;
 
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
@@ -132,6 +135,12 @@ public class LoginActivity extends AppCompatActivity {
     @OnClick(R.id.txt_Registrar)
     public void registrar() {
         startActivity(new Intent(this, RegistroActivity.class));
+    }
+
+    @OnClick(R.id.txt_olvidar_clave)
+    public void recuperarClave(){
+        RecuperarClaveDialog dialog = new RecuperarClaveDialog();
+        dialog.show(getSupportFragmentManager(),"claveDialog");
     }
 
 }

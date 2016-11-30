@@ -1,8 +1,11 @@
 package com.example.gerardo.miestacionamiento.view.ui.fragment;
 
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -16,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.gerardo.miestacionamiento.R;
 import com.example.gerardo.miestacionamiento.controller.GlobalFunction;
+import com.example.gerardo.miestacionamiento.controller.util.GlobalConstant;
 import com.example.gerardo.miestacionamiento.view.ui.LoginActivity;
 
 import butterknife.Bind;
@@ -84,8 +88,7 @@ public class PreferenciasFragment extends Fragment {
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent
                 .putExtra(Intent.EXTRA_TEXT,
-                        "Hola, te invito a probar la app 'Mi Estacionamiento' es gratis y si pones el codigo 'HHGGMM'" +
-                                " recibes un cupon de descuento por $0, disfrutalos :) ");
+                        "Hola, te invito a probar la app Estacionate! es gratis, encuentrala en este enlace http://bit.ly/2gyKzMS");
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Invitación a Mi Estacionamiento");
         sendIntent.setType("text/plain");
 //        sendIntent.setPackage("com.facebook.orca");
@@ -93,18 +96,24 @@ public class PreferenciasFragment extends Fragment {
             startActivity(sendIntent);
         }
         catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(getActivity(),"Por favor instale la applicación", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(),"Por favór instale la applicación", Toast.LENGTH_LONG).show();
         }
     }
 
     @OnClick(R.id.txt_prefs_about)
     public void about(){
-        Toast.makeText(getActivity(), "Sobre Nosotros", Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = GlobalFunction.crearDialogYesNot(getActivity(),
+                "Sobre Nosotros", getString(R.string.sobreNosotros));
+
+        AlertDialog dialog = builder.create();
+        dialog.setCancelable(true);
+
+        dialog.show();
     }
 
     @OnClick(R.id.txt_prefs_delete)
     public void deleteAccount(){
-        AlertDialog.Builder builder = GlobalFunction.crearDialogYesNot(getActivity(), "Eliminar", "¿Desea eliminar su cuenta de Estacionate!?");
+        AlertDialog.Builder builder = GlobalFunction.crearDialogYesNot(getActivity(), "Eliminar", "Nos apena que quieras eliminar tu cuenta de Estacionate! ¿Realmente quieres borrarla?");
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -114,7 +123,15 @@ public class PreferenciasFragment extends Fragment {
         builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(getActivity(), "Cuenta eliminada", Toast.LENGTH_SHORT).show();
+                SharedPreferences prefs;
+                SharedPreferences.Editor editor;
+                prefs = getActivity().getSharedPreferences(GlobalConstant.PREFS_NAME, Context.MODE_PRIVATE);
+                editor = prefs.edit();
+                editor.putBoolean(GlobalConstant.PREFS_AUTOLOGIN,false);
+                editor.remove(GlobalConstant.PREFS_CORREO);
+                editor.remove(GlobalConstant.PREFS_CLAVE);
+                editor.apply();
+                Toast.makeText(getActivity(), "Cuenta eliminada :(", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
             }
         });

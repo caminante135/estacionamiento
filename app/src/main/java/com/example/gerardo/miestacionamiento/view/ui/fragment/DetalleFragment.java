@@ -151,8 +151,10 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
 //                .replace(R.id.frame,EstanciaFragment.newInstance(rutUsuario,idEstacio))
 //                .commitAllowingStateLoss();
         if (estadoEstacionamiento == 1) {
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            ft.addToBackStack(null);
             EstanciaDialog dialog = EstanciaDialog.newInstance(rutUsuario, idEstacio);
-            dialog.show(getActivity().getSupportFragmentManager(), "ftEstancia");
+            dialog.show(ft, "ftEstancia");
         } else {
             Toast.makeText(getActivity(), "Estacionamiento no disponible", Toast.LENGTH_SHORT).show();
         }
@@ -208,7 +210,7 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
             @Override
             public void run() {
                 if (panorama.getLocation() == null) {
-                    Toast.makeText(getActivity(), "No se encontró la previsualización en Street View", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Conexión lenta detectada, por favor espere mientras carga Street View", Toast.LENGTH_LONG).show();
                 }
             }
         }, 3000);
@@ -248,34 +250,37 @@ public class DetalleFragment extends Fragment implements OnStreetViewPanoramaRea
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-//        try {
-//            Fragment fragment = (getFragmentManager()
-//                    .findFragmentById(R.id.street_view));
+        SupportStreetViewPanoramaFragment fragment = (SupportStreetViewPanoramaFragment) getChildFragmentManager().findFragmentById(R.id.street_view);
+//        if (fragment!=null){
 //            FragmentTransaction ft = getActivity().getSupportFragmentManager()
 //                    .beginTransaction();
 //            ft.remove(fragment);
 //            ft.commit();
-//        } catch (Exception e) {
-//            e.printStackTrace();
 //        }
+        if (fragment.isResumed()) {
+            FragmentTransaction ft = getActivity().getSupportFragmentManager()
+                    .beginTransaction();
+            ft.remove(fragment);
+            ft.commit();
+        }
     }
 
 
-    private void setRecyclerItems(){
+    private void setRecyclerItems() {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        RealmResults<Evaluacion> evaluacionList = realm.where(Evaluacion.class).equalTo("idEstacionamiento",idEstacio).findAll();
+        RealmResults<Evaluacion> evaluacionList = realm.where(Evaluacion.class).equalTo("idEstacionamiento", idEstacio).findAll();
         realm.commitTransaction();
         Integer[] notas = new Integer[evaluacionList.size()];
         for (int i = 0; i < evaluacionList.size(); i++) {
             notas[i] = evaluacionList.get(i).getCalificacion();
         }
         mRatingBar.setRating(GlobalFunction.getPromedio(notas));
-        if (evaluacionList.size()==0){
+        if (evaluacionList.size() == 0) {
             txtNoComent.setVisibility(View.VISIBLE);
             recyclerComentarios.setVisibility(View.GONE);
         }
-        EvaluacionAdapter adapter = new EvaluacionAdapter(getContext(),evaluacionList);
+        EvaluacionAdapter adapter = new EvaluacionAdapter(getContext(), evaluacionList);
         recyclerComentarios.setAdapter(adapter);
     }
 

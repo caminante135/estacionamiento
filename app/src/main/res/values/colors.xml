@@ -38,5 +38,6 @@
     <color name="back_webpay">#efeff0</color>
     <color name="backClockLogo">#8cc647</color>
     <color name="backAvailableLogo">#0f883b</color>
+    <color name="dialog_transparecy">#b4ffffff</color>
 
 </resources>

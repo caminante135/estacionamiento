@@ -4,10 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/loginback"
-    android:fitsSystemWindows="true"
+    android:focusableInTouchMode="true"
     tools:context=".view.ui.LoginActivity">
 
     <!--
+
+    OJO LE SAQUE EL FITS SYSTEM WINDOWS
+     android:fitsSystemWindows="true"
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -111,6 +114,16 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@color/white"
                 android:text="¿No tienes cuenta?, Regístrate ¡Gratis!"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/txt_olvidar_clave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:text="Olvidé mi contraseña"
                 android:textSize="17sp" />
 
         </LinearLayout>
