@@ -113,7 +113,7 @@ public class ComentarioDialog extends DialogFragment {
             public void run() {
                 dialog.dismiss();
                 if (this.getResponseBoolean()) {
-                    Toast.makeText(getActivity(), "Su evaluacion ha sido enviada con éxito", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Su evaluación ha sido enviada con éxito", Toast.LENGTH_SHORT).show();
                     GlobalFunction.cargarEvaluaciones();
                     startActivity(new Intent(getActivity(),MainActivity.class));
                 } else {

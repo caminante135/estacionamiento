@@ -112,7 +112,6 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         if (this.getResponse() == GlobalConstant.RESPONSE_LOGIN_INCORRECT) {
 
-
                             Toast.makeText(LoginActivity.this, "Usuario y/o contraseña incorrectos", Toast.LENGTH_SHORT).show();
                         } else {
                             if (this.getResponse() == GlobalConstant.RESPONSE_CONNECTION_ERROR) {

@@ -157,10 +157,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 final String direccion = extras.getString("direccion");
                 final Integer idEst = extras.getInt("idEst");
                 final String rutUser = extras.getString("rutUser");
-                crearNotificacionInicio(direccion);
                 crearNotificacionPagoExito(direccion);
-
                 new CountDownTimer(20000, 1000) {
+
+                    @Override
+                    public void onTick(long l) {
+                        crearNotificacionInicio(direccion);
+                    }
+
+                    @Override
+                    public void onFinish() {
+
+                    }
+                }.start();
+
+                new CountDownTimer(40000, 1000) {
 
                     @Override
                     public void onTick(long l) {
@@ -449,7 +460,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void creardialogLogout(){
-        AlertDialog.Builder builder = GlobalFunction.crearDialogYesNot(this, "Salir", "¿Desea salir de Mi Estacionamiento?");
+        AlertDialog.Builder builder = GlobalFunction.crearDialogYesNot(this, "Salir", "¿Desea salir de Estacionate!?");
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

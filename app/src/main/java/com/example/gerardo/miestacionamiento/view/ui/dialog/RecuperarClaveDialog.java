@@ -68,7 +68,7 @@ public class RecuperarClaveDialog extends DialogFragment {
             final ProgressDialog dialog = new ProgressDialog(getActivity());
             dialog.setCancelable(false);
             dialog.setTitle("Cargando");
-            dialog.setMessage("Seteando nueva contraseña");
+            dialog.setMessage("Reestableciendo su contraseña");
             dialog.show();
             final RunnableArgs runnableArgs = new RunnableArgs() {
                 @Override
